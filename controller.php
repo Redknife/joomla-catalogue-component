@@ -7,33 +7,41 @@ require_once(dirname(__FILE__).DS.'helper.php');
 
 class CatalogueController extends JControllerLegacy
 {
-	
+	public function search(){
+     $search = $this->input->get('search', '', 'string');
+     
+     parent::display();
+    }
+    
 	public function order()
 	{
 		$app = JFactory::getApplication();
-
+		
 		$cart = $app->getUserState('com_catalogue.cart');
 		
-		$order = JRequest::getVar('orderId', 0, 'get', 'int');
+		$item_id = $this->input->get('id', 0, 'get', 'int');
+        
+		$count = $this->input->get('count', 1, 'get', 'int');
 		
-		
-		if (!CatalogueHelper::inCart($order))
+		$data = unserialize($cart);
+        
+		if (!is_array($data))
 		{
-			$data = unserialize($cart);
-			if (!is_array($data))
-			{
-				$data = array();
-			}
-		
-			array_push($data, $order);
-			$data = array_unique($data);
-			$order = serialize($data);
-			$app->setUserState('com_catalogue.cart', $order);
-			
-			echo CatalogueHelper::getCart();	
+			$data = array();
 		}
+        if($item_id)
+         $data[$item_id] = $count;
 		
-		return false;
+        $order = serialize($data);
+		$app->setUserState('com_catalogue.cart', $order);
+		
+		$model = $this->getModel('items');
+		$row = $model->getItem($item_id);
+        
+		$result['result'] = array('id' => $row->id, 'count' => $count, 'item_name' => $row->item_name, 'item_art' => $row->item_art);
+		
+		echo json_encode($result);
+		
 	}
 	
 	public function addToFavorite()
@@ -70,18 +78,21 @@ class CatalogueController extends JControllerLegacy
 		$cart = $app->getUserState('com_catalogue.cart');
 		
 		$order = JRequest::getVar('orderId', 0, 'get', 'int');
-		
-		if (CatalogueHelper::inCart($order))
+        
+		//if (CatalogueHelper::inCart($order))
+        if(true)
 		{
-			$data = unserialize($cart);
+            $data = unserialize($cart);
 			if (!is_array($data))
 			{
 				$data = array();
 			}
-			
-			unset($data[array_search($order,$data)]);
-			$order = serialize($data);
-			$app->setUserState('com_catalogue.cart', $order);
+            if(array_key_exists($order, $data)){
+             unset($data[$order]);
+             //if(count($data) == 1) $data = array();
+             $order = serialize($data);
+             $app->setUserState('com_catalogue.cart', $order);
+            }
 		}
 		return false;
 	}
@@ -89,55 +100,108 @@ class CatalogueController extends JControllerLegacy
 	public function send()
 	{
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-		
-		$data = JRequest::getVar('cart');
-		$name = JRequest::getVar('name', '');
-		$address = JRequest::getVar('address', '');
-		$phone = JRequest::getVar('phone', '');
-		
-		if(empty($data))
-		{
-			$this->setRedirect('http://mix-74.ru/cart.html', 'Корзина пуста!', 'error');
-			return;
+
+    $manager_email = 'info@saity74.ru';
+    $manager_greeting = 'hello manager';
+    $manager_subject = 'Заказ товаров';
+
+    $name = $this->input->get('name', '', 'string');
+    $phone = $this->input->get('phone', '', 'string');
+    $email = $this->input->get('email', '', 'string');
+    $desc = $this->input->get('desc', '', 'string');
+    $client_subject = 'client subject';
+    $client_body = 'Наш менеджер свяжется с вами';
+
+    $client_greeting = 'Здравствуйте'.' '.$name;
+
+    $app = JFactory::getApplication();
+    $mail = JFactory::getMailer();
+
+    $mail->IsHTML(true);
+
+    $mailfrom	= $app->getCfg('mailfrom');
+    $fromname	= $app->getCfg('fromname');
+    $sitename	= $app->getCfg('sitename');
+
+		// check..
+    if(!preg_match("~^([a-z0-9_\-\.])+@([a-z0-9_\-\.])+\.([a-z0-9])+$~i", $email)){
+			$app->redirect('/', JText::_('Некоректный Email'));
+      return;
+    }
+
+    if(strlen($name) < 3){
+    	$app->redirect('/', JText::_('Некоректное имя'));
+      return;
+    }
+		// ..check
+
+    // get order items..
+    $body_items = '<table width="550px" cellspacing="5"><tbody><tr><td>Наименование</td><td>Обозначение</td><td>Количество</td></tr>';
+
+    $items = CatalogueHelper::getCartItems();
+    if($items){
+      foreach ($items as $item){
+        if( $item != end($items)){
+				$body_items .= '<tr>';
+				$item_name = $item->item_name;
+				$item_art = $item->item_art;
+				$count = $items[count($items)-1][$item->id];
+				$body_items .= '<td>'.$item_name.'</td>'.'<td>'.$item_art.'</td>'.'<td>'.$count.'</td>';
+				$body_items .= '</tr>';
+        }
+			}
 		}
-		
-		if(!$name || !$address || !$phone)
-		{
-			$this->setRedirect('http://mix-74.ru/cart.html', 'Заполните, пожалуйста все поля!', 'error');
-			return;
-		}
-		
-		
-				
-		$mail = JFactory::getMailer();
-		$mail->addRecipient('order@mix-74.ru');
-		$mail->addReplyTo(array('admin@saity74.ru', 'Буянов Данила'));
-		$mail->setSender(array('info@mix-74.ru', 'Кафе MIX'));
-		$mail->setSubject('mix-74.ru'.': '.'Ваш заказ принят!');
-		
-		$body .= "Здравствуйте, ".$name."! \n\n";
-		$body .= "Контактный телефон: ".$phone."\n";
-		$body .= "Адрес доставки: ".$address."\n\n";
-		$body .= "Ваш заказ:\n";
-		
-		$body .= "-----------------------------------------------------------\n";
-		
-		$ids = array_keys($data);
-		$items = CatalogueHelper::getItemsByIds($ids);
-		
-		foreach ($items as $item)
-		{
-			$count = $data[$item->id]['count'];
-			$rowSumm = $count*$item->price;
-			$body .= "\t".$item->name."\t\t".$data[$item->id]['count']."шт.\t\t".$rowSumm."р.\n";
-		}
-		
-		$body .= "-----------------------------------------------------------\n";
-		
-		
-		$mail->setBody($body);
-		//$sent = $mail->Send();
-		
-		$this->setRedirect('http://mix-74.ru', 'Спасибо за заказ! Мы Вам перезвоним в ближайшее время.');
+
+		// ...get order items
+
+    $mail->addRecipient($manager_email);
+    $mail->addReplyTo(array($manager_email, $name));
+    $mail->setSender(array($mailfrom, $fromname));
+    $mail->setSubject($manager_subject);
+    
+    $body = strip_tags(str_replace(array('<br />','<br/>'), "\n", $manager_greeting)."\n");
+
+    $body .= '<br/><br/>';
+    
+    if ($name)
+        $body .= 'ФИО отправителя: '.$name."<br/>";
+    
+    if ($phone)
+        $body .= 'Телефон: '.$phone."<br/>";
+    
+    if ($email)
+        $body .= 'E-mail: '.$email."<br/>";
+
+    if ($desc)
+        $body .= 'Описание вопроса: '.$desc."<br/>";
+    
+    $body .= strip_tags(str_replace(array('<br />','<br/>'), "\n", $manager_body));
+
+    $body .= '<br/>'.$body_items;
+    
+    $mail->setBody($body);
+    print_r($body);
+    
+    $sent = $mail->Send();
+    
+    if ($email)
+    {
+        $mail = JFactory::getMailer();
+        $mail->addRecipient($email);
+        if (!$name)
+            $name = $email;
+        $mail->addReplyTo(array($email, $name));
+        $mail->setSender(array($mailfrom, $fromname));
+        $mail->setSubject($client_subject);
+        
+        $body = strip_tags(str_replace(array('<br />','<br/>'), "\n", $client_greeting)."\n");
+        
+        $body .= strip_tags(str_replace(array('<br />','<br/>'), "\n", $client_body));
+        
+        $mail->setBody($body);
+        
+        $sent = $mail->Send();
+    }
+    if ($sent) $app->redirect('/', JText::_('Сообщение отправлено!'));
 	}
 }

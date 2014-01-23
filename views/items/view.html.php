@@ -2,7 +2,7 @@
 
 defined('_JEXEC') or die;
 
-class CatalogueViewSection extends JViewLegacy
+class CatalogueViewItems extends JViewLegacy
 {
 	protected $items;
 

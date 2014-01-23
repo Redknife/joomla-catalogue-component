@@ -6,80 +6,82 @@ JHtml::_('behavior.formvalidation');
 $items = CatalogueHelper::getCartItems();
 $summ = 0;
 ?>
-
-<ul class="breadcrumb">
-	<li><i class="icon-home"></i></li>
-	<li><a href="" title="Каталог">Каталог</a></li>
-	<li><i class="icon-chevron-right"></i></li>
-	<li>Корзина</li>
-</ul>
-
 <div class="cart-items">
-<div class="alert alert-info">
-	<p>Впишите количество товаров в таблице ниже. Чтобы удалить товар нажмите на крестик справа.</p>
+	<div class="page-header">
+		<h1 class="catalogue-head">Корзина</h1>
+	</div>
+    <?php if(!empty($items)): ?>
+<form action="cart.html" method="POST" id="orderForm" class="form-validate">
+<table id="catalogueOrderBody" class="table-items">
+			<thead>
+				<tr>
+					<th>Наименование</th>
+					<th>Обозначение</th>
+					<th>Кол-во</th>
+				</tr>
+			</thead>
+			<tbody>
+			<?php
+        if($items):
+          foreach ($items as $item){
+            if( $item != end($items)): ?>
+				<tr id="t<?php echo $item->id; ?>" class="cart-row">
+					<td class="item-name">
+						<?php echo $item->item_name; ?>
+					</td>
+					<td class="item-art">
+						<?php echo $item->item_art; ?>
+					</td>
+					<td>
+						<div class="item-count">
+								<input value="<?php echo ($items[count($items)-1][$item->id]); ?>" class="input-count"/>
+								<div class="count-controls">
+									<a href="#" class="count-arrowup"></a>
+									<a href="#" class="count-arrowdown"></a>
+								</div>
+					    </div>
+					</td>
+					<td><a href="#" title="Удалить товар из корзины" class="close"></a></td>
+				</tr>
+			<?php endif; } endif;?>
+			</tbody>
+		</table>
+
+	<div class="form-left-info">
+      <h3>Запросить цены, условия и сроки поставки</h3>
+      <p>! Наш менеджер перезвонит Вам в течении 1-го рабочего дня после отправки заявки</p>
+    </div>
+
+    <div class="mail-form">
+      <div class="form-lables">
+        <div class="controlls">
+            <span>Ваше имя</span>
+            <input type="text" class="field required" value="" name="name" placeholder="" />
+        </div>
+
+        <div class="controlls">
+            <span>Email</span>
+            <input type="text" class="field required" value="" name="email" placeholder="" />
+        </div>
+
+        <div class="controlls">
+                <span>Телефон</span>
+                <input type="text" class="field" value="" name="phone" placeholder="" />
+        </div>
+
+        <div class="controlls form-desc">
+            <span>Описание</span>
+            <textarea class="field" name="desc" placeholder="" ></textarea>
+         </div>
+      </div>
+			<div class="controlls">
+	      <a href="#" class="cart-submit btn btn-success" id="cartSubmit">Запросить</a>
+	    </div>
+    </div>
 </div>
-<form action="cart.html" method="POST" class="form-validate">
-	<table id="cart-table" class="table table-condensed">
-		<thead>
-			<tr>
-				<th>#</th>
-				<th>Изображение</th>
-				<th>Название</th>
-				<th>Описание</th>
-				<th>Цена</th>
-				<th>Количество</th>
-				<th>Стоимость</th>
-			</tr>
-		<thead>
-		<?php if ($items) : foreach ($items as $item) : $summ += $item->price; ?>
-			<tr id="t<?php echo $item->id?>" class="cart-row">
-				<td width="1%"><?php echo $i += 1 ?></td>
-				<td><img class="thumbnail span1" src="<?php echo $item->image ?>"/></td>
-				<td class="span2"><?php echo $item->name ?></td>
-				<td style="font-size: 0.9em"><?php echo JFilterOutput::cleanText($item->desc) ?></td>
-				<td class="span1"><span class="row-price badge badge-warning"><?php echo $item->price ?> р.</span></td>
-				<td class="span1"><input type="text" name="cart[<?php echo $item->id?>][count]" class="count required input-mini" value="1" aria-required="true" required="required" /></td>
-				<td class="span1"><span class="row-summ"><?php echo $item->price ?></span> р.<button class="close">×</button></td>				
-			</tr>
-		<?php endforeach; endif; ?>
-	</table>
-		<div style="text-align: center; font-size: 2em">
-			Сумма Вашего заказа: <span id="cart-summ"><?php echo $summ ?></span> р.
-		</div>
-</div>
-<div class="form-actions form-horizontal">
-	<div class="alert alert-info">
-		<p>Обращаем Ваше внимание на то, что при оформлении заказа все поля обязательны для заполнения. Не верно или не корректно заполненные заказы выполняться не будут!</p>
-	</div>
-	
-	<div class="control-group">
-	<label class="control-label" for="name">Фамилия имя отчество:</label>
-		<div class="controls">
-		  <input type="text" name="name" class="span4 required" id="name" aria-required="true" required="required">
-		  <p class="help-block"><small>Ведите Фамилию Имя и Отчество заказчика</small></p>
-		</div>
-	</div>
-	<div class="control-group">
-	<label class="control-label" for="address">Адрес доставки:</label>
-		<div class="controls">
-		  <input type="text" name="address" class="span4 required" id="address" aria-required="true" required="required">
-		  <p class="help-block"><small>Адрес: Например г. Копейск, ул Калинина 13-46</small></p>
-		</div>
-	</div>
-	<div class="control-group">
-	<label class="control-label" for="phone">Телефон:</label>
-		<div class="controls">
-		  <input type="text" name="phone" class="span4 required" id="phone" aria-required="true" required="required">
-		  <p class="help-block"><small>Телефон по которому можно с Вами связаться</small></p>
-		</div>
-	</div>
-	<?php echo JHtml::_('form.token'); ?>
-	<input type="hidden" name="task" value="send" />
-	<div class="control-group">
-		<label class="control-label"></label>
-		<div class="controls">
-			<button type="submit" class="btn btn-primary">Оформить заказ</button>
-		</div>
-	</div>
-</div>
+<?php echo JHtml::_( 'form.token' ); ?>
+<input type="hidden" name="task" value="send">
 </form>
+<?php else: ?>
+<p class="empty-cart">Корзина пуста</p>
+<?php endif; ?>

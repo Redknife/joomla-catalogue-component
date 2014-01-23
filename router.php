@@ -21,7 +21,9 @@ function CatalogueBuildRoute(&$query)
 	
 	$mView	= (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
 	$mCid	= (empty($menuItem->query['cid'])) ? null : $menuItem->query['cid'];
-	$mId	= (empty($menuItem->query['id'])) ? null : $menuItem->query['id'];
+    $mSid	= (empty($menuItem->query['cid'])) ? null : $menuItem->query['sid'];
+    $mSsid	= (empty($menuItem->query['cid'])) ? null : $menuItem->query['ssid'];
+	//$mId	= (empty($menuItem->query['id'])) ? null : $menuItem->query['id'];
 	
 
 	if (isset($query['view']))
@@ -35,12 +37,44 @@ function CatalogueBuildRoute(&$query)
 	};
 	
 
-	if (isset($view) && ($mView == $view) and (isset($query['id'])) and ($mId == (int) $query['id']))
+	if (isset($view) && ($mView == $view) && (isset($query['id'])) )
 	{
 		unset($query['view']);
 		unset($query['cid']);
-		unset($query['id']);
 		return $segments;
+	}
+    
+    
+    if (isset($query['ssid']))
+	{
+		
+		$db = JFactory::getDbo();
+		$aquery = $db->setQuery(
+			$db->getQuery(true)
+				->select('alias')
+				->from('#__catalogue_supersection')
+				->where('id=' . (int) $query['ssid'])
+		);
+		$alias = $db->loadResult();
+		$segments[] = $query['ssid'].':'.$alias;
+		unset($query['ssid']);
+		
+	}
+    
+    if (isset($query['sid']))
+	{
+		
+		$db = JFactory::getDbo();
+		$aquery = $db->setQuery(
+			$db->getQuery(true)
+				->select('alias')
+				->from('#__catalogue_section')
+				->where('id=' . (int) $query['sid'])
+		);
+		$alias = $db->loadResult();
+		$segments[] = $query['sid'].':'.$alias;
+		unset($query['sid']);
+		
 	}
 	
 	if (isset($query['cid']))
@@ -50,7 +84,7 @@ function CatalogueBuildRoute(&$query)
 		$aquery = $db->setQuery(
 			$db->getQuery(true)
 				->select('alias')
-				->from('#__catalogue_categories')
+				->from('#__catalogue_category')
 				->where('id=' . (int) $query['cid'])
 		);
 		$alias = $db->loadResult();
@@ -58,21 +92,27 @@ function CatalogueBuildRoute(&$query)
 		unset($query['cid']);
 		
 	}
-
-	if (isset($query['cid'])  && isset($query['id']) && $view == 'category')
+  
+	if (isset($query['ssid'])  && isset($query['sid']) && $view == 'section')
 	{
-		unset($query['id']);
+		unset($query['ssid']);
+        unset($query['sid']);
 	}
 	
+    if (isset($query['ssid'])  && isset($query['sid']) && isset($query['cid']) && $view == 'items')
+	{
+		unset($query['ssid']);
+        unset($query['sid']);
+        unset($query['cid']);
+	}
+    //var_dump($segments);
 	return $segments;
 }
 
 function CatalogueParseRoute($segments)
 {
-	
 	$app = JFactory::getApplication();
 	$menu = $app->getMenu();
-	
 	if (empty($query['Itemid']))
 	{
 		$menuItem = $menu->getActive();
@@ -83,23 +123,23 @@ function CatalogueParseRoute($segments)
 	}
 	
 	$count = count($segments);
-	$id = JRequest::getVar('id',0);
-	
-	switch ($menuItem->query['view'])
+    
+	switch ($count)
 	{
-		case 'categories' :
-			if (!$id)
-				$vars['view'] = 'category';
-			else
-				$vars['view'] = 'item';
-			if ($count)
-			{
-				$cid = explode(':',$segments[0]);
-			}
+        case 2:
+			$vars['view'] = 'section';
+            $ssid = explode(':',$segments[0]);
+            $sid = explode(':',$segments[1]);
+            $vars['ssid'] = $ssid[0];
+			$vars['sid'] = $sid[0];
+		break;
+      
+		case 3:
+			$vars['view'] = 'items';
+            $cid = explode(':',$segments[2]);
 			$vars['cid'] = $cid[0];
 		break;
 	}
-	
 	return $vars;
 }
 

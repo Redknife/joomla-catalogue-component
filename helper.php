@@ -7,23 +7,27 @@ class CatalogueHelper {
 	
 	static function getCart(){
 		
-		$lastId = JRequest::getVar('orderId');
+		//$lastId = JRequest::getVar('orderId');
 			
 		$cart_list = self::getCartItems();
 		
-		$result['count'] = count($cart_list);
-		$result['summ'] = 0;
+        
+		$result['count'] = count($cart_list) -1;
+        $result['items'] = $cart_list;
+		//$result['summ'] = 0;
 		
-		if ($cart_list) foreach ($cart_list as $item){
-			$result['summ'] += $item->price;
-			if ($item->id == $lastId)
-				$lastItem = $item;
-		}
+		//if ($cart_list) foreach ($cart_list as $item){
+		//	$result['summ'] += $item->price;
+		//	if ($item->id == $lastId)
+		//		$lastItem = $item;
+		//}
 		
-		$result['lastItem'] = array('title' => $lastItem->name, 'price' => $lastItem->price);
+		//$result['lastItem'] = array('title' => $lastItem->name, 'price' => $lastItem->price);
 		
-		echo json_encode($result);
-		
+        //return $result['count'];
+        echo json_encode($result['count']);
+        return $result['count'];
+		//echo json_encode($result);
 	}
 	
 	static function getCartHtml()
@@ -44,6 +48,7 @@ class CatalogueHelper {
 	{
 		$app = JFactory::getApplication();
 		$data = $app->getUserState('com_catalogue.cart');
+        
 		if ($data)
 		{
 			$cart = unserialize($data);
@@ -53,18 +58,21 @@ class CatalogueHelper {
 				$query = $db->getQuery(true);
 				
 				$query->select('*');
-				$query->from('#__catalogue_items');
-				$query->where('id IN ('.implode(',', $cart).')');
-			
+				$query->from('#__catalogue_item');
+				$query->where('id IN ('.implode(',', array_keys($cart)).')');
+                $query->order('id');
 				$db->setQuery($query);
-				$items = $db->loadObjectList();	
+				$items = $db->loadObjectList();
+
+                //$items['countlist'] = $cart;
+                array_push($items, $cart);
+                return $items;
 			}
-			return $items;
+			
 		}
 		
 		return false;
 	}
-	
 	
 	static function getWatchListItems()
 	{
@@ -87,7 +95,6 @@ class CatalogueHelper {
 			
 				$db->setQuery($query, 1, 8);
 				$items = $db->loadObjectList();
-				
 			}
 			return $items;
 		}
@@ -145,11 +152,27 @@ class CatalogueHelper {
 		if ($data)
 		{
 			$cart = unserialize($data);
-			return in_array($id, $cart);
+            $ids = array_keys($cart);
+            return in_array($id, $ids);
 		}
 		return false;
 	}
 	
+    static function getCount($id)
+	{
+		$app = JFactory::getApplication();
+		$data = $app->getUserState('com_catalogue.cart');
+		if ($data)
+		{
+			$cart = unserialize($data);
+            $ids = array_keys($cart);
+            if( in_array($id, $ids) )
+              return $cart[$id];
+            return 1;
+		}
+		return 1;
+	}
+    
 	static function inWatchList($id)
 	{
 		$app = JFactory::getApplication();

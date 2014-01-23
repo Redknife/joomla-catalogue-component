@@ -1,47 +1,39 @@
-<?php defined('_JEXEC') or die; 
+<?php
+defined('_JEXEC') or die;
 JHtml::_('behavior.caption');
 JHtml::_('bootstrap.tooltip');
-
 $i = 0;
-$sc = 0; //start category ID
+$tmpsec = 0;
 
+$app = JFactory::getApplication('site');
+$supsecid = $app->getUserState('supersection.id');
+$secid = $app->getUserState('section.id');
 ?>
 
-<div class="catalogue-categories">
+<div class="catalogue-sections">
 	<div class="page-header">
-		<h1><?php echo $this->items[0]->section ?></h1>
+		<h1 class="catalogue-head">Запчасти для <?php echo $this->items[0]->section_name; ?> </h1>
 	</div>
 	<ul class="unstyled">
-		<?php foreach ($this->items as $item) : $i++; ?>
-		
-			<?php if ($sc != $item->cat_id) : $sc = $item->cat_id; ?>
-				<?php if ($i != 1) : ?>
-					</ul></li>
-				<?php endif; ?>
-				
-				<li class="catalogue-category"><h2 class="title"><a href="<?php echo JRoute::_('index.php?option=com_catalogue&view=category&cid='.$item->cat_id) ?>"><?php echo $item->category ?></a></h2>
-				<?php
-					$thumb = $item->image ? CatalogueHelper::createThumb($item->id, $item->image, 220, 200, 'min') : 'images/no-image.png'
-				?>
-				<div class="head-item row">
-					<div class="image span2">
-						<a href="<?php echo JRoute::_('index.php?option=com_catalogue&view=category&cid='.$item->cat_id) ?>"><img src="<?php echo $thumb ?>"/><p style="text-align:center"><?php echo $item->name ?></p></a>
-					</div>
-					<div class="span5">
-						<?php echo $item->category_desc ?> 
-					</div>
-				</div>
-				<div class="clearfix"></div>
-				<ul class="catalogue-items unstyled">
-			<?php else : ?>
-				<?php
-					$thumb = $item->image ? CatalogueHelper::createThumb($item->id, $item->image, 220, 200, 'min') : 'images/no-image.png'
-				?>
-				<li class="item-mini span1"><a title="Цена: <?php echo $item->price ?> р." class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_catalogue&view=item&cid='.$item->cat_id.'&id='.$item->id) ?>"><img src="<?php echo $thumb ?>"/><?php echo $item->name ?></a></li>
-			<?php endif; ?>
-			
-			
-		<?php endforeach; ?>
-		
-	</li></ul>
-</div>
+		<?php foreach ($this->items as $item){ ?>
+		<li>
+			<?php
+                $link = JRoute::_( 'index.php?option=com_catalogue&view=items&ssid='.$supsecid.'&sid='.$secid.'&cid='.$item->id );
+				echo '<a href="'.$link.'">'.$item->category_name.'</a>';
+			 ?>
+		</li>
+		<?php } ?>
+	</ul>
+	<div class="working-company">
+		<h3>Деятельность компании ООО “Магистраль”</h3>
+		<p class="ben-desc">
+			Основной сферой деятельности ООО “Магистраль” являются продажа, ремонт и техническое обслуживание железнодорожной техники.
+		</p>
+		<p class="ben-desc">
+			За годы нашей работы на рынке, у нас сформировалась большая база поставщиков и заказчиков, налажены деловые связи и партнерские отношения с крупными участниками данного рынка, такими как Московская, Куйбышевская, Юго-Восточная, Приволжская железные дороги Филиалы ОАО "РЖД", а также "«Пензадизельмаш", "Коломенский завод", "Новочеркасский электровозостроительный завод" и др.
+		</p>
+		<p class="ben-desc">
+			Наше предприятие выполняет ремонтные работы не только в собственных ремонтных базах, но и арендует ремонтные площади, принадлежащие ОАО «РЖД», сертифицированные по стандартам качества и имеющие техническое оснащение для всех видов ремонтов тепловозов, электровозов, путевой техники и железнодорожных кранов. Благодаря этому мы можем в кратчайшие сроки произвести ремонт даже в самых отдаленных районах России.
+		</p>
+	</div>
+ </div>
