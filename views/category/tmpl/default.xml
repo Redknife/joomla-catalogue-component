@@ -1,24 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="com_catalogue_category_view_default_title" option="com_catalogue_category_view_default_option">
+	<layout title="com_catalogue_view_category_default_title" option="com_catalogue_view_category_default_option">
 		
 		<message>
-			<![CDATA[com_catalogue_category_view_default_desc]]>
+			<![CDATA[com_catalogue_view_category_default_desc]]>
 		</message>
 	</layout>
-	
-	
-	<fields name="request">
-		<fieldset name="request"
-			addfieldpath="/administrator/components/com_catalogue/models/fields">
-
-			<field name="cid" type="categorieslist"
-				label="COM_CATALOGUE_FIELD_CATEGORY_LABEL"
-				required="true"
-				description="COM_CATALOGUE_FIELD_CATEGORY_DESC"
-			/>
-		</fieldset>
-	</fields>
-	
-	
 </metadata>

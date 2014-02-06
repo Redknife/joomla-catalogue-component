@@ -145,6 +145,20 @@ class CatalogueHelper {
 		return $items;
 	}
 	
+	static function getItemById($id)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		
+		$query->select('*');
+		$query->from('#__catalogue_item');
+		$query->where('id = '.$id);
+		$db->setQuery($query);
+		$item = $db->loadObject();	
+		
+		return $item;
+	}
+
 	static function inCart($id)
 	{
 		$app = JFactory::getApplication();

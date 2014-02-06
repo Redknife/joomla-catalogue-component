@@ -2,42 +2,33 @@
 JHtml::_('behavior.caption');
 $start = microtime(true);
 
-$params = $this->state->get('params');
-
 $app = JFactory::getApplication();
 $path = $app->getPathway();
-$path->addItem($this->state->get('category.name'), JRoute::_('index.php?option=com_catalogue&view=categories'));
+$path->addItem($this->items[0]->section_name);
+$path->addItem($this->items[0]->category_name);
 
-
+$hotlink = JRoute::_( 'index.php?option=com_catalogue&view=hotitems&Itemid=111' );
+$newlink = JRoute::_( 'index.php?option=com_catalogue&view=hotitems&Itemid=112' );
 ?>
-
-<div class="catalogue-categories">
-	<form class="" id="catalogueFilterForm" action="<?php echo JRoute::_('index.php?option=com_catalogue&view=category&cid='.$params->get('id')) ?>">
-		<input type="hidden" name="filter_" value="" />
-	</form>
-	<ul class="unstyled">
-		<?php foreach ($this->items as $item) : ?>
-			<li class="span3">
-				<?php switch ($item->sticker) {
-						case 0 : break;
-						case 1 : echo '<div class="ticket ticket-new"></div>'; break;
-						case 2 : echo '<div class="ticket ticket-hot"></div>'; break;
-						case 3 : echo '<div class="ticket ticket-sale"></div>'; break;
-					}
-					?>
-					<span class="title"><?php echo  $item->ishot ? '<i class="icon-fire"></i>' : '<i class="icon-th"></i>' ?> <?php echo $item->name ?></span>
-				
-				<a href="<?php echo JRoute::_('index.php?option=com_catalogue&view=item&cid='.$item->cat_id.'&id='.$item->id) ?>"><img src="<?php echo CatalogueHelper::createThumb($item->id, $item->image, 220, 200) ?>"/></a>
-				<div class="info">
-					
-					<div class="buttons">
-						<div class="btn-group">
-							<a href="<?php echo JRoute::_('index.php?option=com_catalogue&view=item&cid='.$item->cat_id.'&id='.$item->id) ?>" class="btn btn-mini btn-<?php echo $params->get('btntype', 'primary') ?>"><i class="icon icon-ok icon-white"> </i> <?php echo $item->price ?> руб.</a>
-							<a href="#" id="id-<?php echo $item->id ?>" class="btn btn-mini addtofavorite<?php echo (CatalogueHelper::isFavorite($item->id) ? ' active btn-success' : '') ?>"><i class="icon icon-heart"> </i> В избраннное</a>
-						</div>
-					</div>
-				</div>
-			</li>
-		<?php endforeach; ?>
-	</ul>
-</div>
+<form action="index.php?Itemid=105" method="post" id="catalogueForm">
+	<div class="row">
+		<div class="left-menu span3">
+			<?php echo $this->loadTemplate('left'); ?>
+			<ul class="unstyled hot-new-items">
+    		<li>&mdash;<a href="<?php echo $hotlink; ?>">Популярные товары</a></li>
+    		<li>&mdash;<a href="<?php echo $newlink; ?>">Новинки</a></li>
+			</ul>
+		</div>
+		<div class="catalogue-categories span9" id="catalogue">
+			<?php echo $this->loadTemplate('items'); ?>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span9 offset3">
+			<div class="pagination"><?php if($this->pagination->getPagesLinks()) echo '<span>Страницы:</span>'; echo $this->pagination->getPagesLinks(); ?></div>
+		</div>
+		</div>
+	</div>
+	<input type="hidden" name="option" value="com_catalogue" />
+	<input type="hidden" name="task" value="" />
+</form>
