@@ -23,7 +23,19 @@
 	</uninstall>
 	
 	<administration>
-		<menu>Catalogue</menu>
+		
+		<menu img="class:catalogue">com_catalogue</menu>
+		<submenu>
+			<!--
+				Note that all & must be escaped to &amp; for the file to be valid
+				XML and be parsed by the installer
+			-->
+			<menu link="option=com_catalogue" img="class:catalogue"
+				alt="Catalogue/Catalogue">com_catalogue</menu>
+			<menu link="option=com_categories&amp;extension=com_catalogue"
+				view="categories" img="class:catalogue-cat" alt="Catalogue/Categories">com_catalogue_categories</menu>
+		</submenu>
+		
 		<files folder="admin">
 			<filename>index.html</filename>
 			<filename>catalogue.php</filename>
