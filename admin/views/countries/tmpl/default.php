@@ -23,6 +23,15 @@ $trashed	= $this->state->get('filter.published') == -2 ? true : false;
 $params		= (isset($this->state->params)) ? $this->state->params : new JObject;
 
 $sortFields = $this->getSortFields();
+
+$saveOrder	= $listOrder == 'ctr.ordering';
+
+if ($saveOrder)
+{
+	$saveOrderingUrl = 'index.php?option=com_catalogue&task=countries.saveOrderAjax&tmpl=component';
+	JHtml::_('sortablelist.sortable', 'articleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+}
+
 ?>
 
 <script type="text/javascript">
@@ -139,7 +148,7 @@ $sortFields = $this->getSortFields();
 						<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 					</td>
 					<td class="center">
-						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'countries.', true, 'cb', $item->publish_up, $item->publish_down); ?>
+						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'countries.', true, 'cb'); ?>
 					</td>
 					<td class="nowrap has-context">
 						<div class="pull-left">

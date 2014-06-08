@@ -16,7 +16,7 @@ $img_height = $params->get('img_height', 0);
 
 <ul class="unstyled">
 <?php foreach ($this->items as $item) : ?>
-        <li class="one-item span4 white-box">
+        <li class="one-item white-box">
         <?php 
         	$ilink 	= JRoute::_( 'index.php?option=com_catalogue&view=item&ssid='.$supersection_id.'&sid='.$section_id.'&cid='.$category_id.'&id='.$item->id );
         	$src	= CatalogueHelper::createThumb($item->id, $item->item_image, $img_width, $img_height);

@@ -3,106 +3,180 @@ JHtml::_('behavior.caption');
 
 $config = JFactory::getConfig();
 
+// Загрузка глобальных параметров каталога
 $params = $this->state->get('params');
+
+$catalague_order_type = $params->get('catalague_order_type', 1);
+$addprice = $params->get('addprice', 0);
+$slice_desc = $params->get('slice_desc', 0);
+$slice_len = $params->get('short_desc_len', 150);
+$img_width = $params->get('img_width', 250);
+$img_height = $params->get('img_height', 250);
+
 $item = $this->item;
 
 $app = JFactory::getApplication();
 $path = $app->getPathway();
 
-$path->addItem($item->section_name);
-$path->addItem($item->category_name);
 $path->addItem($this->state->get('item.name'));
 
 $mypath = $path->getPathway();
 $mypath['0']->name = 'Каталог';
-$mypath['0']->link = JRoute::_('index.php?option=com_catalogue&view=all&Itemid=103');
+$mypath['0']->link = '#';
 $path->setPathway($mypath);
 
 $doc = JFactory::getDocument();
 $doc->setTitle( $config->get('sitename').' - '.$item->item_name);
+
+//Технические характеристики
+$item_params = new JRegistry($item->params);
+$item->params = $item_params->toArray();
+
 ?>
 <div class="row">
-	<div id="item-open" class="catalogue-item span12">
+	
+	
+	<div id="item-open" class="catalogue-item span9">
+		<div class="page-header">
+			<h2 class="item-name"><?php echo $item->item_name; ?></h2>
+		</div>
 		<div class="white-box">
-			<div class="float-left">
-				<img src="<?php $imgpath = CatalogueHelper::createThumb($item->id, $item->item_image, 235, 215, 'mid'); if($imgpath){ echo $imgpath;} else{ echo '/templates/blank_j3/img/imgholder.jpg'; }  ?>"/>
+			
+			<div class="item-image">
+				<a href="#" class="slider-prev slider-arrow"></a>
+				<div class="item-slider-wrap">
+					<ul id="slider-container" class="unstyled">
+					<?php if ($item->item_image) : ?>
+						<li><img src="<?php $imgpath = CatalogueHelper::createThumb($item->id, $item->item_image, 235, 215, 'mid'); if($imgpath){ echo $imgpath;} else{ echo '/templates/blank_j3/img/imgholder.jpg'; }  ?>"/></li>
+					<?php endif; ?>
+					<?php if($item->item_image_2) : ?>
+						<li><img src="<?php $imgpath = CatalogueHelper::createThumb($item->id, $item->item_image_2, 235, 215, 'mid'); if($imgpath){ echo $imgpath;} else{ echo '/templates/blank_j3/img/imgholder.jpg'; }  ?>"/></li>
+					<?php endif; ?>
+					<?php if($item->item_image_3) : ?>
+						<li><img src="<?php $imgpath = CatalogueHelper::createThumb($item->id, $item->item_image_3, 235, 215, 'mid'); if($imgpath){ echo $imgpath;} else{ echo '/templates/blank_j3/img/imgholder.jpg'; }  ?>"/></li>
+					<?php endif; ?>
+					<?php if($item->item_image_4) : ?>
+						<li><img src="<?php $imgpath = CatalogueHelper::createThumb($item->id, $item->item_image_4, 235, 215, 'mid'); if($imgpath){ echo $imgpath;} else{ echo '/templates/blank_j3/img/imgholder.jpg'; }  ?>"/></li>
+					<?php endif; ?>
+					<?php if($item->item_image_5) : ?>
+						<li><img src="<?php $imgpath = CatalogueHelper::createThumb($item->id, $item->item_image_5, 235, 215, 'mid'); if($imgpath){ echo $imgpath;} else{ echo '/templates/blank_j3/img/imgholder.jpg'; }  ?>"/></li>
+					<?php endif; ?>
+					</ul>
+				</div>
+				<a href="#" class="slider-next slider-arrow"></a>
 			</div>
-			<div class="float-right card-item-desc">
-				<h2 class="item-name"><?php echo $item->item_name; ?></h2>
-				<p class="item-desc"><?php echo strip_tags($item->item_shortdesc); ?></p>
+			<div class="info">
 				<div class="price-wrap">
-					<span class="item-price"><?php echo $item->price.' руб.'; ?></span>
-	        <?php if (!CatalogueHelper::inCart($item->id)) : ?>
-                        <a href="index.php?option=com_catalogue&task=order&orderid=<?php echo $item->id; ?>&Itemid=114&backuri=<?php echo base64_encode(JURI::current()); ?>" class="addToCart">Заказать</a></td>
-                <?php else : ?>
-                        <a id="b<?php echo $item->id; ?>" data-id="<?php echo $item->id; ?>" class="addToCart inCart">В корзине</a>
-                <?php endif; ?>
+					<span class="item-price"><?php echo number_format($item->price, 2, '.', ' ').' руб.'; ?></span>
+					<?php if ($catalague_order_type == 1) : ?>
+						<?php if (!CatalogueHelper::inCart($item->id)) : ?>
+							<a href="index.php?option=com_catalogue&view=item&task=cart.add_to_cart&id=<?php echo $item->id; ?>" class="addToCart">Заказать</a></td>
+						<?php else : ?>
+							<a data-id="<?php echo $item->id; ?>" class="addToCart inCart">В корзине</a>
+						<?php endif; ?>
+					<?php elseif($catalague_order_type == 2) : ?>
+					
+						<a href="#orderModal" role="button" class="red-btn" data-toggle="modal">Купить в 1 клик</a>
+						
+					<?php elseif($catalague_order_type == 3) : ?>
+						
+						<?php if (!CatalogueHelper::inCart($item->id)) : ?>
+							<a href="index.php?option=com_catalogue&task=order&orderid=<?php echo $item->id; ?>&Itemid=114&backuri=<?php echo base64_encode(JURI::current()); ?>" class="addToCart red-btn">Заказать</a></td>
+						<?php else : ?>
+							<a id="b<?php echo $item->id; ?>" data-id="<?php echo $item->id; ?>" class="addToCart inCart red-btn">В корзине</a>
+						<?php endif; ?>
+						
+						<a href="#orderModal" role="button" class="red-btn" data-toggle="modal">Купить в 1 клик</a>
+					<?php endif; ?>
 				</div>
-				<div class="tabs-wrap">
-    			<ul class="nav nav-tabs">
-		        <li class="active"><a href="#itDesc" data-toggle="tab">Описание</a></li>
-		        <li><a href="#itTech" data-toggle="tab">Тех.Характеристики</a></li>
-    			</ul>
+				<div class="instock">
+					<span><?php echo ($item->item_count ? JText::_('COM_CATALOGUE_INSTOCK') : JText::_('COM_CATALOGUE_NOTINSTOCK') ) ?></span>
+				</div>
+				
+			</div>
 
-				<div class="tab-content">
-					<div id="itDesc" class="tab-pane active"><?php echo strip_tags($item->item_description); ?></div>
-					<div id="itTech" class="tab-pane">
-						<table>
-							<tbody>
-							<tr>
-								<th>Объем отапливаемого помещения</th><td><?php echo 'до '.$item->item_amountspace.' м3'; ?></td>
-							</tr>
-							<tr>
-								<th>Размеры ШхДхВ</th><td><?php echo $item->item_width.'x'.$item->item_length.'x'.$item->item_height.' мм'; ?></td>
-							</tr>
-							<tr>
-								<th>Глубина топки</th><td><?php echo $item->item_depthfirebox.' мм'; ?></td>
-							</tr>
-							<tr>
-								<th>Вес</th><td><?php echo $item->item_weight.' кг'; ?></td>
-							</tr>
-							<tr>
-								<th>Диаметр дымохода</th><td><?php echo $item->item_diameter.' мм'; ?></td>
-							</tr>
-							<tr>
-								<th>Цвет</th><td><?php echo $item->item_color; ?></td>
-							</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				</div>
+			<div class="params">
+				<h3>Технические характеристики</h3>
+				<table id="paramsTable" class="table table-striped table-condensed">
+					<?php foreach($item->params as $param) : ?>
+						<tr>
+							<td><?php echo $param['name'] ?></td>
+							<td style="width: 10%"><?php echo $param['value'] ?></td>
+						</tr>
+					<?php endforeach; ?>
+				</table>
+			</div>
+		
+			<div class="desc">
+				<h3>Описание <?php echo $item->item_name; ?></h3>
+				<?php echo $item->item_description; ?>
 			</div>
 
 			<div class="clearfix"></div>
 		</div>
 	</div>
 </div>
-<?php if (!empty($this->more)) : ?>
-<div class="row">
-	<div class="span12">
-	<h2>Похожие товары</h2>
-	<div class="popular-item in-item">
-    <ul сlass="unstyled">
-		<?php foreach ($this->more as $more_item) : ?>
-			<li class="one-item span3 white-box">
-			<?php $ilink = JRoute::_( 'index.php?option=com_catalogue&view=item&sid='.$more_item->sectionid.'&cid='.$more_item->categoryid.'&id='.$more_item->id.'&Itemid=110' ); ?>
-                <a href="<?php echo $ilink; ?>" class="item-link">
-                        <img src="<?php $imgpath = CatalogueHelper::createThumb($more_item->id, $more_item->item_image, 218, 203); if($imgpath){ echo $imgpath;} else{ echo '/templates/blank_j3/img/imgholder.png'; }  ?>"/>
-                        <p class="item-head"><?php echo $more_item->item_name; ?></p>
-                </a>
-                <div class="info">
-                        <p class="item-desc">
-                                <?php echo mb_substr(strip_tags($more_item->item_shortdesc),0,65).' ...'; ?>
-                        </p>
-                        <span class="item-price"><?php echo $more_item->price.' руб.'; ?></span>
-                        <a href="#" id="b<?php echo $more_item->id ?>" data-id="<?php echo $more_item->id; ?>" class="addToCart"> Заказать </a>
 
-                </div>
-        </li>
-		<?php endforeach; ?>
-    </ul>
+<!-- WatchList -->
+
+<?php if($params->get('watcheditems_enable', 0)) : ?>
+	<ul class="unstyled">
+	<?php foreach($this->watchlist as $w_item) : ?>
+		<?php 
+			$ilink 	= JRoute::_( 'index.php?'.$w_item->path.'&id='.$w_item->id );
+			$src	= CatalogueHelper::createThumb($w_item->id, $w_item->item_image, $img_width, $img_height); 
+			?>
+		<li class="span3">
+			<div class="white-box">
+
+					<a href="<?php echo $ilink ?>">
+						<span class="item-name"><?php echo $w_item->item_name ?></span>
+						<?php if ($src) : ?>
+							<img src="<?php $imgpath = CatalogueHelper::createThumb($w_item->id, $w_item->item_image, 235, 215, 'mid'); if($imgpath){ echo $imgpath;} else{ echo '/templates/blank_j3/img/imgholder.jpg'; }  ?>"/>
+						<?php endif; ?>
+					</a>
+					
+					<div class="price-wrap">
+						<span class="item-price"><?php echo number_format($w_item->price, 2, '.', ' ').' руб.'; ?></span>
+					</div>
+					
+					
 			</div>
-	</div>
-</div>
+		</li>
+	<?php endforeach; ?>
+	</ul>
+	<div class="clearfix"></div>
 <?php endif; ?>
+
+<!-- Modal -->
+<div id="orderModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
+
+  <div class="modal-body">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <div class="modal-image">
+	<img src="<?php $imgpath = CatalogueHelper::createThumb($item->id, $item->item_image, 218, 140, 'min'); if($imgpath){ echo $imgpath;} else{ echo '/templates/blank_j3/img/imgholder.jpg'; }  ?>"/>
+	<span class="modal-item-name"><?php echo $item->item_name; ?></span>
+	<span class="modal-item-price"><?php echo number_format($item->price, 2, '.', ' ').' руб.'; ?></span>
+    </div>
+    <div class="order-form">
+	<h3 id="orderModalLabel">Оформить покупку</h3>
+	<form>
+		<div class="control-group">
+			
+			<div class="controls">
+				<input type="text" id="inputName" placeholder="Иван Петров">
+			</div>
+			<div class="controls">
+				<input type="text" id="inputEmail" placeholder="ivan_petrov@mail.ru">
+			</div>
+			<div class="controls">
+				<input type="text" id="inputPhone" placeholder="+7 919 123-45-67">
+			</div>
+		</div>
+		
+		<a href="#" class="red-btn">Купить</a>
+	</form>
+    </div>
+  </div>
+    
+</div>

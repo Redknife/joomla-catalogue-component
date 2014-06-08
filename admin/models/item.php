@@ -44,7 +44,15 @@ class CatalogueModelItem extends JModelAdmin
 	public function getItem($pk = null)
 	{
 		
-		return parent::getItem($pk);
+		if ($result = parent::getItem($pk))
+		{
+			// Convert the metadata field to an array.
+			$metadata = new JRegistry;
+			$metadata->loadString($result->metadata);
+			$result->metadata = $metadata->toArray();
+		}
+		
+		return $result;
 	}
 	
 	public function save($data)
@@ -60,7 +68,7 @@ class CatalogueModelItem extends JModelAdmin
 			$data['alias'] =  preg_replace('#\W#', '-', $data['alias']);
 			$data['alias'] =  preg_replace('#[-]+#', '-', $data['alias']);
         }
-		
+        		
 		return parent::save($data);
 	}
 	

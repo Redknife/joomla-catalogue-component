@@ -28,11 +28,38 @@ class CatalogueModelItems extends JModelList
 		parent::__construct($config);
 	}
 
-    protected function populateState()
+    protected function populateState($ordering = NULL, $direction = NULL)
 	{
-      $app = JFactory::getApplication('site');
-      $catid = JRequest::getVar('cid', 0);
-      $app->setUserState('category.id', $catid);
+
+		$app = JFactory::getApplication('site');
+
+		$offset = $app->input->getUInt('limitstart');
+		$this->setState('list.offset', $offset);
+		
+		$catid = $app->input->getUInt('cid');
+		$this->setState('category.id', $catid);
+		
+		$id = $app->input->getUInt('id');
+		$this->setState('item.id', $id);
+		
+		$db	= JFactory::getDbo();
+
+		$db->setQuery(
+			$db->getQuery(true)
+			->select('category_name, category_description')
+			->from('#__catalogue_category')
+			->where('state = 1 AND published AND id = '.$catid)
+		);
+		$category = $db->loadObject();
+		
+		$this->setState('category.name', $category->category_name);
+		$this->setState('category.desc', $category->category_description);
+		
+		// Load the parameters.
+		$params = $app->getParams();
+		$this->setState('params', $params);
+		
+		parent::populateState('ordering', 'ASC');
     }
 
 	public function getItems()

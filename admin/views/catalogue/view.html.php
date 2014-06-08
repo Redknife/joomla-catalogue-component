@@ -104,8 +104,8 @@ class CatalogueViewCatalogue extends JViewLegacy
 		
 		JHtmlSidebar::addFilter(
 			JText::_('JOPTION_SELECT_CATEGORY'),
-			'filter_cat_id',
-			JHtml::_('select.options', CatalogueHelper::getCategoriesOptions(), 'value', 'text', $this->state->get('filter.cat_id'))
+			'filter_category_id',
+			JHtml::_('select.options', CatalogueHelper::getCategoriesOptions(), 'value', 'text', $this->state->get('filter.category_id'))
 		);
 		
 		JHtmlSidebar::addFilter(

@@ -133,7 +133,7 @@ $sortFields = $this->getSortFields();
 				$canEditOwn = $user->authorise('core.edit.own',   'com_catalogue.item.'.$item->id) && $item->created_by == $userId;
 				$canChange  = $user->authorise('core.edit.state', 'com_catalogue.item.'.$item->id) && $canCheckin;
 				?>
-				<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid?>">
+				<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->category_id?>">
 					<td class="order nowrap center hidden-phone">
 					<?php if ($canChange) :
 						$disableClassName = '';

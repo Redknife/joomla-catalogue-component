@@ -17,10 +17,12 @@ $layout = $this->getLayout();
 
 	<form action="index.php" method="post" id="catalogueForm">
 		<div class="row">
-			<?php echo $this->loadTemplate('items'); ?>
+			<div class="span9">
+				<?php echo $this->loadTemplate('items'); ?>
+			</div>
 		</div>
 		<div class="row">
-			<div class="span9 offset3">
+			<div class="span9">
 				<div class="pagination"><?php if($this->pagination->getPagesLinks()) echo '<span>Страницы:</span>'; echo $this->pagination->getPagesLinks(); ?></div>
 			</div>
 		</div>

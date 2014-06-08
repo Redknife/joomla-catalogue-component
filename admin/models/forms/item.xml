@@ -8,6 +8,14 @@
 		<field name="item_name" type="text" class="inputbox"
 			size="40" label="COM_CATALOGUE_FIELD_NAME_LABEL"
 			description="COM_CATALOGUE_FIELD_NAME_DESC" required="true" />
+
+		<field name="item_art" type="text" class="inputbox"
+			size="40" label="COM_CATALOGUE_FIELD_ITEMART_LABEL"
+			description="COM_CATALOGUE_FIELD_ITEMART_DESC" required="false" />
+
+		<field name="item_count" type="text" class="inputbox"
+			size="40" label="COM_CATALOGUE_FIELD_ITEMCOUNT_LABEL"
+			description="COM_CATALOGUE_FIELD_ITEMCOUNT_DESC" required="false" />
 		
 		<field name="category_id" type="categorieslist"
 			label="COM_CATALOGUE_FIELD_CATEGORY_LABEL" description="COM_CATALOGUE_FIELD_CATEGORY_DESC" />
@@ -64,10 +72,38 @@
 			label="COM_CATALOGIE_FIELD_IMAGE_LABEL"
 			description="COM_CATALOGIE_FIELD_IMAGE_DESC"
 			labelclass="control-label"/>
+
+		<field
+			name="item_image_2"
+			type="media"
+			label="COM_CATALOGIE_FIELD_IMAGE2_LABEL"
+			description="COM_CATALOGIE_FIELD_IMAGE_DESC"
+			labelclass="control-label"/>
+
+		<field
+			name="item_image_3"
+			type="media"
+			label="COM_CATALOGIE_FIELD_IMAGE3_LABEL"
+			description="COM_CATALOGIE_FIELD_IMAGE_DESC"
+			labelclass="control-label"/>
+
+		<field
+			name="item_image_4"
+			type="media"
+			label="COM_CATALOGIE_FIELD_IMAGE4_LABEL"
+			description="COM_CATALOGIE_FIELD_IMAGE_DESC"
+			labelclass="control-label"/>
+
+		<field
+			name="item_image_5"
+			type="media"
+			label="COM_CATALOGIE_FIELD_IMAGE5_LABEL"
+			description="COM_CATALOGIE_FIELD_IMAGE_DESC"
+			labelclass="control-label"/>
 				
 		<field name="price" type="text" class="inputbox"
 			size="40" label="COM_CATALOGUE_FIELD_PRICE_LABEL"
-			description="COM_CATALOGUE_FIELD_PRICE_DESC" required="true" />
+			description="COM_CATALOGUE_FIELD_PRICE_DESC" required="false" />
 		
 		<field name="ordering" type="ordering" class="inputbox"
 
@@ -77,4 +113,45 @@
 
 		
 	</fieldset>
+
+	<fields name="metadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">
+		<fieldset name="jmetadata"
+			label="JGLOBAL_FIELDSET_METADATA_OPTIONS">
+
+			<field
+				name="metatitle"
+				type="text"
+				label="JFIELD_METADATA_TITLE_LABEL"
+				description="JFIELD_METADATA_TITLE_DESC"
+				size="30"/>
+			
+			<field name="metakey" type="textarea"
+				label="JFIELD_META_KEYWORDS_LABEL" description="JFIELD_META_KEYWORDS_DESC"
+				rows="3" cols="30" />
+
+			<field name="metadesc" type="textarea"
+				label="JFIELD_META_DESCRIPTION_LABEL" description="JFIELD_META_DESCRIPTION_DESC"
+				rows="3" cols="30" />
+			
+
+			<field
+				name="author"
+				type="text"
+				label="JAUTHOR"
+				description="JFIELD_METADATA_AUTHOR_DESC"
+				size="30"/>
+
+			<field name="robots"
+				type="list"
+				label="JFIELD_METADATA_ROBOTS_LABEL"
+				description="JFIELD_METADATA_ROBOTS_DESC"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="index, follow">JGLOBAL_INDEX_FOLLOW</option>
+				<option value="noindex, follow">JGLOBAL_NOINDEX_FOLLOW</option>
+				<option value="index, nofollow">JGLOBAL_INDEX_NOFOLLOW</option>
+				<option value="noindex, nofollow">JGLOBAL_NOINDEX_NOFOLLOW</option>
+			</field>
+		</fieldset>
+	</fields>
 </form>

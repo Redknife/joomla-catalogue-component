@@ -27,16 +27,48 @@ class CatalogueModelSection extends JModelList
 		}
 		parent::__construct($config);
 	}
-    protected function populateState()
+
+	protected function populateState($ordering = NULL, $direction = NULL)
 	{
-      $app = JFactory::getApplication('site');
-      
-      $secid = JRequest::getVar('sid', 0);
-      $supsecid = JRequest::getVar('ssid', 0);
-      
-      $app->setUserState('section.id', $secid);
-      $app->setUserState('supersection.id', $supsecid);
-    }
+		$app = JFactory::getApplication('site');
+
+		$ssid = $app->input->getUInt('ssid');
+		$this->setState('supersection.id', $ssid);
+		
+		$sid = $app->input->getUInt('sid');
+		$this->setState('section.id', $sid);
+		
+		$db	= JFactory::getDbo();
+		
+		$db->setQuery(
+			$db->getQuery(true)
+			->select('supersection_name, supersection_description')
+			->from('#__catalogue_supersection')
+			->where('state = 1 AND published = 1 AND id = '.$ssid)
+		);
+		
+		$supersection = $db->loadObject();
+		
+		$this->setState('supersection.name', $supersection->supersection_name);
+		$this->setState('supersection.desc', $supersection->supersection_description);
+		
+		$db->setQuery(
+			$db->getQuery(true)
+			->select('section_name, section_description')
+			->from('#__catalogue_section')
+			->where('state = 1 AND published = 1 AND id = '.$sid)
+		);
+		
+		$section = $db->loadObject();
+		
+		$this->setState('section.name', $section->section_name);
+		$this->setState('section.desc', $section->section_description);
+		
+		$params = $app->getParams();
+		$this->setState('params', $params);
+		
+		parent::populateState('ordering', 'ASC');
+	}
 
 	public function getItems()
 	{

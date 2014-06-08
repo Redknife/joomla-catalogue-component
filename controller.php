@@ -8,70 +8,11 @@ require_once(dirname(__FILE__).DS.'helper.php');
 class CatalogueController extends JControllerLegacy
 {
 	public function search(){
-     $search = $this->input->get('search', '', 'string');
-     
-     parent::display();
-    }
-    
-	public function order_ajax()
-	{
-		$app = JFactory::getApplication();
-		
-		$cart = $app->getUserState('com_catalogue.cart');
-		
-		$item_id = $this->input->get('id', 0, 'get', 'int');
-        
-		$count = $this->input->get('count', 1, 'get', 'int');
-		
-		$data = unserialize($cart);
-        
-		if (!is_array($data))
-		{
-			$data = array();
-		}
-        if($item_id)
-         $data[$item_id] = $count;
-		
-        $order = serialize($data);
-		$app->setUserState('com_catalogue.cart', $order);
-		
-		$model = $this->getModel('items');
-		$row = $model->getItem($item_id);
-        
-		$result['result'] = array('id' => $row->id, 'count' => $count, 'item_name' => $row->item_name, 'item_art' => $row->item_art);
-		
-		echo json_encode($result);
-		
-	}
-	
-	public function order()
-	{
-		$app = JFactory::getApplication();
-		
-		$cart = $app->getUserState('com_catalogue.cart');
-		
-		$item_id = $this->input->get('orderid', 0, 'get', 'int');
+ 		$search = $this->input->get('search', '', 'string');
 
-		$data = unserialize($cart);
-
-		if (!is_array($data))
-		{
-			$data = array();
-		}
-        if($item_id && !in_array($item_id, $data)){
-        	$data[] = $item_id;
-        }
-    
-    
-    $order = serialize($data);
-		$app->setUserState('com_catalogue.cart', $order);
-		
-		$this->input->set('view', 'cart');
-		$this->input->set('layout', 'redirect');
 		parent::display();
-		
-	}
-
+    }
+ 
 	public function addToFavorite()
 	{
 		$app = JFactory::getApplication();
@@ -96,61 +37,6 @@ class CatalogueController extends JControllerLegacy
 			echo '1';
 		}
 		
-		return false;
-	}
-	
-	public function remove_ajax()
-	{
-		$app = JFactory::getApplication();
-
-		$cart = $app->getUserState('com_catalogue.cart');
-		
-		$order = JRequest::getVar('orderId', 0, 'get', 'int');
-        
-		//if (CatalogueHelper::inCart($order))
-        if(true)
-		{
-            $data = unserialize($cart);
-			if (!is_array($data))
-			{
-				$data = array();
-			}
-            if(array_key_exists($order, $data)){
-             unset($data[$order]);
-             //if(count($data) == 1) $data = array();
-             $order = serialize($data);
-             $app->setUserState('com_catalogue.cart', $order);
-            }
-		}
-		return false;
-	}
-
-	public function remove()
-	{
-		$app = JFactory::getApplication();
-
-		$cart = $app->getUserState('com_catalogue.cart');
-		
-		$order = JRequest::getVar('orderid', 0, 'get', 'int');
-        
-		if (CatalogueHelper::inCart($order))
-		{
-      $data = unserialize($cart);
-
-			if (!is_array($data))
-			{
-				$data = array();
-			}
-            if(in_array($order, $data)){
-            	$key = array_search($order, $data);
-							unset($data[$key]);
-							$order = serialize($data);
-							$app->setUserState('com_catalogue.cart', $order);
-            }
-    $this->input->set('view', 'cart');
-		$this->input->set('layout', 'default');
-		parent::display();
-		}
 		return false;
 	}
 	

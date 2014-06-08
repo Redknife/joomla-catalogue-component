@@ -5,72 +5,28 @@ require_once('thumbnail.php');
 
 class CatalogueHelper {
 	
-	static function getCart(){
-		
-		//$lastId = JRequest::getVar('orderId');
-			
-		$cart_list = self::getCartItems();
-		
-        
-		$result['count'] = count($cart_list) -1;
-        $result['items'] = $cart_list;
-		//$result['summ'] = 0;
-		
-		//if ($cart_list) foreach ($cart_list as $item){
-		//	$result['summ'] += $item->price;
-		//	if ($item->id == $lastId)
-		//		$lastItem = $item;
-		//}
-		
-		//$result['lastItem'] = array('title' => $lastItem->name, 'price' => $lastItem->price);
-		
-        //return $result['count'];
-        echo json_encode($result['count']);
-        return $result['count'];
-		//echo json_encode($result);
-	}
-	
-	static function getCartHtml()
-	{
-		$cart_list = self::getCartItems();
-		$count = $cart_list ? count($cart_list) : 0;
-		$summ = 0;
-		$html = '';
-		if ($cart_list) foreach ($cart_list as $item){
-			$summ += $item->price;
-			$name = mb_strlen($item->name) > 15 ? mb_substr($item->name, 0, 15).'...' : $item->name;
-			$html .= '<li class="cart-item"><span class="cart-title">'.$name.'</span><span class="badge badge-warning cart-price">'.$item->price.' р.</span></li>';
-		}
-		return $html;
-	}
-	
 	static function getCartItems()
 	{
 		$app = JFactory::getApplication();
 		$data = $app->getUserState('com_catalogue.cart');
-        
+
 		if ($data)
 		{
-			$cart = unserialize($data);
-			if (!empty($cart))
+			$cart_items = unserialize($data);
+			if (!empty($cart_items))
 			{
 				$db = JFactory::getDbo();
 				$query = $db->getQuery(true);
 				
 				$query->select('*');
 				$query->from('#__catalogue_item');
-				$query->where('id IN ('.implode(',', array_keys($cart)).')');
-                $query->order('id');
+				$query->where('id IN ('.implode(',', $cart_items).')');
+                $query->order('item_name');
 				$db->setQuery($query);
 				$items = $db->loadObjectList();
-
-                //$items['countlist'] = $cart;
-                array_push($items, $cart);
                 return $items;
 			}
-			
 		}
-		
 		return false;
 	}
 	
@@ -88,7 +44,7 @@ class CatalogueHelper {
 				$query = $db->getQuery(true);
 				
 				$query->select('*');
-				$query->from('#__catalogue_items');
+				$query->from('#__catalogue_item');
 				
 				$query->where('id IN ('.implode(',', $watchlist).')');
 				$query->order('FIELD(id, '.implode(',', $watchlist).')');
@@ -165,9 +121,8 @@ class CatalogueHelper {
 		$data = $app->getUserState('com_catalogue.cart');
 		if ($data)
 		{
-			$cart = unserialize($data);
-            $ids = array_keys($cart);
-            return in_array($id, $ids);
+			$cart_items = unserialize($data);
+            return in_array($id, $cart_items);
 		}
 		return false;
 	}
@@ -259,13 +214,13 @@ class CatalogueHelper {
 		$minOptions = array(
 				'width' => 440,
 				'height' => 440,
-				'method' => THUMBNAIL_METHOD_HEIGHT_PRIORITY,
+				'method' => THUMBNAIL_METHOD_SCALE_MIN,
 			);
 		
 		$midOptions = array(
 				'width' => $width,
 				'height' => $height,
-				'method' => THUMBNAIL_METHOD_HEIGHT_PRIORITY,
+				'method' => THUMBNAIL_METHOD_SCALE_MIN,
 			);
 			
 		

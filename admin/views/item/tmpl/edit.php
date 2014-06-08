@@ -53,13 +53,9 @@ $categoryId = $app->getUserStateFromRequest('com_catalogue.catalogue.filter.cat_
 
 <form action="<?php echo JRoute::_('index.php?option=com_catalogue&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate form-vertical">
 <div class="span12 form-vertical">
+<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 
-	<fieldset>
-		<ul class="nav nav-tabs">
-			<li class="active"><a href="#details" data-toggle="tab"><?php echo JText::_('COM_CATALOGUE_ITEM_DETAILS');?></a></li>
-		</ul>
-		<div class="tab-content">
-			<div class="tab-pane active" id="details">
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('COM_CATALOGUE_ITEM_DETAILS', true)); ?>
 				<div class="span5">
 					<div class="row-fluid">
 						<div class="span6">
@@ -73,7 +69,7 @@ $categoryId = $app->getUserStateFromRequest('com_catalogue.catalogue.filter.cat_
 							</div>
 						</div>
 						
-						<div class="span3">
+						<div class="span5">
 							<div class="control-group">
 								<div class="control-label">
 									<?php echo $this->form->getLabel('alias'); ?>
@@ -84,6 +80,30 @@ $categoryId = $app->getUserStateFromRequest('com_catalogue.catalogue.filter.cat_
 							</div>
 						</div>
 					</div>
+
+					<div class="row-fluid">
+						<div class="span6">
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $this->form->getLabel('item_art'); ?>
+								</div>
+								<div class="controls">
+									<?php echo $this->form->getInput('item_art'); ?>
+								</div>
+							</div>
+						</div>
+						<div class="span5">
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $this->form->getLabel('item_count'); ?>
+								</div>
+								<div class="controls">
+									<?php echo $this->form->getInput('item_count'); ?>
+								</div>
+							</div>
+						</div>	
+					</div>
+
 					<div class="row-fluid">
 						<div class="span6">
 							<div class="control-group">
@@ -95,7 +115,7 @@ $categoryId = $app->getUserStateFromRequest('com_catalogue.catalogue.filter.cat_
 								</div>
 							</div>
 						</div>
-						<div class="span6">
+						<div class="span5">
 							<div class="control-group">
 								<div class="control-label">
 									<?php echo $this->form->getLabel('manufacturer_id'); ?>
@@ -117,7 +137,7 @@ $categoryId = $app->getUserStateFromRequest('com_catalogue.catalogue.filter.cat_
 								</div>
 							</div>
 						</div>
-						<div class="span6">
+						<div class="span5">
 							<div class="control-group">
 								<div class="control-label">
 									<?php echo $this->form->getLabel('item_sale'); ?>
@@ -139,7 +159,7 @@ $categoryId = $app->getUserStateFromRequest('com_catalogue.catalogue.filter.cat_
 								</div>
 							</div>
 						</div>
-						<div class="span3">
+						<div class="span5">
 							<div class="control-group">
 								<div class="control-label">
 									<?php echo $this->form->getLabel('rate'); ?>
@@ -150,51 +170,45 @@ $categoryId = $app->getUserStateFromRequest('com_catalogue.catalogue.filter.cat_
 							</div>
 						</div>
 					</div>
-					<div class="control-group" style="display:none;">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('form_id'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('form_id'); ?>
-						</div>
-					</div>
 					
-					<div class="clearfix">
-					</div>
-					
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('state'); ?>
+					<div class="row-fluid">
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('state'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('state'); ?>
+							</div>
 						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('state'); ?>
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('id'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('id'); ?>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('id'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('id'); ?>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="span6">
-					
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('line_id'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('line_id'); ?>
-						</div>
-					</div>
+				<div class="span7">
 					<div class="control-group">
 						<div class="control-label">
 							<?php echo $this->form->getLabel('item_image'); ?>
 						</div>
 						<div class="controls">
 							<?php echo $this->form->getInput('item_image'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('item_image_2'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('item_image_3'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('item_image_4'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('item_image_5'); ?>
 						</div>
 					</div>
 					<div class="control-group">
@@ -206,13 +220,22 @@ $categoryId = $app->getUserStateFromRequest('com_catalogue.catalogue.filter.cat_
 						</div>
 					</div>
 				</div>
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
+		
+			
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'metadata', JText::_('COM_CATALOGUE_METADATA', true)); ?>
+		<div class="row-fluid form-horizontal-desktop">
+			<div class="span6">
+				<?php echo JLayoutHelper::render('joomla.edit.metadata', $this); ?>
 			</div>
-
 		</div>
-	</fieldset>
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
+	
+		<?php echo JLayoutHelper::render('joomla.edit.params', $this); ?>
+		
+<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 
 	<input type="hidden" name="task" value="" />
-	
 	<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>

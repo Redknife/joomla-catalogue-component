@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die;
 
-class CatalogueViewSupersections extends JViewLegacy
+class CatalogueViewSupersection extends JViewLegacy
 {
 	protected $items;
 	protected $state;
@@ -61,7 +61,6 @@ class CatalogueViewSupersections extends JViewLegacy
 		$this->document->setTitle($title);
 		
 		// Устновка метаданных 
-		
 		
 		if ($metadesc = $metadata->get('metadesc', ''))
 		{

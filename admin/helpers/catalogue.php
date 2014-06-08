@@ -43,17 +43,6 @@ class CatalogueHelper
 			$vName == 'countries'
 		);
 		
-		JHtmlSidebar::addEntry(
-			JText::_('COM_CATALOGUE_SUBMENU_FORMS'),
-			'index.php?option=com_catalogue&view=forms',
-			$vName == 'forms'
-		);
-		
-		JHtmlSidebar::addEntry(
-			JText::_('COM_CATALOGUE_SUBMENU_FIELDS'),
-			'index.php?option=com_catalogue&view=fields',
-			$vName == 'fields'
-		);		
 	}
 
 
@@ -110,32 +99,6 @@ class CatalogueHelper
 		$query->select('id As value, section_name As text');
 		$query->from('#__catalogue_section AS sec');
 		$query->order('sec.section_name');
-
-		// Get the options.
-		$db->setQuery($query);
-
-		try
-		{
-			$options = $db->loadObjectList();
-		}
-		catch (RuntimeException $e)
-		{
-			JError::raiseWarning(500, $e->getMessage());
-		}
-
-		return $options;
-	}
-	
-	public static function getFormsOptions()
-	{
-		$options = array();
-
-		$db	= JFactory::getDbo();
-		$query	= $db->getQuery(true);
-
-		$query->select('id As value, form_name As text');
-		$query->from('#__catalogue_form AS f');
-		$query->order('f.form_name');
 
 		// Get the options.
 		$db->setQuery($query);

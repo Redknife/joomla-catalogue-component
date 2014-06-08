@@ -1,50 +1,49 @@
 <?php
-
-
 defined('_JEXEC') or die;
-
 
 class CatalogueModelSupersections extends JModelList
 {
 	
 	public $_context = 'com_catalogue.supersections';
-
 	protected $_extension = 'com_catalogue';
-
 	private $_parent = null;
-
 	private $_items = null;
-	
-	public function __construct($config = array())
+
+	protected function populateState($ordering = 'ordering', $direction = 'ASC')
 	{
-		if (empty($config['filter_fields']))
-		{
-			$config['filter_fields'] = array(
-				'id', 'ssec.id',
-				'supersection_name', 'ssec.supersection_name',
-				'alias', 'ssec.alias',
-				'state', 'ssec.state',
-				'ordering', 'ssec.ordering',
-				'published', 'ssec.published'
-			);
-		}
-		parent::__construct($config);
+		$app = JFactory::getApplication();
+
+		// List state information
+		// $value = $app->input->get('limit', $app->getCfg('list_limit', 0), 'uint');
+		// $this->setState('list.limit', $value);
+
+		// $value = $app->input->get('limitstart', 0, 'uint');
+		// $this->setState('list.start', $value);
+
+		$params = $app->getParams();
+		$this->setState('params', $params);
 	}
 
-	public function getItems()
-	{
+	public function getListQuery()
+	{	
+        $app = JFactory::getApplication();
+		$params = $app->getParams()->toArray();
+	    $ordering = (int)$params['catalogue_sort'];
+
 		$db	= JFactory::getDbo();
 		$query	= $db->getQuery(true);
-
-		$query->select('ssec.supersection_name, ssec.id, sec.section_name, sec.id as sectionid');
+		$query->select('ssec.*');
 		$query->from('#__catalogue_supersection AS ssec');
-		$query->join('LEFT', '#__catalogue_section as sec ON sec.supersection_id = ssec.id');
 		$query->where('ssec.state = 1 AND ssec.published = 1');
-		$query->order('ssec.supersection_name');
+		if($ordering == 2){
+			$query->order('ssec.supersection_name');	
+		}
+		else{
+			$query->order('ssec.ordering');
+		}
 		$db->setQuery($query);
-		$this->_items = $db->loadObjectList();
 
-		return $this->_items;
+		return $query;
 	}
 
 }

@@ -127,7 +127,7 @@ $sortFields = $this->getSortFields();
 				$canEditOwn = $user->authorise('core.edit.own',   'com_catalogue.item.'.$item->id) && $item->created_by == $userId;
 				$canChange  = $user->authorise('core.edit.state', 'com_catalogue.item.'.$item->id) && $canCheckin;
 				?>
-				<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid?>">
+				<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->id?>">
 					<td class="order nowrap center hidden-phone">
 					<?php if ($canChange) :
 						$disableClassName = '';
@@ -151,7 +151,7 @@ $sortFields = $this->getSortFields();
 						<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 					</td>
 					<td class="center">
-						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'categories.', true, 'cb', $item->publish_up, $item->publish_down); ?>
+						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'categories.', true, 'cb'); ?>
 					</td>
 					<td class="nowrap has-context">
 						<div class="pull-left">
