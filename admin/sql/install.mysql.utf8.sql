@@ -24,6 +24,7 @@ CREATE TABLE `#__catalogue_item` (
   `state` int(11) NOT NULL DEFAULT '0',
   `modified` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` INT NOT NULL,
+  `created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL,
   `checked_out` int(11) NOT NULL,
   `metadata` text NOT NULL,
