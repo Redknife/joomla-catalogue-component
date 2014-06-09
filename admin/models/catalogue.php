@@ -44,7 +44,7 @@ class CatalogueModelCatalogue extends JModelList
 
         // Join over the categories.
         $query->select('cat.title AS category_name')
-            ->join('LEFT', '#__categories AS cat ON c.id = c.category_id');
+            ->join('LEFT', '#__categories AS cat ON cat.id = c.category_id');
 
         $query->select('mf.manufacturer_name')
             ->join('LEFT', '#__catalogue_manufacturer AS mf ON mf.id = c.manufacturer_id');
@@ -154,6 +154,9 @@ class CatalogueModelCatalogue extends JModelList
 
         $categoryId = $this->getUserStateFromRequest($this->context.'.filter.category_id', 'filter_category_id', '');
         $this->setState('filter.category_id', $categoryId);
+
+        $sectionId = $this->getUserStateFromRequest($this->context.'.filter.section_id', 'filter_section_id', '');
+        $this->setState('filter.section_id', $sectionId);
 
         $manufacturerId = $this->getUserStateFromRequest($this->context.'.filter.manufacturer_id', 'filter_manufacturer_id', '');
         $this->setState('filter.manufacturer_id', $manufacturerId);
