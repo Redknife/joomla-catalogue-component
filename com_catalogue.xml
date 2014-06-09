@@ -10,7 +10,7 @@
 	<license>GNU General Public License version 2 or later;</license>
 	<version>1.8.1</version>
 	<description>COM_CATALOGUE_MANAGER</description>
-	
+	<script>script.php</script>
 	<install>
 		<sql>
 			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
