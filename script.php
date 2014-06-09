@@ -15,7 +15,21 @@ class com_catalogueInstallerScript
     function install($parent)
     {
         // $parent is the class calling this method
-        $parent->getParent()->setRedirectURL('index.php?option=com_helloworld');
+
+        // Create categories for our component
+        $basePath = JPATH_ADMINISTRATOR . '/components/com_categories';
+        require_once $basePath . '/models/category.php';
+        $config = array( 'table_path' => $basePath . '/tables');
+        $model = new CategoriesModelCategory($config);
+        $data = array( 'id' => 0, 'parent_id' => 1, 'level' => 1, 'path' => 'uncategorised', 'extension' => 'com_catalogue' , 'title' => 'Uncategorised', 'alias' => 'uncategorised', 'published' => 1, 'language' => '*');
+        $status = $model->save($data);
+
+        if(!$status)
+        {
+            JError::raiseWarning(500, JText::_('Unable to create default content category!'));
+        }
+
+        $parent->getParent()->setRedirectURL('index.php?option=com_catalogue', JText::_('COM_CATALOGUE_TNX'));
     }
 
     /**
