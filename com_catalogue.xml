@@ -2,13 +2,13 @@
 <extension type="component" version="2.5.0" method="upgrade">
  
 	<name>com_catalogue</name>
-	<creationDate>08.01.2012</creationDate>
+	<creationDate>10.06.2014</creationDate>
 	<author>Saity74</author>
 	<authorEmail>info@saity74.ru</authorEmail>
 	<authorUrl>http://saity74.ru</authorUrl>
 	<copyright></copyright>
 	<license>GNU General Public License version 2 or later;</license>
-	<version>1.5.0</version>
+	<version>1.8.1</version>
 	<description>COM_CATALOGUE_MANAGER</description>
 	
 	<install>
@@ -23,19 +23,14 @@
 	</uninstall>
 	
 	<administration>
-		
-		<menu img="class:catalogue">com_catalogue</menu>
+		<menu img="class:catalogue">Catalogue</menu>
 		<submenu>
-			<!--
-				Note that all & must be escaped to &amp; for the file to be valid
-				XML and be parsed by the installer
-			-->
 			<menu link="option=com_catalogue" img="class:catalogue"
 				alt="Catalogue/Catalogue">com_catalogue</menu>
 			<menu link="option=com_categories&amp;extension=com_catalogue"
 				view="categories" img="class:catalogue-cat" alt="Catalogue/Categories">com_catalogue_categories</menu>
 		</submenu>
-		
+
 		<files folder="admin">
 			<filename>index.html</filename>
 			<filename>catalogue.php</filename>

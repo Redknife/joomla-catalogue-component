@@ -44,53 +44,17 @@ class CatalogueModelCategory extends JModelAdmin
 	
 	public function getItem($pk = null)
 	{
-		$item = parent::getItem($pk);
-		
-		$db = JFactory::getDbo();
-		
-		// Display stored skin types, effects and componens while editing item
-		if ($item->id)
+		if ($result = parent::getItem($pk))
 		{
-			$query_effect = $db->getQuery(true);
-			$query_effect->select('*')->from('#__catalogue_links')->where('ptype = 2 AND parent = '.$item->id);
-			$db->setQuery($query_effect);
-			$result = $db->loadObjectList();
-			$effects = array();
-			foreach($result as $row)
-			{
-				$effects[] = $row->parent;
-			}
-			$item->child_item = $effects;
-			//print_r($effects);
-			/*
-			//
-			$query_skin = $db->getQuery(true);
-			$query_skin->select('skin_id')->from('#__catalogue_item_skin')->where('item_id = '.$item->id);
-			$db->setQuery($query_skin);
-			$result = $db->loadObjectList();
-			$skins = array();
-			foreach($result as $row)
-			{
-				$skins[] = $row->skin_id;
-			}
-			$item->skin_id = $skins;
-			
-			//
-			$query_component = $db->getQuery(true);
-			$query_component->select('component_id')->from('#__catalogue_item_component')->where('item_id = '.$item->id);
-			$db->setQuery($query_component);
-			$result = $db->loadObjectList();
-			$components = array();
-			foreach($result as $row)
-			{
-				$components[] = $row->component_id;
-			}
-			$item->component_id = $components;
-			*/
-			
-		}
 		
-		return $item;
+			// Convert the metadata field to an array.
+			$metadata = new JRegistry;
+			$metadata->loadString($result->metadata);
+			$result->metadata = $metadata->toArray();
+			
+	
+		}
+		return $result;
 		
 	
 		
@@ -98,9 +62,14 @@ class CatalogueModelCategory extends JModelAdmin
 	
 	public function save($data)
 	{
-		$linked_ids = $data['linked_id'];
-		$registry = new JRegistry($linked_ids);
-		$data['linked_id'] = $registry->toString();
+		
+		// Convert the metadata array to string.
+		$metadata = new JRegistry($data['metadata']);
+		$data['metadata'] = $metadata->toString();
+		
+		// Convert the params array to string.
+		$params = new JRegistry($data['params']);
+		$data['params'] = $params->toString();
 		
 		if (isset($data['alias']) && empty($data['alias'])){
 			$data['alias'] = ru_RULocalise::transliterate($data['category_name']);

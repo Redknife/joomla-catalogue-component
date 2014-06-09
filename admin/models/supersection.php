@@ -37,8 +37,15 @@ class CatalogueModelSupersection extends JModelAdmin
 	
 	public function getItem($pk = null)
 	{
-		$item = parent::getItem($pk);
-		return $item;
+		if ($result = parent::getItem($pk))
+		{
+			// Convert the metadata field to an array.
+			$metadata = new JRegistry;
+			$metadata->loadString($result->metadata);
+			$result->metadata = $metadata->toArray();
+		}
+		
+		return $result;
 	}
         
         public function save($data)

@@ -42,7 +42,7 @@ class CatalogueViewCategories extends JViewLegacy
 	{
 		require_once JPATH_COMPONENT . '/helpers/catalogue.php';
 		
-		$canDo = CatalogueHelper::getActions($this->state->get('filter.cat_id'));
+		$canDo = CatalogueHelper::getActions($this->state->get('filter.category_id'));
 
 		$bar = JToolBar::getInstance('toolbar');
 		

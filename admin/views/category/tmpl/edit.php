@@ -1,11 +1,4 @@
 <?php
-/**
- * @package     Joomla.Administrator
- * @subpackage  com_banners
- *
- * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
- */
 
 defined('_JEXEC') or die;
 
@@ -28,12 +21,12 @@ JHtml::_('formbehavior.chosen', 'select');
 <form action="<?php echo JRoute::_('index.php?option=com_catalogue&view=category&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate form-vertical">
 <div class="span8 form-vertical">
 
-	<fieldset>
-		<ul class="nav nav-tabs">
-			<li class="active"><a href="#details" data-toggle="tab"><?php echo JText::_('COM_CATALOGUE_CATEGORY_DETAILS');?></a></li>
-		</ul>
-		<div class="tab-content row-fluid">
-			<div class="tab-pane active span6" id="details">
+		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('COM_CATALOGUE_CATEGORY_DETAILS', true)); ?>
+		
+		<div class="row-fluid">
+			<div class="span6">
 				<div class="control-group">
 					<div class="control-label">
 						<?php echo $this->form->getLabel('category_name'); ?>
@@ -92,43 +85,9 @@ JHtml::_('formbehavior.chosen', 'select');
 					</div>
 				</div>
 			</div>
-			<div class="span6">
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('child_item'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('child_item'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('child_category'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('child_category'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('child_section'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('child_section'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('child_supersection'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('child_supersection'); ?>
-					</div>
-				</div>
-			</div>
 			
-			<div class="clearfix">
-			</div>
+			<div class="clearfix"></div>
+			
 			<div class="span12">
 				<div class="control-group">
 					<div class="control-label">
@@ -139,9 +98,23 @@ JHtml::_('formbehavior.chosen', 'select');
 					</div>
 				</div>
 			</div>
-		</div>
-	</fieldset>
 
+		</div>
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
+		
+			
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'metadata', JText::_('COM_CATALOGUE_METADATA', true)); ?>
+		<div class="row-fluid form-horizontal-desktop">
+			<div class="span6">
+				<?php echo JLayoutHelper::render('joomla.edit.metadata', $this); ?>
+			</div>
+		</div>
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
+	
+		<?php echo JLayoutHelper::render('joomla.edit.params', $this); ?>
+		
+	<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+	
 	<input type="hidden" name="task" value="" />
 	<?php echo JHtml::_('form.token'); ?>
 	</div>

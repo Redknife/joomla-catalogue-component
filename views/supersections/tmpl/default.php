@@ -1,36 +1,24 @@
-<?php
-defined('_JEXEC') or die;
-JHtml::_('behavior.caption');
-JHtml::_('bootstrap.tooltip');
-$i = 0;
-$tmpsec = 0;
+<?php defined('_JEXEC') or die; 
+
+	$app = JFactory::getApplication();
+	$menuitem   = $app->getMenu()->getActive(); // get the active item
+	$menuparams = $menuitem->params; // get menu params
 ?>
-
-<div class="catalogue-supersections">
-	<div class="page-header">
-		<h1 class="catalogue-head">Каталог продукции</h1>
-	</div>
-	<ul class="unstyled">
-	<?php
-		$ssec = ''; $k = 0;
-
-		foreach ($this->items as $item){
-			if ($ssec != $item->supersection_name){
-				if ($ssec != '')
-					echo '</ul>';
-
-				$ssec = $item->supersection_name;
-				$k = 0;
-                $link = JRoute::_( 'index.php?option=com_catalogue&view=section&ssid='.$item->id.'&sid='.$item->sectionid );
-				echo '<li class="one-supersection parent supersection-closed"><h3>'.$item->supersection_name.'</h3><ul class="sectionlist unstyled"><li><a href="'.$link.'">'.$item->section_name.'</a></li>';
+<?php if($menuparams->get('show_page_heading')): ?>
+<div class="page-header">
+	<h1><?php echo $menuitem->title; ?></h1>
+</div>
+<?php endif; ?>
+<div class="catalogue-wrapper">
+	<div class="supersections-wrapper">
+		<?php 
+			$layout_type = (int)$menuitem->query['layout_type']; // get the layout type
+			if($layout_type == 1){
+				echo $this->loadTemplate('items_rows');
 			}
 			else{
-				$k++;
-                $link = JRoute::_( 'index.php?option=com_catalogue&view=section&ssid='.$item->id.'&sid='.$item->sectionid );
-				echo '<li><a href="'.$link.'">'.$item->section_name.'</a></li>';
+				echo $this->loadTemplate('items_grid');
 			}
-
-		}
-	?>
-	</ul>
+		?>
+	</div>
  </div>

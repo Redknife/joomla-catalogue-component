@@ -20,7 +20,8 @@ class CatalogueModelCatalogue extends JModelList
 				'country_id', 'mf.country_id',
 				'price', 'c.price',
 				'published', 'c.published',
-				'ordering', 'c.ordering'
+				'ordering', 'c.ordering',
+				'created_by', 'c.created_by'
 			);
 		}
 
@@ -67,6 +68,9 @@ class CatalogueModelCatalogue extends JModelList
 		
 		$query->select('ct.country_name');
 		$query->join('LEFT', '#__catalogue_country AS ct ON ct.id = mf.country_id');
+		
+		$query->select('u.name AS username');
+		$query->join('LEFT', '#__users AS u ON u.id = c.created_by');
 		
 		// Filter by published state
 		$published = $this->getState('filter.state');
@@ -143,7 +147,7 @@ class CatalogueModelCatalogue extends JModelList
 		$id	.= ':'.$this->getState('filter.access');
 		$id	.= ':'.$this->getState('filter.state');
 		$id	.= ':'.$this->getState('filter.published');
-		$id	.= ':'.$this->getState('filter.cat_id');
+		$id	.= ':'.$this->getState('filter.category_id');
 		$id	.= ':'.$this->getState('filter.section_id');
 		$id	.= ':'.$this->getState('filter.manufacturer_id');
 		$id	.= ':'.$this->getState('filter.country_id');
@@ -173,8 +177,8 @@ class CatalogueModelCatalogue extends JModelList
 		$published = $this->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '');
 		$this->setState('filter.published', $published);
 		
-		$categoryId = $this->getUserStateFromRequest($this->context.'.filter.cat_id', 'filter_cat_id', '');
-		$this->setState('filter.cat_id', $categoryId);
+		$categoryId = $this->getUserStateFromRequest($this->context.'.filter.category_id', 'filter_category_id', '');
+		$this->setState('filter.category_id', $categoryId);
 		
 		$sectionId = $this->getUserStateFromRequest($this->context.'.filter.section_id', 'filter_section_id', '');
 		$this->setState('filter.section_id', $sectionId);

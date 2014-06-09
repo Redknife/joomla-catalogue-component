@@ -146,7 +146,7 @@ $sortFields = $this->getSortFields();
 						<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 					</td>
 					<td class="center">
-						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'supersections.', true, 'cb', $item->publish_up, $item->publish_down); ?>
+						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'supersections.', true, 'cb'); ?>
 					</td>
 					<td class="nowrap has-context">
 						<div class="pull-left">

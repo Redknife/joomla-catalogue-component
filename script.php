@@ -2,6 +2,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Script file of HelloWorld component
+ */
 class com_catalogueInstallerScript
 {
     /**

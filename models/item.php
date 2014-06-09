@@ -31,60 +31,44 @@ class CatalogueModelItem extends JModelList
 		$db->setQuery($query);
 		$this->_items = $db->loadObject();
 		
-		$this->setState('item.name', $this->_items->item_name);
+		$this->_addToWatchList($this->_items->id);
 		
 		return $this->_items;
 	}
 	
-	public function getMore()
+	protected function populateState($ordering = NULL, $direction = NULL)
 	{
-		$id = JRequest::getVar('id');
-        $amountspace = 10;
-        $depthfirebox = 50;
-        $width = 50;
-        $height = 50;
-        $length = 50;
-        $diameter = 10;
+		$app = JFactory::getApplication('site');
 
+		$offset = $app->input->getUInt('limitstart');
+		$this->setState('list.offset', $offset);
+		
+		$id = $app->input->getUInt('id');
+		$this->setState('item.id', $id);
+		
 		$db	= JFactory::getDbo();
- 		$query	= $db->getQuery(true);
 		
-			//Определение категории
-			$query->select('i.*');
-			$query->from('#__catalogue_item AS i');
-			$query->where('i.id = '.$id);
-			$db->setQuery($query);
-			$this_item = $db->loadObject();
+		$db->setQuery(
+			$db->getQuery(true)
+			->select('item_name, item_description, params, metadata')
+			->from('#__catalogue_item')
+			->where('state = 1 AND published AND id = '.$id)
+		);
+		
+		$item = $db->loadObject();
+		
+		$this->setState('item.name', $item->item_name);
+		$this->setState('item.params', $item->params);
+		$this->setState('item.metadata', $item->metadata);
+		$this->setState('item.desc', $item->item_description);
+		
+		// Load the parameters.
+		$params = $app->getParams();
+		$this->setState('params', $params);
 
-			$query_more = $db->getQuery(true);
-			$query_more->select('i.*, sec.id as sectionid, cat.id as categoryid');
-			$query_more->from('#__catalogue_item AS i');
-			$query_more->join('LEFT', '#__catalogue_category as cat ON cat.id = i.category_id');
-			$query_more->join('LEFT', '#__catalogue_section as sec ON sec.id = cat.section_id');
-			$query_more->where('i.state = 1');
-			$query_more->where('i.published = 1');
-			$query_more->where('i.id <> '.$id);
-			$query_more->where('i.item_amountspace <= '.(int)($this_item->item_amountspace + $amountspace));
-			$query_more->where('i.item_amountspace >= '.(int)($this_item->item_amountspace-$amountspace));
-			$query_more->where('i.item_depthfirebox <= '.(int)($this_item->item_depthfirebox+$depthfirebox));
-			$query_more->where('i.item_depthfirebox >= '.(int)($this_item->item_depthfirebox-$depthfirebox));
-			$query_more->where('i.item_diameter <= '.(int)($this_item->item_diameter+$diameter));
-			$query_more->where('i.item_diameter >= '.(int)($this_item->item_diameter-$diameter));
-			$query_more->where('i.item_width <= '.(int)($this_item->item_width+$width));
-			$query_more->where('i.item_width >= '.(int)($this_item->item_width-$width));
-			$query_more->where('i.item_height <= '.(int)($this_item->item_height+$height));
-			$query_more->where('i.item_height >= '.(int)($this_item->item_height-$height));
-			$query_more->where('i.item_length <= '.(int)($this_item->item_length+$length));
-			$query_more->where('i.item_length >= '.(int)($this_item->item_length-$length));
-			
-			$query_more->order('i.ordering');
-			$db->setQuery($query_more, 0, 4);
-		
-		$items_arr = $db->loadObjectList();
-		return $items_arr;
 	}
 	
-	protected function _addToWatchList($id)
+	private function _addToWatchList($id)
 	{
 		$app = JFactory::getApplication();
 
@@ -93,7 +77,6 @@ class CatalogueModelItem extends JModelList
 		{
 			
 			$data = (array) unserialize($watchlist);
-			
 			
 			if (!is_array($data))
 			{
