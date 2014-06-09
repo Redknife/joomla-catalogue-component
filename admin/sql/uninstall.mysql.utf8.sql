@@ -1,2 +1,4 @@
-DROP TABLE  `#__catalogue_item`,`#__catalogue_country`,`#__catalogue_manufacturer`;
 DELETE FROM `#__categories` WHERE `extension` = 'com_catalogue';
+DROP TABLE IF EXISTS `#__catalogue_item`;
+DROP TABLE IF EXISTS `#__catalogue_country`;
+DROP TABLE IF EXISTS `#__catalogue_manufacturer`;
