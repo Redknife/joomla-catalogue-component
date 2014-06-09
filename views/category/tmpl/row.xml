@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="com_catalogue_view_category_row_title" option="com_catalogue_view_category_row_option">
+		
+		<message>
+			<![CDATA[com_catalogue_view_category_row_desc]]>
+		</message>
+	</layout>
+</metadata>
