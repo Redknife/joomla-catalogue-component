@@ -2,13 +2,13 @@
 <extension type="component" version="2.5.0" method="upgrade">
  
 	<name>com_catalogue</name>
-	<creationDate>08.01.2012</creationDate>
+	<creationDate>10.06.2014</creationDate>
 	<author>Saity74</author>
 	<authorEmail>info@saity74.ru</authorEmail>
 	<authorUrl>http://saity74.ru</authorUrl>
 	<copyright></copyright>
 	<license>GNU General Public License version 2 or later;</license>
-	<version>1.5.0</version>
+	<version>1.8.1</version>
 	<description>COM_CATALOGUE_MANAGER</description>
 	
 	<install>
