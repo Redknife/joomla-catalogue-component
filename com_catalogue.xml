@@ -8,7 +8,7 @@
 	<authorUrl>http://saity74.ru</authorUrl>
 	<copyright></copyright>
 	<license>GNU General Public License version 2 or later;</license>
-	<version>1.8.1</version>
+	<version>1.8.2</version>
 	<description>COM_CATALOGUE_MANAGER</description>
     <scriptfile>script.php</scriptfile>
 	<install>
