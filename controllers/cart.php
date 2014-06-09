@@ -49,45 +49,43 @@ class CatalogueControllerCart extends JControllerForm
 
     public function send()
     {
-       JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
         $app = JFactory::getApplication();
         $params = $app->getParams();
-        $manager_email = $params->toArray()['cartemail'];
-        $manager_greeting = $params->toArray()['greetingmanager'];
-        $manager_subject = $params->toArray()['cartemailsubject'];
+        $manager_email = $params->get('cart_manager_email');
+        $manager_subject = $params->get('cart_manager_email_subject');
+        $manager_intro = $params->get('cart_manager_introtext');
 
-        $name = $this->input->get('name', '', 'string');
-        $phone = $this->input->get('phone', '', 'string');
-        $email = $this->input->get('email', '', 'string');
-        $desc = $this->input->get('desc', '', 'string');
+        $client_subject = $params->get('cart_client_email_subject');
+        $client_intro = $params->get('cart_client_introtext');
+        $client_mail_sign = $params->get('cart_email_sign');
+
+        $user_name = $this->input->get('name', '', 'string');
+        $user_phone = $this->input->get('phone', '', 'string');
+        $user_email = $this->input->get('email', '', 'string');
+        $user_msg = $this->input->get('desc', '', 'string');
         $itemId = $this->input->get('id', '', 'string');
-        $client_subject = $params->toArray()['cartemailclientsubject'];
-        $client_body = 'Наш менеджер свяжется с вами';
-
-        $client_greeting = 'Здравствуйте, '.$name;
 
         $app = JFactory::getApplication();
         $mail = JFactory::getMailer();
-
         $mail->IsHTML(true);
-
         $mailfrom   = $app->getCfg('mailfrom');
         $fromname   = $app->getCfg('fromname');
         $sitename   = $app->getCfg('sitename');
 
-            // check..
-        if ($email){
-            if(!preg_match("~^([a-z0-9_\-\.])+@([a-z0-9_\-\.])+\.([a-z0-9])+$~i", $email)){
+        // check..
+        if ($user_email){
+            if(!preg_match("~^([a-z0-9_\-\.])+@([a-z0-9_\-\.])+\.([a-z0-9])+$~i", $user_email)){
                     $app->redirect('/', JText::_('Некоректный Email'));
               return;
             }
         }
 
-        if(strlen($name) < 3){
+        if(strlen($user_name) < 3){
             $app->redirect('/', JText::_('Некоректное имя'));
           return;
         }
-            // ..check
+        // ..check
 
         // get order items..
         $body_items = '<table width="550px" cellspacing="5"><tbody><tr><td>Наименование</td><td>Цена</td></tr>';
@@ -100,56 +98,56 @@ class CatalogueControllerCart extends JControllerForm
             $body_items .= '</tr>';
         }
         $body_items .= '</table>';  
-            // ...get order items
+        // ...get order items
 
         $mail->addRecipient($manager_email);
-        $mail->addReplyTo(array($manager_email, $name));
+        $mail->addReplyTo(array($manager_email, $user_name));
         $mail->setSender(array($mailfrom, $fromname));
         $mail->setSubject($manager_subject);
         
-        $body = strip_tags(str_replace(array('<br />','<br/>'), "\n", $manager_greeting)."\n");
+        $body = strip_tags(str_replace(array('<br />','<br/>'), "\n", $manager_intro)."\n");
 
         $body .= '<br/><br/>';
         
-        if ($name)
-            $body .= 'ФИО отправителя: '.$name."<br/>";
+        if ($user_name)
+            $body .= 'ФИО отправителя: '.$user_name."<br/>";
         
-        if ($phone)
-            $body .= 'Телефон: '.$phone."<br/>";
+        if ($user_phone)
+            $body .= 'Телефон: '.$user_phone."<br/>";
         
-        if ($email)
-            $body .= 'E-mail: '.$email."<br/>";
+        if ($user_email)
+            $body .= 'E-mail: '.$user_email."<br/>";
 
-        if ($desc)
-            $body .= 'Описание вопроса: '.$desc."<br/>";
+        if ($user_msg)
+            $body .= 'Сообщение: '.$user_msg."<br/>";
         
         $body .= strip_tags(str_replace(array('<br />','<br/>'), "\n", $manager_body));
 
         $body .= '<br/>'.$body_items;
-        
+        $body .= 'Страница отправки: '.$_SERVER['HTTP_REFERER'];
         $mail->setBody($body);
-        print_r($body);
-        
         $sent = $mail->Send();
         
-        if ($email)
+        if ($user_email)
         {
             $mail = JFactory::getMailer();
-            $mail->addRecipient($email);
-            if (!$name)
-                $name = $email;
-            $mail->addReplyTo(array($email, $name));
+            $mail->addRecipient($user_email);
+            if (!$user_name)
+                $user_name = $user_email;
+            $mail->addReplyTo(array($user_email, $user_name));
             $mail->setSender(array($mailfrom, $fromname));
             $mail->setSubject($client_subject);
             
-            $body = strip_tags(str_replace(array('<br />','<br/>'), "\n", $client_greeting)."\n");
+            $body = strip_tags(str_replace(array('<br />','<br/>'), "\n", $client_intro)."\n");
             
-            $body .= strip_tags(str_replace(array('<br />','<br/>'), "\n", $client_body));
+            $body .= strip_tags(str_replace(array('<br />','<br/>'), "\n", $client_mail_sign));
             
             $mail->setBody($body);
             
             $sent = $mail->Send();
         }
-        if ($sent) $app->redirect('/thanks.html', '');
-        }
+        $menu = $app->getMenu();
+        $page_redirect = $menu->getItem($params->get('cart_form_redirect'))->route;
+        if ($sent) $app->redirect($page_redirect, '');
+    }
 }

@@ -12,7 +12,7 @@ CREATE TABLE `#__catalogue_supersection` (
   `metadata` text NOT NULL,
   `params` text NOT NULL,
   `supersection_image` varchar(255) NOT NULL,
-  `supersection_description` text NOT NULL,
+  `supersection_description` text NOT NULL
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `#__catalogue_section`;
@@ -30,7 +30,7 @@ CREATE TABLE `#__catalogue_section` (
   `state` tinyint(4) NOT NULL,
   `ordering` int(11) NOT NULL,
   `section_image` varchar(255) NOT NULL,
-  `section_description` text NOT NULL,
+  `section_description` text NOT NULL
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `#__catalogue_category`;
@@ -48,7 +48,7 @@ CREATE TABLE `#__catalogue_category` (
   `created_by` int(11) NOT NULL,
   `checked_out` int(11) NOT NULL,
   `params` text NOT NULL,
-  `metadata` text NOT NULL,
+  `metadata` text NOT NULL
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `#__catalogue_item`;
@@ -75,7 +75,7 @@ CREATE TABLE `#__catalogue_item` (
   `state` int(11) NOT NULL DEFAULT '0',
   `created_by` int(11) NOT NULL,
   `checked_out` int(11) NOT NULL,
-  `metadata` text NOT NULL,
+  `metadata` text NOT NULL
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `#__catalogue_country`;
@@ -91,7 +91,7 @@ CREATE TABLE `#__catalogue_country` (
   `created_by` int(11) NOT NULL,
   `checked_out` int(11) NOT NULL,
   `params` text NOT NULL,
-  `metadata` text NOT NULL,
+  `metadata` text NOT NULL
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `#__catalogue_manufacturer`;
@@ -108,6 +108,6 @@ CREATE TABLE `#__catalogue_manufacturer` (
   `created_by` int(11) NOT NULL,
   `checked_out` int(11) NOT NULL,
   `params` text NOT NULL,
-  `metadata` text NOT NULL,
+  `metadata` text NOT NULL
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

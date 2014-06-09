@@ -1,1 +1,1 @@
-DROP TABLE `#__catalogue_category`, `#__catalogue_item`, `#__catalogue_section`,`#__catalogue_country`,`#__catalogue_manufacturer`,`#__catalogue_supersection`;
+DROP TABLE `#__catalogue_category`, `#__catalogue_item`, `#__catalogue_section`,`#__catalogue_country`,`#__catalogue_field`,`#__catalogue_form`,`#__catalogue_links`,`#__catalogue_manufacturer`,`#__catalogue_supersection`;

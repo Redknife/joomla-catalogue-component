@@ -13,6 +13,18 @@ class CatalogueTableCatalogue extends JTable
 	public function bind($array, $ignore = '')
 	{
 		
+		if (isset($array['item_description'])) {
+            $pattern = '#<hr\s+id=("|\')system-readmore("|\')\s*\/*>#i';
+            $tagPos    = preg_match($pattern, $array['item_description']);
+ 
+            if ($tagPos == 0) {
+                $this->introtext    = $array['item_description'];
+                $this->fulltext         = '';
+            } else {
+                list($this->introtext, $this->fulltext) = preg_split($pattern, $array['item_description'], 2);
+            }
+        }
+        
 		if (isset($array['params']) && is_array($array['params']))
 		{
 			$registry = new JRegistry;
@@ -47,9 +59,38 @@ class CatalogueTableCatalogue extends JTable
 	
 	public function store($updateNulls = false)
 	{
-		$result = parent::store($updateNulls);
 		
-		return $result;
+		if (is_array($this->params))
+		{
+			$registry = new JRegistry;
+			$registry->loadArray($this->params);
+			$this->params = (string) $registry;
+		}
+
+		$date	= JFactory::getDate();
+		$user	= JFactory::getUser();
+		
+		if ($this->id)
+		{
+			// Existing item
+			$this->modified		= $date->toSql();
+			$this->modified_by	= $user->get('id');
+		}
+		else
+		{
+			// New contact. A contact created and created_by field can be set by the user,
+			// so we don't touch either of these if they are set.
+			if (!(int) $this->created)
+			{
+				$this->created = $date->toSql();
+			}
+			if (empty($this->created_by))
+			{
+				$this->created_by = $user->get('id');
+			}
+		}
+		
+		return parent::store($updateNulls);
 	}
 	
 }
