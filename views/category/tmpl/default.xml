@@ -6,4 +6,17 @@
 			<![CDATA[com_catalogue_view_category_default_desc]]>
 		</message>
 	</layout>
+
+    <fields name="request">
+        <fieldset name="request"
+                >
+
+            <field name="сid" type="category"
+                   description="JGLOBAL_CHOOSE_CATEGORY_DESC"
+                   extension="com_catalogue"
+                   label="JGLOBAL_CHOOSE_CATEGORY_LABEL"
+                   required="true"
+                    />
+        </fieldset>
+    </fields>
 </metadata>
