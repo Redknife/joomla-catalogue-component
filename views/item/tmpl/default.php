@@ -33,10 +33,10 @@ $item_params = new JRegistry($item->params);
 $item->params = $item_params->toArray();
 
 ?>
-<div class="row">
+<div class="row-fluid">
 	
 	
-	<div id="item-open" class="catalogue-item span9">
+	<div id="item-open" class="catalogue-item">
 		<div class="page-header">
 			<h2 class="item-name"><?php echo $item->item_name; ?></h2>
 		</div>

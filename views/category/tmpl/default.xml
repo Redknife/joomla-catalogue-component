@@ -6,17 +6,215 @@
 			<![CDATA[com_catalogue_view_category_default_desc]]>
 		</message>
 	</layout>
+	
+	<fields name="request">
+		<fieldset name="request"
+		>
 
-    <fields name="request">
-        <fieldset name="request"
-                >
+			<field name="cid" type="category"
+				description="JGLOBAL_CHOOSE_CATEGORY_DESC"
+				extension="com_catalogue"
+				label="JGLOBAL_CHOOSE_CATEGORY_LABEL"
+				required="true"
+			/>
+		</fieldset>
+		
+	</fields>
+	
+	<fields name="params">
+		<fieldset name="basic" label="JGLOBAL_CATEGORY_OPTIONS">
+		
+					<field name="layout_type"
+						type="hidden"
+						default="grid"
+					/>
+					
+				  	<field name="show_category_heading_title_text"
+						type="list"
+		 				label="JGLOBAL_SHOW_CATEGORY_HEADING_TITLE_TEXT_LABEL"
+						description="JGLOBAL_SHOW_CATEGORY_HEADING_TITLE_TEXT_DESC"
+						>
+						<option value="">JGLOBAL_USE_GLOBAL</option>
+						<option value="0">JHIDE</option>
+						<option value="1">JSHOW</option>
+				</field>
+					<field name="show_category_title" type="list"
+						label="JGLOBAL_SHOW_CATEGORY_TITLE"
+						description="JGLOBAL_SHOW_CATEGORY_TITLE_DESC"
+					>
+						<option value="">JGLOBAL_USE_GLOBAL</option>
+						<option value="0">JHIDE</option>
+						<option value="1">JSHOW</option>
+					</field>
+		
+					<field name="show_description" type="list"
+						description="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_DESC"
+						label="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_LABEL"
+					>
+						<option value="">JGLOBAL_USE_GLOBAL</option>
+						<option value="0">JHIDE</option>
+						<option value="1">JSHOW</option>
+					</field>
+		
+					<field name="show_description_image" type="list"
+						description="JGLOBAL_SHOW_CATEGORY_IMAGE_DESC"
+						label="JGLOBAL_SHOW_CATEGORY_IMAGE_LABEL"
+					>
+						<option value="">JGLOBAL_USE_GLOBAL</option>
+						<option value="0">JHIDE</option>
+						<option value="1">JSHOW</option>
+					</field>
+		
+					<field name="maxLevel" type="list"
+						description="JGLOBAL_MAXLEVEL_DESC"
+						label="JGLOBAL_MAXLEVEL_LABEL"
+					>
+						<option value="">JGLOBAL_USE_GLOBAL</option>
+						<option value="-1">JALL</option>
+						<option value="0">JNONE</option>
+						<option value="1">J1</option>
+						<option value="2">J2</option>
+						<option value="3">J3</option>
+						<option value="4">J4</option>
+						<option value="5">J5</option>
+					</field>
+		
+					<field name="show_empty_categories" type="list"
+						label="JGLOBAL_SHOW_EMPTY_CATEGORIES_LABEL"
+						description="COM_CONTENT_SHOW_EMPTY_CATEGORIES_DESC"
+					>
+						<option value="">JGLOBAL_USE_GLOBAL</option>
+						<option value="0">JHIDE</option>
+						<option value="1">JSHOW</option>
+					</field>
+	
+		
+					<field name="show_subcat_desc" type="list"
+					label="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_LABEL"
+					description="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_DESC"
+					>
+						<option value="">JGLOBAL_USE_GLOBAL</option>
+						<option value="0">JHIDE</option>
+						<option value="1">JSHOW</option>
+					</field>
+		
+					<field name="show_cat_num_articles" type="list"
+						label="COM_CONTENT_NUMBER_CATEGORY_ITEMS_LABEL"
+						description="COM_CONTENT_NUMBER_CATEGORY_ITEMS_DESC"
+					>
+						<option value="">JGLOBAL_USE_GLOBAL</option>
+						<option value="0">JHIDE</option>
+						<option value="1">JSHOW</option>
+					</field>
+		
+					<field name="page_subheading" type="text"
+						description="JGLOBAL_SUBHEADING_DESC"
+						label="JGLOBAL_SUBHEADING_LABEL"
+						size="20"
+					/>
+		
+		</fieldset>
+		
+		<fieldset name="advanced" label="JGLOBAL_LAYOUT_OPTIONS">
+		
+					<field name="bloglayout" type="spacer" class="text"
+							label="JGLOBAL_SUBSLIDER_BLOG_LAYOUT_LABEL"
+					/>
+		
+					<field name="num_columns" type="text"
+						description="JGLOBAL_NUM_COLUMNS_DESC"
+						label="JGLOBAL_NUM_COLUMNS_LABEL"
+						size="3"
+					/>
+		
+					<field name="show_subcategory_content" type="list"
+		
+						description="JGLOBAL_SHOW_SUBCATEGORY_CONTENT_DESC"
+						label="JGLOBAL_SHOW_SUBCATEGORY_CONTENT_LABEL"
+					>
+						<option value="">JGLOBAL_USE_GLOBAL</option>
+						<option value="0">JNONE</option>
+						<option value="-1">JALL</option>
+						<option value="1">J1</option>
+						<option value="2">J2</option>
+						<option value="3">J3</option>
+						<option value="4">J4</option>
+						<option value="5">J5</option>
+					</field>
+		
+					<field
+						name="spacer1"
+						type="spacer"
+						hr="true"
+					/>
+		
+					<field name="orderby_pri" type="list"
+						description="JGLOBAL_CATEGORY_ORDER_DESC"
+						label="JGLOBAL_CATEGORY_ORDER_LABEL"
+					>
+						<option value="">JGLOBAL_USE_GLOBAL</option>
+						<option value="none">JGLOBAL_NO_ORDER</option>
+						<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
+						<option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
+						<option value="order">JGLOBAL_CATEGORY_MANAGER_ORDER</option>
+					</field>
+		
+					<field name="orderby_sec" type="list"
+						description="JGLOBAL_ARTICLE_ORDER_DESC"
+						label="JGLOBAL_ARTICLE_ORDER_LABEL"
+					>
+						<option value="">JGLOBAL_USE_GLOBAL</option>
+						<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
+						<option value="date">JGLOBAL_OLDEST_FIRST</option>
+						<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
+						<option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
+						<option value="hits">JGLOBAL_MOST_HITS</option>
+						<option value="rhits">JGLOBAL_LEAST_HITS</option>
+						<option value="order">JGLOBAL_ORDERING</option>
+					</field>
+		
+					<field name="show_pagination" type="list"
+						description="JGLOBAL_PAGINATION_DESC"
+						label="JGLOBAL_PAGINATION_LABEL"
+					>
+						<option value="">JGLOBAL_USE_GLOBAL</option>
+						<option value="0">JHIDE</option>
+						<option value="1">JSHOW</option>
+						<option value="2">JGLOBAL_AUTO</option>
+					</field>
+		
+					<field name="show_pagination_results" type="list"
+						label="JGLOBAL_PAGINATION_RESULTS_LABEL"
+						description="JGLOBAL_PAGINATION_RESULTS_DESC">
+		
+						<option value="">JGLOBAL_USE_GLOBAL</option>
+						<option value="0">JHIDE</option>
+						<option value="1">JSHOW</option>
+					</field>
+		
+		</fieldset>
+				<fieldset name="integration" label="COM_MENUS_INTEGRATION_FIELDSET_LABEL"
+				>
+		
+					<field name="show_feed_link" type="list"
+						description="JGLOBAL_SHOW_FEED_LINK_DESC"
+						label="JGLOBAL_SHOW_FEED_LINK_LABEL"
+					>
+						<option value="">JGLOBAL_USE_GLOBAL</option>
+						<option value="0">JHIDE</option>
+						<option value="1">JSHOW</option>
+					</field>
+		
+					<field name="feed_summary" type="list"
+						description="JGLOBAL_FEED_SUMMARY_DESC"
+						label="JGLOBAL_FEED_SUMMARY_LABEL"
+					>
+						<option value="">JGLOBAL_USE_GLOBAL</option>
+						<option value="0">JGLOBAL_INTRO_TEXT</option>
+						<option value="1">JGLOBAL_FULL_TEXT</option>
+					</field>
+				</fieldset>
+		</fields>
 
-            <field name="сid" type="category"
-                   description="JGLOBAL_CHOOSE_CATEGORY_DESC"
-                   extension="com_catalogue"
-                   label="JGLOBAL_CHOOSE_CATEGORY_LABEL"
-                   required="true"
-                    />
-        </fieldset>
-    </fields>
+	
 </metadata>
