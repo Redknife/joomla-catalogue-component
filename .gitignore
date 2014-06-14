@@ -1,5 +1,6 @@
 .gitignore
 .htaccess
+.idea/*
 administrator/cache/*
 administrator/components/com_admin/*
 administrator/components/com_banners/*
@@ -394,3 +395,4 @@ configuration.php
 index.php
 joomla.xml
 *.txt
+.DS_Store
