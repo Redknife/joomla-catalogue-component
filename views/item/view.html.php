@@ -20,7 +20,7 @@ class catalogueViewItem extends JViewLegacy
 		parent::display($tpl);
 	}
 	
-	private function _prepareDocument()
+	protected function _prepareDocument()
 	{
 
 		$app		= JFactory::getApplication();
@@ -29,11 +29,34 @@ class catalogueViewItem extends JViewLegacy
 		$title 		= null;
 		$metadata 	= new JRegistry($this->state->get('item.metadata'));
 		
+				
 		// Ссылка на активный пункт меню
 		$menu = $menus->getActive();
 		
 		// Проверка привязана ли категория к меню
 		$cid = (int) @$menu->query['cid'];
+		
+		$this->category = JCategories::getInstance('Catalogue')->get($cid);
+
+
+		if ($menu && ($menu->query['option'] != 'com_catalogue' || $menu->query['view'] == 'category' || $cid != $this->category->id))
+		{
+			$path = array(array('title' => $this->category->title, 'link' => ''));
+			$category = $this->category->getParent();
+
+			while (($menu->query['option'] != 'com_catalogue' || $menu->query['view'] == 'category' || $cid != $category->id) && $category->id > 1)
+			{
+				$path[] = array('title' => $category->title, 'link' => CatalogueHelperRoute::getCategoryRoute($category->id));
+				$category = $category->getParent();
+			}
+
+			$path = array_reverse($path);
+
+			foreach ($path as $item)
+			{
+				$pathway->addItem($item['title'], $item['link']);
+			}
+		}
 		
 		if ($menu && $cid == $this->state->get('item.id'))
 		{

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="2.5.0" method="upgrade">
+<extension type="component" version="3.0.0" method="upgrade">
  
 	<name>com_catalogue</name>
 	<creationDate>10.06.2014</creationDate>
@@ -8,7 +8,7 @@
 	<authorUrl>http://saity74.ru</authorUrl>
 	<copyright></copyright>
 	<license>GNU General Public License version 2 or later;</license>
-	<version>1.8.1</version>
+	<version>1.8.2</version>
 	<description>COM_CATALOGUE_MANAGER</description>
     <scriptfile>script.php</scriptfile>
 	<install>
