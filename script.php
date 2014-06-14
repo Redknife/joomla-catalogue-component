@@ -14,6 +14,8 @@ class com_catalogueInstallerScript
      */
     function install($parent)
     {
+        // $parent is the class calling this method
+
         // Create categories for our component
         $basePath = JPATH_ADMINISTRATOR . '/components/com_categories';
         require_once $basePath . '/models/category.php';
@@ -26,6 +28,8 @@ class com_catalogueInstallerScript
         {
             JError::raiseWarning(500, JText::_('Unable to create default content category!'));
         }
+
+        $parent->getParent()->setRedirectURL('index.php?option=com_catalogue', JText::_('COM_CATALOGUE_TNX'));
     }
 
     /**

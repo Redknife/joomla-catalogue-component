@@ -37,7 +37,7 @@ class CatalogueModelItems extends JModelList
 		$this->setState('list.offset', $offset);
 		
 		$catid = $app->input->getUInt('cid');
-		$this->setState('filter.category_id', $catid);
+		$this->setState('category.id', $catid);
 		
 		$id = $app->input->getUInt('id');
 		$this->setState('item.id', $id);
@@ -46,8 +46,8 @@ class CatalogueModelItems extends JModelList
 
 		$db->setQuery(
 			$db->getQuery(true)
-			->select('title AS category_name, category_description')
-			->from('#__categories')
+			->select('category_name, category_description')
+			->from('#__catalogue_category')
 			->where('state = 1 AND published AND id = '.$catid)
 		);
 		$category = $db->loadObject();
@@ -65,63 +65,18 @@ class CatalogueModelItems extends JModelList
 	public function getItems()
 	{
 		$db	= JFactory::getDbo();
-		$query	= $db->getQuery(true);		
+		$query	= $db->getQuery(true);
+		//$catid = JRequest::getVar('cid', 0);
+        
+        $app = JFactory::getApplication('site');
+        $catid =  $app->input->get('cid');
 		
-		$categoryId = $this->getState('filter.category_id');
-		
-		if (is_numeric($categoryId))
-		{
-			$type = $this->getState('filter.category_id.include', true) ? '= ' : '<> ';
-			
-			// Add subcategory check
-			$includeSubcategories = $this->getState('filter.subcategories', false);
-			$categoryEquals = 'itm.category_id ' . $type . (int) $categoryId;
-			
-			if ($includeSubcategories)
-			{
-				$levels = (int) $this->getState('filter.max_category_levels', '1');
-
-				// Create a subquery for the subcategory list
-				$subQuery = $db->getQuery(true)
-					->select('sub.id')
-					->from('#__categories as sub')
-					->join('INNER', '#__categories as this ON sub.lft > this.lft AND sub.rgt < this.rgt')
-					->where('this.id = ' . (int) $categoryId);
-
-				if ($levels >= 0)
-				{
-					$subQuery->where('sub.level <= this.level + ' . $levels);
-				}
-
-				// Add the subquery to the main query
-				$query->where('(' . $categoryEquals . ' OR itm.category_id IN (' . $subQuery->__toString() . '))');
-			}
-			else
-			{
-				$query->where($categoryEquals);
-			}
-		}
-		elseif (is_array($categoryId) && (count($categoryId) > 0))
-		{
-			JArrayHelper::toInteger($categoryId);
-			$categoryId = implode(',', $categoryId);
-
-			if (!empty($categoryId))
-			{
-				$type = $this->getState('filter.category_id.include', true) ? 'IN' : 'NOT IN';
-				$query->where('itm.category_id ' . $type . ' (' . $categoryId . ')');
-			}
-		}
-		
-		
-		
-        $query->select('itm.*, cat.title AS category_name')
-			->from('#__catalogue_item AS itm')
-			->join('LEFT', '#__categories as cat ON itm.category_id = cat.id')
-			->where('itm.state = 1 AND itm.published = 1');
-			
+        $query->select('itm.item_name, itm.item_art, itm.id, cat.category_name');
+		$query->from('#__catalogue_item AS itm');
+		$query->join('LEFT', '#__catalogue_category as cat ON cat.id = '.$catid);
+		$query->where('itm.category_id = '.$catid.' AND itm.state = 1 AND itm.published = 1');
+		$query->order('cat.category_name');
 		$db->setQuery($query);
-		
 		$this->_items = $db->loadObjectList();
 
 		return $this->_items;

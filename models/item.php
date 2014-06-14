@@ -21,10 +21,12 @@ class CatalogueModelItem extends JModelList
 		
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
-		$query->select('itm.*, cat.title AS category_name');
+		$query->select('itm.*, cat.category_name, sec.section_name');
 		$query->from('#__catalogue_item AS itm');
-		$query->join('LEFT', '#__categories AS cat ON cat.id = itm.category_id');
+		$query->join('LEFT', '#__catalogue_category AS cat ON cat.id = itm.category_id');
 		$query->where('itm.state = 1  && itm.published = 1 && itm.id='.$id);
+
+		$query->join('LEFT', '#__catalogue_section AS sec ON sec.id = cat.section_id');
 
 		$db->setQuery($query);
 		$this->_items = $db->loadObject();

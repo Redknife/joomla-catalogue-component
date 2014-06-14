@@ -2,24 +2,19 @@
 
 defined('_JEXEC') or die;
 
-class catalogueViewCategory extends JViewCategory
+class catalogueViewCategory extends JViewLegacy
 {
 	protected $items;
 	protected $state;
-	protected $category;
 	protected $pagination;
 
 	public function display($tpl = null)
 	{
 		
-		parent::commonCategoryDisplay();
-		
 		$this->items = $this->get('Items');
 		$this->state = $this->get('State');
 		$this->pagination = $this->get('Pagination');
-		
-		$this->params = $this->state->get('params');
-		
+	
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
@@ -27,43 +22,31 @@ class catalogueViewCategory extends JViewCategory
 			return false;
 		}
 		
+		$registry = new JRegistry($this->state->get('category.params'));
+		$layout = str_replace('_:', '', $registry->get('category_layout', 'default'));
+		$this->setLayout($layout);
+		
+		$this->_prepareDocument();
 		
 		parent::display($tpl);
 	}
 	
-	protected function prepareDocument()
+	private function _prepareDocument()
 	{
-		
-		parent::prepareDocument();
-		
+
+		$app		= JFactory::getApplication();
+		$menus		= $app->getMenu();
+		$pathway	= $app->getPathway();
 		$title 		= null;
 		$metadata 	= new JRegistry($this->state->get('category.metadata'));
 		
-		//$this->category = JCategories::getInstance('Catalogue')->get($this->state->get('category.id'));
+		// Ссылка на активный пункт меню
+		$menu = $menus->getActive();
 		
-		$menu = $this->menu;
+		// Проверка привязана ли категория к меню
 		$cid = (int) @$menu->query['cid'];
-
-		if ($menu && ($menu->query['option'] != 'com_catalogue' || $menu->query['view'] == 'category' || $cid != $this->category->id))
-		{
-			$path = array(array('title' => $this->category->title, 'link' => ''));
-			$category = $this->category->getParent();
-
-			while (($menu->query['option'] != 'com_catalogue' || $menu->query['view'] == 'category' || $cid != $category->id) && $category->id > 1)
-			{
-				$path[] = array('title' => $category->title, 'link' => CatalogueHelperRoute::getCategoryRoute($category->id));
-				$category = $category->getParent();
-			}
-
-			$path = array_reverse($path);
-
-			foreach ($path as $item)
-			{
-				$this->pathway->addItem($item['title'], $item['link']);
-			}
-		}
 		
-		if ($menu && $cid == $this->category->id)
+		if ($menu && $cid == $this->state->get('category.id'))
 		{
 			//если привязана к меню то берем TITLE из меню
 			$title = $menu->params->get('page_title');
@@ -71,10 +54,9 @@ class catalogueViewCategory extends JViewCategory
 		else
 		{
 			//если нет то берем TITLE из настрое категории (по умолчанию название категории)
-			$title = $metadata->get('metatitle', $this->category->title);
+			$title = $metadata->get('metatitle', $this->state->get('category.name'));
 		}
 		
-		$app = JFactory::getApplication();
 		// Установка <TITLE>
 		
 		if (empty($title))
@@ -117,7 +99,5 @@ class catalogueViewCategory extends JViewCategory
 		{
 			$this->document->setMetadata('robots', $robots);
 		}
-		
-		parent::addFeed();
 	}
 }

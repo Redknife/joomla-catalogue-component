@@ -103,6 +103,19 @@ class CatalogueViewCatalogue extends JViewLegacy
 		);
 		
 		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_CATEGORY'),
+			'filter_category_id',
+			JHtml::_('select.options', CatalogueHelper::getCategoriesOptions(), 'value', 'text', $this->state->get('filter.category_id'))
+		);
+		
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_SECTION'),
+			'filter_section_id',
+			JHtml::_('select.options', CatalogueHelper::getSectionsOptions(), 'value', 'text', $this->state->get('filter.section_id'))
+		);
+		
+		
+		JHtmlSidebar::addFilter(
 			JText::_('JOPTION_SELECT_MANUFACTURER'),
 			'filter_manufacturer_id',
 			JHtml::_('select.options', CatalogueHelper::getManufacturersOptions(), 'value', 'text', $this->state->get('filter.manufacturer_id'))

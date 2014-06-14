@@ -39,6 +39,16 @@ class CatalogueController extends JControllerLegacy
 			return false;
 		}
 		
+		if ($view == 'section' && $layout == 'edit' && !$this->checkEditId('com_catalogue.edit.section', $id))
+		{
+			// Somehow the person just went to the form - we don't allow that.
+			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+			$this->setMessage($this->getError(), 'error');
+			$this->setRedirect(JRoute::_('index.php?option=com_catalogue&view=sections', false));
+
+			return false;
+		}
+		
 		if ($view == 'country' && $layout == 'edit' && !$this->checkEditId('com_catalogue.edit.country', $id))
 		{
 			// Somehow the person just went to the form - we don't allow that.
