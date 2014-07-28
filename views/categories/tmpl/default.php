@@ -1,30 +1,46 @@
-<?php defined('_JEXEC') or die; 
+<?php defined('_JEXEC') or die;
 JHtml::_('behavior.caption');
-
+$app = JFactory::getApplication();
+$params = $app->getParams();
+// require_once(JPATH_COMPONENT . '/helpers/route.php');
 ?>
+<div class="page-header">
+	<h1>Каталог офисной мебели</h1>
+</div>
+
+<div class="gray-info-box">
+	<div class="pull-left big-info">90%</div>
+	<div class="pull-left small-info">
+		клиентов обращаются к нам повторно. Покупка офисной мебели в «АПС Технолоджи» - гарантия качества и уверенность
+в правильном выборе мебели.
+	</div>
+	<div class="clearfix"></div>
+</div>
 
 <div class="catalogue-categories">
-	<ul class="unstyled">
+	<div class="row">
 		<?php foreach ($this->items as $item) : ?>
-			<?php
-				$registry = new JRegistry();
-				$registry->loadString($item->linked_id);
-				$item->count += count($registry->toArray());
-			?>
-			<li class="span3">
-				<div class="ticket ticket-new"></div>
-				<span class="title"><i class="icon-th"> </i> <?php echo $item->title ?> (<?php echo $item->count; ?>)</span>
-				<?php
-					$image = $item->image ? $item->image : ($item->subimage ? $item->subimage : false);
-					$thumb = $image ? CatalogueHelper::createThumb($item->id, $image, 220, 200, 'min') : 'images/no-image.png'
-				?>
-				
-				<?php if ($item->count) : ?>
-					<a href="<?php echo JRoute::_('index.php?option=com_catalogue&view=category&cid='.$item->id) ?>"><img src="<?php echo $thumb ?>"/></a>
-				<?php else : ?>
-					<img src="<?php echo $thumb ?>"/>
-				<?php endif; ?>
-			</li>
+			<?php $img = json_decode($item->params)->image; ?>
+			<?php $ilink = ''; ?>
+		        <div class="span4">
+		        	<div class="item-image-wrapper">
+		        	<a href="<?php echo JRoute::_(CatalogueHelperRoute::getCategoryRoute($item)); ?>">
+		        		<img src="<?php echo $img; ?>"/>
+		        		<div class="item-link-wrapper">
+		                	<span class="item-link"><?php echo $item->title; ?></span>
+		        		</div>
+		        	</a>
+		        	</div>
+		            <div class="item-desc-wrapper">
+		            	<?php echo $item->description; ?>
+		            </div>
+	            	<div class="item-price-wrapper">
+		            	<p>
+		            		<span class="price-name">Цена: </span>
+		            		<span class="item-price"><?php if($item->min_price && $item->max_price){ echo 'от '.number_format($item->min_price, 0, '.', ' ').' до '.number_format($item->max_price, 0, '.', ' ').' '.$params->get('catalogue_currency'); } else{ echo "по запросу"; } ?></span>
+		            	</p>
+	            	</div>
+		        </div>
 		<?php endforeach; ?>
-	</ul>
+	</div>
 </div>

@@ -2,51 +2,68 @@
 
 defined('_JEXEC') or die;
 
-class catalogueViewCategory extends JViewLegacy
+class catalogueViewCategory extends JViewCategory
 {
 	protected $items;
 	protected $state;
+	protected $category;
 	protected $pagination;
 
 	public function display($tpl = null)
 	{
-		
+
+		parent::commonCategoryDisplay();
+
 		$this->items = $this->get('Items');
 		$this->state = $this->get('State');
 		$this->pagination = $this->get('Pagination');
-	
+
+		$this->params = $this->state->get('params');
+
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseWarning(500, implode("\n", $errors));
 			return false;
 		}
-		
-		$registry = new JRegistry($this->state->get('category.params'));
-		$layout = str_replace('_:', '', $registry->get('category_layout', 'default'));
-		$this->setLayout($layout);
-		
-		$this->_prepareDocument();
-		
+
+
 		parent::display($tpl);
 	}
-	
-	private function _prepareDocument()
+
+	protected function prepareDocument()
 	{
 
-		$app		= JFactory::getApplication();
-		$menus		= $app->getMenu();
-		$pathway	= $app->getPathway();
+		parent::prepareDocument();
+
 		$title 		= null;
 		$metadata 	= new JRegistry($this->state->get('category.metadata'));
-		
-		// Ссылка на активный пункт меню
-		$menu = $menus->getActive();
-		
-		// Проверка привязана ли категория к меню
+
+		//$this->category = JCategories::getInstance('Catalogue')->get($this->state->get('category.id'));
+
+		$menu = $this->menu;
 		$cid = (int) @$menu->query['cid'];
-		
-		if ($menu && $cid == $this->state->get('category.id'))
+
+		// if ($menu && ($menu->query['option'] != 'com_catalogue' || $menu->query['view'] == 'category' || $cid != $this->category->id))
+		// {
+			// $path = array(array('title' => $this->category->title, 'link' => ''));
+			// $category = $this->category->getParent();
+
+			// while (($menu->query['option'] != 'com_catalogue' || $menu->query['view'] == 'category' || $cid != $category->id) && $category->id > 1)
+			// {
+			// 	$path[] = array('title' => $category->title, 'link' => CatalogueHelperRoute::getCategoryRoute($category->id));
+			// 	$category = $category->getParent();
+			// }
+
+			// $path = array_reverse($path);
+
+			// foreach ($path as $item)
+			// {
+			// 	$this->pathway->addItem($item['title'], $item['link']);
+			// }
+		// }
+
+		if ($menu && $cid == $this->category->id)
 		{
 			//если привязана к меню то берем TITLE из меню
 			$title = $menu->params->get('page_title');
@@ -54,11 +71,12 @@ class catalogueViewCategory extends JViewLegacy
 		else
 		{
 			//если нет то берем TITLE из настрое категории (по умолчанию название категории)
-			$title = $metadata->get('metatitle', $this->state->get('category.name'));
+			$title = $metadata->get('metatitle', $this->category->title);
 		}
-		
+
+		$app = JFactory::getApplication();
 		// Установка <TITLE>
-		
+
 		if (empty($title))
 		{
 			$title = $app->getCfg('sitename');
@@ -71,12 +89,12 @@ class catalogueViewCategory extends JViewLegacy
 		{
 			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
-		
+
 		$this->document->setTitle($title);
-		
-		// Устновка метаданных 
-		
-		
+
+		// Устновка метаданных
+
+
 		if ($metadesc = $metadata->get('metadesc', ''))
 		{
 			$this->document->setDescription($metadesc);
@@ -99,5 +117,7 @@ class catalogueViewCategory extends JViewLegacy
 		{
 			$this->document->setMetadata('robots', $robots);
 		}
+
+		//parent::addFeed();
 	}
 }

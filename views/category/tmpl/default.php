@@ -1,31 +1,40 @@
-<?php defined('_JEXEC') or die; 
+<?php defined('_JEXEC') or die;
 JHtml::_('behavior.caption');
-$start = microtime(true);
 
 $app = JFactory::getApplication();
-$path = $app->getPathway();
-
-$category_name = $this->state->get('category.name');
-$category_desc = $this->state->get('category.description');
 
 $jinput = $app->input;
 $view = $this->getName();
 $layout = $this->getLayout();
 
+$menu = $this->menu;
 ?>
 <div class="catalogue-<?php echo $view ?>-<?php echo $layout ?>">
 
-	<form action="index.php" method="post" id="catalogueForm">
-		<div class="row">
+	<div class="page-header">
+		<h1><?php echo $this->category->title; ?></h1>
+	</div>
+
+
+	<?php $cat_child = $this->category->getChildren(); if(!empty($cat_child)): ?>
+	<div class="subcategories">
+		<?php echo $this->loadTemplate('subcategories'); ?>
+	</div>
+	<?php endif; ?>
+
+	<?php //if(!empty($this->items)):
+	if(empty($cat_child)): ?>
+	<form action="<?php echo JRoute::_(CatalogueHelperRoute::getCategoryRoute($this->state->get('category.id'))); ?>" method="post" id="catalogueForm">
+		<div class="catalogue-items">
+			<div class="filters">
+			</div>
 			<?php echo $this->loadTemplate('items'); ?>
 		</div>
-		<div class="row">
-			<div class="span9 offset3">
-				<div class="pagination"><?php if($this->pagination->getPagesLinks()) echo '<span>Страницы:</span>'; echo $this->pagination->getPagesLinks(); ?></div>
-			</div>
-		</div>
-		<input type="hidden" name="option" value="com_catalogue" />
-		<input type="hidden" name="task" value="" />
-	</form>
 
+		<div class="pagination"><?php if($this->pagination->getPagesLinks()) echo '<span>Страницы:</span>'; echo $this->pagination->getPagesLinks(); ?></div>
+
+		<input type="hidden" name="option" value="com_catalogue" />
+		<input type="hidden" name="task" value="setFilter" />
+	</form>
+	<?php endif; ?>
 </div>

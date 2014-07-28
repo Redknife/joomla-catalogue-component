@@ -5,6 +5,8 @@ defined('_JEXEC') or die;
 class CatalogueHelper
 {
 	
+	public static $extension = 'com_catalogue';
+	
 	public static function addSubmenu($vName)
 	{
 		JHtmlSidebar::addEntry(
@@ -15,20 +17,8 @@ class CatalogueHelper
 		
 		JHtmlSidebar::addEntry(
 			JText::_('COM_CATALOGUE_SUBMENU_CATEGORIES'),
-			'index.php?option=com_catalogue&view=categories',
+			'index.php?option=com_categories&extension=com_catalogue',
 			$vName == 'categories'
-		);
-		
-		JHtmlSidebar::addEntry(
-			JText::_('COM_CATALOGUE_SUBMENU_SECTIONS'),
-			'index.php?option=com_catalogue&view=sections',
-			$vName == 'sections'
-		);
-		
-		JHtmlSidebar::addEntry(
-			JText::_('COM_CATALOGUE_SUBMENU_SUPERSECTIONS'),
-			'index.php?option=com_catalogue&view=supersections',
-			$vName == 'supersections'
 		);
 		
 		JHtmlSidebar::addEntry(
@@ -60,60 +50,7 @@ class CatalogueHelper
 		return $result;
 	}
 	
-	public static function getCategoriesOptions()
-	{
-		$options = array();
 
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
-
-		$query->select('id As value, category_name As text');
-		$query->from('#__catalogue_category AS cat');
-		$query->order('cat.category_name');
-
-		// Get the options.
-		$db->setQuery($query);
-
-		try
-		{
-			$options = $db->loadObjectList();
-		}
-		catch (RuntimeException $e)
-		{
-			JError::raiseWarning(500, $e->getMessage());
-		}
-
-		// Merge any additional options in the XML definition.
-		//$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
-	}
-	
-	public static function getSectionsOptions()
-	{
-		$options = array();
-
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
-
-		$query->select('id As value, section_name As text');
-		$query->from('#__catalogue_section AS sec');
-		$query->order('sec.section_name');
-
-		// Get the options.
-		$db->setQuery($query);
-
-		try
-		{
-			$options = $db->loadObjectList();
-		}
-		catch (RuntimeException $e)
-		{
-			JError::raiseWarning(500, $e->getMessage());
-		}
-
-		return $options;
-	}
 	
 	public static function getItemsOptions($exclude = false)
 	{
@@ -192,30 +129,5 @@ class CatalogueHelper
 
 		return $options;
 	}
-	
-	public static function getSupersectionsOptions()
-	{
-		$options = array();
 
-		$db	= JFactory::getDbo();
-		$query	= $db->getQuery(true);
-
-		$query->select('id As value, supersection_name As text');
-		$query->from('#__catalogue_supersection AS ssec');
-		$query->order('ssec.supersection_name');
-
-		// Get the options.
-		$db->setQuery($query);
-
-		try
-		{
-			$options = $db->loadObjectList();
-		}
-		catch (RuntimeException $e)
-		{
-			JError::raiseWarning(500, $e->getMessage());
-		}
-
-		return $options;
-	}
 }

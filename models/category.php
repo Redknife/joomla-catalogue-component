@@ -6,98 +6,371 @@ defined('_JEXEC') or die;
 
 class CatalogueModelCategory extends JModelList
 {
-	
+
 	public $_context = 'com_catalogue.category';
 
 	protected $_extension = 'com_catalogue';
 
-	private $_parent = null;
+	protected $_item = null;
 
-	private $_items = null;
+	protected $_items = null;
 
+	protected $_siblings = null;
 
-	public function getListQuery()
+	protected $_children = null;
+
+	protected $_parent = null;
+
+	public function getUserStateFromRequest($key, $request, $default = null, $type = 'none', $resetPage = true)
 	{
-		// $this->setState('list.limit', 9);
-		$catid = $this->getState('category.id', 0);
-		$secid = $this->getState('section.id', 0);
+		$app = JFactory::getApplication();
+		$input     = $app->input;
+		$old_state = $app->getUserState($key);
+		$cur_state = (!is_null($old_state)) ? $old_state : $default;
+		$new_state = $input->get($request, null, $type);
+		if (($cur_state != $new_state) && ($resetPage))
+		{
+			$input->set('price_cat', 0);
+			$input->set('limitstart', 0);
+		}
+		// Save the new value only if it is set in this request.
+		$app->setUserState($key, $new_state);
+		// if ($new_state !== null)
+		// {
+		// }
+		// else
+		// {
+		// 	$new_state = $cur_state;
+		// }
 
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
-		$query->select('itm.*, cat.category_name, sec.section_name');
-		$query->from('#__catalogue_item AS itm');
-		$query->join('LEFT', '#__catalogue_section as sec ON sec.id ='.$secid);
-		$query->where('itm.state = 1  && itm.published = 1 && itm.category_id = '.$catid);
-		$query->order('itm.ordering');
-
-		$query->join('LEFT', '#__catalogue_category AS cat ON cat.id = '.$catid);
-
-		$db->setQuery($query);
-		
-		return $query;
+		return $new_state;
 	}
-	
-	
+
+
 	protected function populateState($ordering = NULL, $direction = NULL)
 	{
 		$app = JFactory::getApplication('site');
+		$pk  = $app->input->getInt('cid');
 
-		$ssection_id = $app->getUserStateFromRequest($this->context.'.ssid', 'cid', 0, 'int');
-		$this->setState('supersection.id', $ssection_id);
-		
-		$section_id = $app->getUserStateFromRequest($this->context.'.sid', 'sid', 0, 'int');
-		$this->setState('section.id', $section_id);
-		
-		$category_id = $app->getUserStateFromRequest($this->context.'.cid', 'cid', 0, 'int');
-		$this->setState('category.id', $category_id);
-		
-		$id = $app->input->getUInt('id');
-		$this->setState('item.id', $id);
-		
-		$db	= JFactory::getDbo();
-		
-		$db->setQuery(
-			$db->getQuery(true)
-			->select('supersection_name, supersection_description')
-			->from('#__catalogue_supersection')
-			->where('state = 1 AND published AND id = '.$ssection_id)
-		);
-		
-		$supersection = $db->loadObject();
-		
-		$this->setState('supersection.name', $supersection->supersection_name);
-		$this->setState('supersection.desc', $supersection->supersection_description);
-	
-		
-		$db->setQuery(
-			$db->getQuery(true)
-			->select('section_name, section_description')
-			->from('#__catalogue_section')
-			->where('state = 1 AND published AND id = '.$section_id)
-		);
-		
-		$section = $db->loadObject();
-		
-		$this->setState('section.name', $section->section_name);
-		$this->setState('section.desc', $section->section_description);
+		$this->setState('category.id', $pk);
 
-		
-		$db->setQuery(
-			$db->getQuery(true)
-			->select('category_name, category_description, params, metadata')
-			->from('#__catalogue_category')
-			->where('state = 1 AND published AND id = '.$category_id)
-		);
-		$category = $db->loadObject();
-		
-		$this->setState('category.name', $category->category_name);
-		$this->setState('category.desc', $category->category_description);
-		$this->setState('category.metadata', $category->metadata);
-		$this->setState('category.params', $category->params);
-		
-		// Load the parameters.
+		// Load the parameters. Merge Global and Menu Item params into new object
 		$params = $app->getParams();
-		$this->setState('params', $params);
+		$menuParams = new JRegistry;
 
+		if ($menu = $app->getMenu()->getActive())
+		{
+			$menuParams->loadString($menu->params);
+		}
+
+		$mergedParams = clone $menuParams;
+		$mergedParams->merge($params);
+
+		$this->setState('params', $mergedParams);
+
+		$user		= JFactory::getUser();
+				// Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+
+		if ((!$user->authorise('core.edit.state', 'com_content')) &&  (!$user->authorise('core.edit', 'com_content'))){
+			// limit to published for people who can't edit or edit.state.
+			$this->setState('filter.published', 1);
+			// Filter by start and end dates.
+			$nullDate = $db->quote($db->getNullDate());
+			$nowDate = $db->quote(JFactory::getDate()->toSQL());
+
+			$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')')
+				->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
+		}
+		else
+		{
+			$this->setState('filter.published', array(0, 1, 2));
+		}
+
+		// process show_noauth parameter
+		if (!$params->get('show_noauth'))
+		{
+			$this->setState('filter.access', true);
+		}
+		else
+		{
+			$this->setState('filter.access', false);
+		}
+
+		// Optional filter text
+		$this->setState('list.filter', $app->input->getString('filter-search'));
+
+		// filter.order
+		$itemid = $app->input->get('id', 0, 'int') . ':' . $app->input->get('Itemid', 0, 'int');
+		$orderCol = $app->getUserStateFromRequest('com_catalogue.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'i.ordering';
+		}
+		$this->setState('list.ordering', $orderCol);
+
+		$listOrder = $app->getUserStateFromRequest('com_catalogue.category.list.' . $itemid . '.filter_order_Dir',
+			'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
+
+		$this->setState('list.start', $app->input->get('limitstart', 0, 'uint'));
+
+		$limit = $app->getUserStateFromRequest('com_catalogue.category.list.' . $itemid . '.limit', 'limit', $params->get('display_num'), 'uint');
+
+		$this->setState('list.limit', $limit);
+
+		// set the depth of the category query based on parameter
+		$showSubcategories = $params->get('show_subcategory_content', '0');
+
+		if ($showSubcategories)
+		{
+			$this->setState('filter.max_category_levels', $params->get('show_subcategory_content', '1'));
+			$this->setState('filter.subcategories', true);
+		}
+
+		$this->setState('filter.language', JLanguageMultilang::isEnabled());
+
+		$this->setState('layout', $app->input->getString('layout'));
+
+		$pricecat_filter = $this->getUserStateFromRequest($this->context.'.filters.price_cat', 'price_cat', 0, 'int');
+		$this->setState('filters.price_cat', $pricecat_filter);
+
+	}
+
+
+	function getItems()
+	{
+		$limit = $this->getState('list.limit');
+
+		if ($this->_items === null && $category = $this->getCategory())
+		{
+
+			$model = JModelLegacy::getInstance('Items', 'CatalogueModel', array('ignore_request' => true));
+			$model->setState('params', JFactory::getApplication()->getParams());
+			$model->setState('filter.category_id', $category->id);
+			$model->setState('filter.published', $this->getState('filter.published'));
+			$model->setState('filter.access', $this->getState('filter.access'));
+			$model->setState('filter.language', $this->getState('filter.language'));
+			$model->setState('list.ordering', $this->_buildContentOrderBy());
+			$model->setState('list.start', $this->getState('list.start'));
+			$model->setState('list.limit', $limit);
+			$model->setState('list.direction', $this->getState('list.direction'));
+			$model->setState('list.filter', $this->getState('list.filter'));
+			// filter.subcategories indicates whether to include articles from subcategories in the list or blog
+			$model->setState('filter.subcategories', $this->getState('filter.subcategories'));
+			$model->setState('filter.max_category_levels', $this->getState('filter.max_category_levels'));
+
+			$model->setState('filters.price_cat', $this->getState('filters.price_cat'));
+
+			if ($limit >= 0)
+			{
+				$this->_items = $model->getItems();
+
+				if ($this->_items === false)
+				{
+					$this->setError($model->getError());
+				}
+			}
+			else
+			{
+				$this->_items = array();
+			}
+
+			$this->_pagination = $model->getPagination();
+		}
+
+		return $this->_items;
+	}
+
+	public function getCategory()
+	{
+		if (!is_object($this->_item))
+		{
+			if ( isset( $this->state->params ) )
+			{
+				$params = $this->state->params;
+				$options = array();
+				$options['countItems'] = $params->get('show_cat_num_items', 1) || !$params->get('show_empty_categories_cat', 0);
+			}
+			else {
+				$options['countItems'] = 0;
+			}
+
+			$categories = JCategories::getInstance('Catalogue', $options);
+			$this->_item = $categories->get($this->getState('category.id', 'root'));
+
+			// Compute selected asset permissions.
+			if (is_object($this->_item))
+			{
+				$user	= JFactory::getUser();
+				$asset	= 'com_catalogue.category.'.$this->_item->id;
+
+				// Check general create permission.
+				if ($user->authorise('core.create', $asset))
+				{
+					$this->_item->getParams()->set('access-create', true);
+				}
+
+				// TODO: Why aren't we lazy loading the children and siblings?
+				$this->_children = $this->_item->getChildren();
+				$this->_parent = false;
+
+				if ($this->_item->getParent())
+				{
+					$this->_parent = $this->_item->getParent();
+				}
+
+				$this->_rightsibling = $this->_item->getSibling();
+				$this->_leftsibling = $this->_item->getSibling(false);
+			}
+			else {
+				$this->_children = false;
+				$this->_parent = false;
+			}
+		}
+
+		return $this->_item;
+	}
+
+	/**
+	 * Get the parent category.
+	 *
+	 * @param   integer  An optional category id. If not supplied, the model state 'category.id' will be used.
+	 *
+	 * @return  mixed  An array of categories or false if an error occurs.
+	 * @since   1.6
+	 */
+	public function getParent()
+	{
+		if (!is_object($this->_item))
+		{
+			$this->getCategory();
+		}
+
+		return $this->_parent;
+	}
+
+	/**
+	 * Get the left sibling (adjacent) categories.
+	 *
+	 * @return  mixed  An array of categories or false if an error occurs.
+	 * @since   1.6
+	 */
+	function &getLeftSibling()
+	{
+		if (!is_object($this->_item))
+		{
+			$this->getCategory();
+		}
+
+		return $this->_leftsibling;
+	}
+
+	/**
+	 * Get the right sibling (adjacent) categories.
+	 *
+	 * @return  mixed  An array of categories or false if an error occurs.
+	 * @since   1.6
+	 */
+	function &getRightSibling()
+	{
+		if (!is_object($this->_item))
+		{
+			$this->getCategory();
+		}
+
+		return $this->_rightsibling;
+	}
+
+	/**
+	 * Get the child categories.
+	 *
+	 * @param   integer  An optional category id. If not supplied, the model state 'category.id' will be used.
+	 *
+	 * @return  mixed  An array of categories or false if an error occurs.
+	 * @since   1.6
+	 */
+	function &getChildren()
+	{
+
+		if (!is_object($this->_item))
+		{
+			$this->getCategory();
+		}
+
+		// Order subcategories
+
+		if (count($this->_children))
+		{
+			$params = $this->getState()->get('params');
+			if ($params->get('orderby_pri') == 'alpha' || $params->get('orderby_pri') == 'ralpha')
+			{
+				jimport('joomla.utilities.arrayhelper');
+				JArrayHelper::sortObjects($this->_children, 'title', ($params->get('orderby_pri') == 'alpha') ? 1 : -1);
+			}
+
+
+
+			jimport('joomla.utilities.arrayhelper');
+			$ids = JArrayHelper::getColumn($this->_children, 'id');
+
+			$query = $this->_db->getQuery(true);
+			$query->select('i.category_id, MAX(i.price) AS max_price, MIN(i.price) AS min_price')
+				->from('#__catalogue_item AS i')
+				->where('i.price <> 0 AND i.category_id IN ('.implode(',',$ids).')')
+				->group('i.category_id');
+
+			$this->_db->setQuery($query);
+			$prices = $this->_db->loadAssocList('category_id');
+
+			foreach($this->_children as $child)
+			{
+				$child->max_price = isset($prices[$child->id]) ? $prices[$child->id]['max_price'] : 0;
+				$child->min_price = isset($prices[$child->id]) ? $prices[$child->id]['min_price'] : 0;
+			}
+		}
+		return $this->_children;
+	}
+
+	protected function _buildContentOrderBy()
+	{
+		$app		= JFactory::getApplication('site');
+		$db			= $this->getDbo();
+		$params		= $this->state->params;
+		$itemid		= $app->input->get('cid', 0, 'int') . ':' . $app->input->get('Itemid', 0, 'int');
+		$orderCol	= $app->getUserStateFromRequest('com_catalogue.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
+		$orderDirn	= $app->getUserStateFromRequest('com_catalogue.category.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		$orderby	= ' ';
+
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = null;
+		}
+
+		if (!in_array(strtoupper($orderDirn), array('ASC', 'DESC', '')))
+		{
+			$orderDirn = 'ASC';
+		}
+
+		if ($orderCol && $orderDirn)
+		{
+			$orderby .= $db->escape($orderCol) . ' ' . $db->escape($orderDirn) . ', ';
+		}
+
+		return $orderby;
+	}
+
+	public function getPagination()
+	{
+		if (empty($this->_pagination))
+		{
+			return null;
+		}
+		return $this->_pagination;
 	}
 }

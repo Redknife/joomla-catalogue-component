@@ -16,8 +16,8 @@
 			component="com_catalogue"
 			section="component" />
 	</fieldset>
-	
-	
+
+
 	<fieldset name="advanced">
 		<field
 		       name="addprice"
@@ -45,7 +45,7 @@
 			<option
 				value="1">JYES</option>
 		</field>
-		
+
 		<field
 		       name="short_desc_len"
 		       type="text"
@@ -56,7 +56,7 @@
 		       section="component"
 		       default="150"
 		/>
-		
+
 		<field
 		       name="catalague_order_type"
 		       type="radio"
@@ -74,7 +74,7 @@
 			<option
 				value="3">COM_CATALOGUE_CONFIG_ORDER_TYPE_ALL</option>
 		</field>
-		
+
 		<field
 		       name="watcheditems_enable"
 		       type="radio"
@@ -122,7 +122,7 @@
 		       section="component"
 		       default="руб."
 		/>
-		
+
 		<field
 		       name="catalogue_sort"
 		       type="radio"
@@ -138,8 +138,129 @@
 			<option
 				value="2">COM_CATALOGUE_CONFIG_SORT_NAME</option>
 		</field>
+
+		<field name="manager_phone" type="text"
+					description="COM_CATALOGUE_MANPHONE_DESC"
+					label="COM_CATALOGUE_MANPHONE_LABEL"
+					size="3"
+				/>
+
+		<field
+		       name="add_id_alias"
+		       type="radio"
+		       label="COM_CATALOGUE_CONFIG_ADD_ID_ALIAS_LABEL"
+		       class="btn-group"
+		       component="com_catalogue"
+		       section="component"
+		       default="1" >
+			<option
+				value="0">JNO</option>
+			<option
+				value="1">JYES</option>
+		</field>
 	</fieldset>
-	
+
+	<fieldset name="category" label="JGLOBAL_LAYOUT_OPTIONS">
+
+				<field name="bloglayout" type="spacer" class="text"
+						label="JGLOBAL_SUBSLIDER_BLOG_LAYOUT_LABEL"
+				/>
+
+				<field name="show_category_title"
+					type="radio"
+					class="btn-group"
+					label="JGLOBAL_SHOW_CATEGORY_TITLE"
+					description="JGLOBAL_SHOW_CATEGORY_TITLE_DESC"
+					default="0"
+				>
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+
+				<field name="show_category_heading_title_text"
+						type="radio"
+						class="btn-group"
+		 				label="JGLOBAL_SHOW_CATEGORY_HEADING_TITLE_TEXT_LABEL"
+						description="JGLOBAL_SHOW_CATEGORY_HEADING_TITLE_TEXT_DESC"
+						default="0"
+						>
+						<option value="0">JHIDE</option>
+						<option value="1">JSHOW</option>
+				</field>
+
+				<field name="num_columns" type="text"
+					description="JGLOBAL_NUM_COLUMNS_DESC"
+					label="JGLOBAL_NUM_COLUMNS_LABEL"
+					size="3"
+				/>
+
+				<field name="show_subcategory_content" type="list"
+
+					description="JGLOBAL_SHOW_SUBCATEGORY_CONTENT_DESC"
+					label="JGLOBAL_SHOW_SUBCATEGORY_CONTENT_LABEL"
+				>
+					<option value="">JGLOBAL_USE_GLOBAL</option>
+					<option value="0">JNONE</option>
+					<option value="-1">JALL</option>
+					<option value="1">J1</option>
+					<option value="2">J2</option>
+					<option value="3">J3</option>
+					<option value="4">J4</option>
+					<option value="5">J5</option>
+				</field>
+
+				<field
+					name="spacer1"
+					type="spacer"
+					hr="true"
+				/>
+
+				<field name="orderby_pri" type="list"
+					description="JGLOBAL_CATEGORY_ORDER_DESC"
+					label="JGLOBAL_CATEGORY_ORDER_LABEL"
+				>
+					<option value="">JGLOBAL_USE_GLOBAL</option>
+					<option value="none">JGLOBAL_NO_ORDER</option>
+					<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
+					<option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
+					<option value="order">JGLOBAL_CATEGORY_MANAGER_ORDER</option>
+				</field>
+
+				<field name="orderby_sec" type="list"
+					description="JGLOBAL_ARTICLE_ORDER_DESC"
+					label="JGLOBAL_ARTICLE_ORDER_LABEL"
+				>
+					<option value="">JGLOBAL_USE_GLOBAL</option>
+					<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
+					<option value="date">JGLOBAL_OLDEST_FIRST</option>
+					<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
+					<option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
+					<option value="hits">JGLOBAL_MOST_HITS</option>
+					<option value="rhits">JGLOBAL_LEAST_HITS</option>
+					<option value="order">JGLOBAL_ORDERING</option>
+				</field>
+
+				<field name="show_pagination" type="list"
+					description="JGLOBAL_PAGINATION_DESC"
+					label="JGLOBAL_PAGINATION_LABEL"
+				>
+					<option value="">JGLOBAL_USE_GLOBAL</option>
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+					<option value="2">JGLOBAL_AUTO</option>
+				</field>
+
+				<field name="show_pagination_results" type="list"
+					label="JGLOBAL_PAGINATION_RESULTS_LABEL"
+					description="JGLOBAL_PAGINATION_RESULTS_DESC">
+
+					<option value="">JGLOBAL_USE_GLOBAL</option>
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+
+	</fieldset>
+
 	<fieldset name="IMAGES">
 		<field
 		       name="img_width"
@@ -150,7 +271,7 @@
 		       component="com_catalogue"
 		       section="component"
 		/>
-		
+
 		<field
 		       name="img_height"
 		       type="text"
@@ -340,6 +461,16 @@
 			<option
 				value="2">JREQUIRED</option>
 		</field>
+
+		<field
+		       name="cart_form_btn"
+		       type="text"
+		       label="COM_CATALOGUE_CONFIG_CART_FORM_BTN_LABEL"
+		       class="inputbox"
+		       component="com_catalogue"
+		       section="component"
+		       default="Сделайте заказ"
+		/>
 
 		<field name="cart_form_redirect"
 			type="menuitem"

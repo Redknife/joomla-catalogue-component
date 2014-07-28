@@ -4,9 +4,10 @@ JLoader::register('CatalogueHelper', JPATH_COMPONENT.'/helpers/catalogue.php');
 
 class CatalogueViewCatalogue extends JViewLegacy
 {
-	protected $categories;
 	protected $items;
+
 	protected $pagination;
+
 	protected $state;
 
 	public function display($tpl = null)
@@ -15,6 +16,9 @@ class CatalogueViewCatalogue extends JViewLegacy
 		$this->pagination	= $this->get('Pagination');
 		$this->state		= $this->get('State');
 		$this->categories	= $this->get('Categories');
+		
+		$this->filterForm    	= $this->get('FilterForm');
+		$this->activeFilters 	= $this->get('ActiveFilters');
 
 		if (count($errors = $this->get('Errors')))
 		{
@@ -25,20 +29,20 @@ class CatalogueViewCatalogue extends JViewLegacy
 		CatalogueHelper::addSubmenu('catalogue');
 
 		$this->addToolbar();
-
+		
 		$this->sidebar = JHtmlSidebar::render();
+		
 		parent::display($tpl);
 	}
 
 	protected function addToolbar()
 	{
 		require_once JPATH_COMPONENT . '/helpers/catalogue.php';
-		
+
 		$user = JFactory::getUser();
-		
+
 		$canDo = CatalogueHelper::getActions();
-		
-				
+
 		$bar = JToolBar::getInstance('toolbar');
 
 		JToolbarHelper::title(JText::_('COM_CATALOGUE_MANAGER'), 'component.png');
@@ -92,42 +96,11 @@ class CatalogueViewCatalogue extends JViewLegacy
 		{
 			JToolbarHelper::preferences('com_catalogue');
 		}
-		
 
-		JHtmlSidebar::setAction('index.php?option=com_catalogue&view=catalogue');
 
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_PUBLISHED'),
-			'filter_published',
-			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true)
-		);
 		
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_CATEGORY'),
-			'filter_category_id',
-			JHtml::_('select.options', CatalogueHelper::getCategoriesOptions(), 'value', 'text', $this->state->get('filter.category_id'))
-		);
-		
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_SECTION'),
-			'filter_section_id',
-			JHtml::_('select.options', CatalogueHelper::getSectionsOptions(), 'value', 'text', $this->state->get('filter.section_id'))
-		);
-		
-		
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_MANUFACTURER'),
-			'filter_manufacturer_id',
-			JHtml::_('select.options', CatalogueHelper::getManufacturersOptions(), 'value', 'text', $this->state->get('filter.manufacturer_id'))
-		);
-		
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_COUNTRY'),
-			'filter_country_id',
-			JHtml::_('select.options', CatalogueHelper::getCountriesOptions(), 'value', 'text', $this->state->get('filter.country_id'))
-		);
 	}
-	
+
 	protected function getSortFields()
 	{
 		return array(

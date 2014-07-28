@@ -50,8 +50,17 @@ class CatalogueModelItem extends JModelAdmin
 			$metadata = new JRegistry;
 			$metadata->loadString($result->metadata);
 			$result->metadata = $metadata->toArray();
+			
+			$query = $this->_db->getQuery(true);
+			$query->select('a.*, i.item_name as assoc_name')
+				->from('#__catalogue_assoc as a')
+				->join('LEFT', '#__catalogue_item as i ON i.id = a.assoc_id')
+				->where('item_id = '.(int) $result->id)
+				->order('ordering ASC');
+			$this->_db->setQuery($query);
+			
+			$result->assoc = $this->_db->loadObjectList();
 		}
-		
 		return $result;
 	}
 	
