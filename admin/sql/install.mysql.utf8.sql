@@ -1,77 +1,11 @@
-<<<<<<< HEAD
-DROP TABLE IF EXISTS `#__catalogue_supersection`;
-CREATE TABLE `#__catalogue_supersection` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `alias` varchar(255) NOT NULL,
-  `supersection_name` varchar(255) NOT NULL,
-  `supersection_sale` double NOT NULL,
-  `published` tinyint(1) NOT NULL,
-  `state` tinyint(4) NOT NULL,
-  `ordering` int(11) NOT NULL,
-  `created_by` int(11) NOT NULL,
-  `checked_out` int(11) NOT NULL,
-  `metadata` text NOT NULL,
-  `params` text NOT NULL,
-  `supersection_image` varchar(255) NOT NULL,
-  `supersection_description` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `#__catalogue_section`;
-CREATE TABLE `#__catalogue_section` (
-`id` int(11) NOT NULL AUTO_INCREMENT,
-  `supersection_id` int(11) NOT NULL,
-  `alias` varchar(255) NOT NULL,
-  `section_name` varchar(255) NOT NULL,
-  `section_sale` double NOT NULL,
-  `created_by` int(11) NOT NULL,
-  `checked_out` int(11) NOT NULL,
-  `metadata` text NOT NULL,
-  `params` text NOT NULL,
-  `published` tinyint(1) NOT NULL,
-  `state` tinyint(4) NOT NULL,
-  `ordering` int(11) NOT NULL,
-  `section_image` varchar(255) NOT NULL,
-  `section_description` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `#__catalogue_category`;
-CREATE TABLE `#__catalogue_category` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `section_id` int(11) NOT NULL,
-  `state` tinyint(4) NOT NULL,
-  `published` tinyint(1) NOT NULL,
-  `ordering` int(11) NOT NULL,
-  `alias` varchar(255) NOT NULL,
-  `category_name` varchar(255) NOT NULL,
-  `category_sale` double NOT NULL,
-  `category_image` varchar(255) NOT NULL,
-  `category_description` text NOT NULL,
-  `created_by` int(11) NOT NULL,
-  `checked_out` int(11) NOT NULL,
-  `params` text NOT NULL,
-  `metadata` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-=======
->>>>>>> ce058dac706f2a994396c02e2947681e8f00335b
-DROP TABLE IF EXISTS `#__catalogue_item`;
 CREATE TABLE `#__catalogue_item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `category_id` int(11) NOT NULL,
   `manufacturer_id` int(11) NOT NULL,
   `alias` varchar(45) NOT NULL,
   `item_name` varchar(255) NOT NULL,
-  `item_shortname` varchar(255) NOT NULL,
   `item_art` varchar(255) NOT NULL,
-  `item_count` varchar(255) NOT NULL,
   `price` double NOT NULL,
-  `price_cat` tinyint(4) NOT NULL,
-  `print_totalsum` tinyint(4) NOT NULL,
-  `delivery_period` varchar(255) NOT NULL,
-  `warranty` varchar(255) NOT NULL,
-  `assembly` varchar(255) NOT NULL,
-  `price_list` varchar(255) NOT NULL,
-  `tech_desc` varchar(255) NOT NULL,
   `item_sale` double NOT NULL,
   `sticker` tinyint(4) NOT NULL DEFAULT '0',
   `item_count` int(11) NOT NULL,
@@ -80,64 +14,22 @@ CREATE TABLE `#__catalogue_item` (
   `item_image_3` varchar(255) NOT NULL,
   `item_image_4` varchar(255) NOT NULL,
   `item_image_5` varchar(255) NOT NULL,
-  `item_image_6` varchar(255) NOT NULL,
-  `item_image_7` varchar(255) NOT NULL,
-  `item_image_8` varchar(255) NOT NULL,
-  `item_image_9` varchar(255) NOT NULL,
-  `item_image_10` varchar(255) NOT NULL,
-  `item_image_11` varchar(255) NOT NULL,
-  `item_image_12` varchar(255) NOT NULL,
-  `item_image_13` varchar(255) NOT NULL,
-  `item_image_14` varchar(255) NOT NULL,
-  `item_image_15` varchar(255) NOT NULL,
-  `item_image_16` varchar(255) NOT NULL,
-  `item_image_17` varchar(255) NOT NULL,
-  `item_image_18` varchar(255) NOT NULL,
-  `item_image_19` varchar(255) NOT NULL,
-  `item_image_20` varchar(255) NOT NULL,
-  `item_image_desc` varchar(255) NOT NULL,
-  `item_image_desc_2` varchar(255) NOT NULL,
-  `item_image_desc_3` varchar(255) NOT NULL,
-  `item_image_desc_4` varchar(255) NOT NULL,
-  `item_image_desc_5` varchar(255) NOT NULL,
-  `item_image_desc_6` varchar(255) NOT NULL,
-  `item_image_desc_7` varchar(255) NOT NULL,
-  `item_image_desc_8` varchar(255) NOT NULL,
-  `item_image_desc_9` varchar(255) NOT NULL,
-  `item_image_desc_10` varchar(255) NOT NULL,
-  `item_image_desc_11` varchar(255) NOT NULL,
-  `item_image_desc_12` varchar(255) NOT NULL,
-  `item_image_desc_13` varchar(255) NOT NULL,
-  `item_image_desc_14` varchar(255) NOT NULL,
-  `item_image_desc_15` varchar(255) NOT NULL,
-  `item_image_desc_16` varchar(255) NOT NULL,
-  `item_image_desc_17` varchar(255) NOT NULL,
-  `item_image_desc_18` varchar(255) NOT NULL,
-  `item_image_desc_19` varchar(255) NOT NULL,
-  `item_image_desc_20` varchar(255) NOT NULL,
   `item_description` text NOT NULL,
-  `benefits` text NOT NULL,
-  `assets` text NOT NULL,
-  `color_scheme` text NOT NULL,
   `introtext` text NOT NULL,
   `fulltext` text NOT NULL,
   `params` text NOT NULL,
-  `metadata` text NOT NULL,
-  `published` tinyint(1) NOT NULL,
+  `published` tinyint(1) NOT NULL DEFAULT '0',
   `ordering` int(11) NOT NULL,
-  `state` int(11) NOT NULL,
-<<<<<<< HEAD
-=======
+  `state` int(11) NOT NULL DEFAULT '0',
   `modified` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` INT NOT NULL,
   `created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
->>>>>>> ce058dac706f2a994396c02e2947681e8f00335b
   `created_by` int(11) NOT NULL,
   `checked_out` int(11) NOT NULL,
   `metadata` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `#__catalogue_country`;
+
 CREATE TABLE `#__catalogue_country` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
   `alias` varchar(255) NOT NULL,
@@ -153,7 +45,7 @@ CREATE TABLE `#__catalogue_country` (
   `metadata` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `#__catalogue_manufacturer`;
+
 CREATE TABLE `#__catalogue_manufacturer` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
   `country_id` int(11) NOT NULL,
@@ -168,5 +60,25 @@ CREATE TABLE `#__catalogue_manufacturer` (
   `checked_out` int(11) NOT NULL,
   `params` text NOT NULL,
   `metadata` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__catalogue_image` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `image_path` varchar(255) NOT NULL,
+  `image_name` varchar(100) NOT NULL,
+  `image_desc` varchar(255) NOT NULL,
+  `ordering` int(11) NOT NULL,
+  `published` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__catalogue_assoc` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `item_id` int(11) NOT NULL,
+  `assoc_id` int(11) NOT NULL,
+  `published` int(11) NOT NULL,
+  `ordering` int(11) NOT NULL,
+  `state` tinyint(3) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
