@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<extension type="component" version="3.0" method="upgrade">
-    <name>Catalogue</name>
-    <creationDate>2014-09-04</creationDate>
-    <copyright>© 2014. Все права защищены.</copyright>
-    <license>GNU General Public License версии 2 или более поздней;</license>
-    <author>Saity74 LLC</author>
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.0.0" method="upgrade">
+    <name>com_catalogue</name>
+    <creationDate>10.06.2014</creationDate>
+    <author>Saity74</author>
     <authorEmail>info@saity74.ru</authorEmail>
-    <authorUrl>saity74.ru</authorUrl>
-    <version>1.9.0</version>
-    <description>COM_CATALOGUE_DESCRIPTION</description>
+    <authorUrl>http://saity74.ru</authorUrl>
+    <copyright>Saity74 LLC</copyright>
+    <license>GNU General Public License version 2 or later;</license>
+    <version>1.9</version>
+    <description>COM_CATALOGUE_MANAGER</description>
     <scriptfile>script.php</scriptfile>
     <install>
         <sql>
@@ -23,11 +23,13 @@
     <administration>
         <menu img="class:catalogue">Catalogue</menu>
         <submenu>
-            <menu link="option=com_catalogue" img="class:catalogue" alt="Catalogue/Catalogue">com_catalogue</menu>
-            <menu link="option=com_categories&amp;extension=com_catalogue" view="categories" img="class:catalogue-cat" alt="Catalogue/Categories">com_catalogue_categories</menu>
+            <menu link="option=com_catalogue" img="class:catalogue"
+                  alt="Catalogue/Catalogue">com_catalogue</menu>
+            <menu link="option=com_categories&amp;extension=com_catalogue"
+                  view="categories" img="class:catalogue-cat" alt="Catalogue/Categories">com_catalogue_categories</menu>
         </submenu>
 
-        <files folder="administrator">
+        <files folder="admin">
             <filename>index.html</filename>
             <filename>catalogue.php</filename>
             <filename>controller.php</filename>
@@ -40,12 +42,12 @@
             <folder>tables</folder>
             <folder>sql</folder>
         </files>
-        <languages folder="administrator">
-            <language tag="ru-RU">language/ru-RU/ru-RU.com_catalogue.ini</language>
-            <language tag="ru-RU">language/ru-RU/ru-RU.com_catalogue.sys.ini</language>
+        <languages folder="admin">
+            <language tag="ru-RU">language/ru-RU.com_catalogue.ini</language>
+            <language tag="ru-RU">language/ru-RU.com_catalogue.sys.ini</language>
         </languages>
     </administration>
-    <files folder="site">
+    <files>
         <filename>index.html</filename>
         <filename>catalogue.php</filename>
         <filename>com_catalogue.xml</filename>
