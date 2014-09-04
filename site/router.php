@@ -20,6 +20,7 @@ class CatalogueRouter extends JComponentRouterBase
 		$menu = $app->getMenu();
 		$params = JComponentHelper::getParams('com_catalogue');
 		$advanced = $params->get('sef_advanced_link', 0);
+		$add_id_alias = (int)$params->get('add_id_alias', 1);
 
 		// We need a menu item.  Either the one specified in the query, or the current active one if none specified
 		if (empty($query['Itemid']))
@@ -95,14 +96,14 @@ class CatalogueRouter extends JComponentRouterBase
 							->where('id=' . (int) $query['id']);
 						$db->setQuery($dbQuery);
 						$alias = $db->loadResult();
-						
+
 						if ($add_id_alias)
 							$query['id'] = $query['id'] . ':' . $alias;
 						else
 							$query['id'] = $alias;
 					}
-					
-					
+
+
 				}
 				else
 				{
@@ -269,9 +270,9 @@ class CatalogueRouter extends JComponentRouterBase
 
 		for ($i = 0; $i < $total; $i++)
 		{
-			if (preg_match('/^\d+-/'))
+			if (preg_match('/^\d+-/', $segments[$i]))
 				$segments[$i] = preg_replace('/-/', ':', $segments[$i], 1);
-				
+
 		}
 
 		// Get the active menu item.
@@ -309,23 +310,40 @@ class CatalogueRouter extends JComponentRouterBase
 			{
 				$vars['view'] = 'item';
 				$vars['id'] = (int) $segments[0];
-				
-				
+
+
 				// add alias to query array for build
 				if (!$vars['id'])
 				{
-					
+
 					$db = JFactory::getDbo();
 					$dbQuery = $db->getQuery(true)
 						->select('id')
 						->from('#__catalogue_item')
 						->where('alias=' . $db->quote($segments[0]));
 					$db->setQuery($dbQuery);
-					
-					$id = $db->loadResult(); 
-					$segments[0] = $id.':'.$vars['alias'];
+
+					$id = $db->loadResult();
+
+					$segments[0] = $id.':'.$segments[0];
 				}
-				
+
+			}
+			else
+			{
+				list($id, $alias) = explode(':', $segments[0], 2);
+				$db = JFactory::getDbo();
+				$dbQuery = $db->getQuery(true)
+					->select('alias')
+					->from('#__catalogue_item')
+					->where('id=' . $db->quote((int)$id));
+				$db->setQuery($dbQuery);
+
+				$alias = $db->loadResult();
+				if(!$alias){
+					JError::raiseError(404, JText::_('COM_CATALOGUE_ERROR_ITEM_NOT_FOUND'));
+					return $vars;
+				}
 			}
 
 			list($id, $alias) = explode(':', $segments[0], 2);
@@ -359,6 +377,12 @@ class CatalogueRouter extends JComponentRouterBase
 
 						return $vars;
 					}
+
+				}
+				else
+				{
+					JError::raiseError(404, JText::_('COM_CATALOGUE_ERROR_ITEM_NOT_FOUND'));
+					return $vars;
 				}
 			}
 		}

@@ -187,6 +187,18 @@ abstract class CatalogueHelperRoute
 							self::$lookup[$language][$view][$item->query['cid']] = $item->id;
 						}
 					}
+					if (isset($item->query['id']))
+					{
+						/**
+						 * Here it will become a bit tricky
+						 * language != * can override existing entries
+						 * language == * cannot override existing entries
+						 */
+						if (!isset(self::$lookup[$language][$view][$item->query['id']]) || $item->language != '*')
+						{
+							self::$lookup[$language][$view][$item->query['id']] = $item->id;
+						}
+					}
 				}
 			}
 		}

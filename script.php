@@ -59,7 +59,7 @@ class com_catalogueInstallerScript
     {
         // $parent is the class calling this method
         // $type is the type of change (install, update or discover_install)
-        echo '<p>' . JText::_('COM_CATALOGUE_PREFLIGHT_' . $type . '_TEXT') . '</p>';
+        // echo '<p>' . JText::_('COM_CATALOGUE_PREFLIGHT_' . $type . '_TEXT') . '</p>';
     }
 
     /**
@@ -71,6 +71,6 @@ class com_catalogueInstallerScript
     {
         // $parent is the class calling this method
         // $type is the type of change (install, update or discover_install)
-        echo '<p>' . JText::_('COM_CATALOGUE_POSTFLIGHT_' . $type . '_TEXT') . '</p>';
+        // echo '<p>' . JText::_('COM_CATALOGUE_POSTFLIGHT_' . $type . '_TEXT') . '</p>';
     }
 }
