@@ -37,6 +37,7 @@
             <folder>helpers</folder>
             <folder>models</folder>
             <folder>views</folder>
+            <folder>layouts</folder>
             <folder>tables</folder>
             <folder>sql</folder>
         </files>
@@ -53,6 +54,8 @@
         <filename>helper.php</filename>
         <filename>thumbnail.php</filename>
         <filename>router.php</filename>
+        <folder>helpers</folder>
+        <folder>controllers</folder>
         <folder>models</folder>
         <folder>views</folder>
     </files>
