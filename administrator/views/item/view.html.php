@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-JLoader::register('CatalogueHelper', JPATH_COMPONENT.'/helpers/catalogue.php');
+JLoader::register('CatalogueHelper', JPATH_COMPONENT . '/helpers/catalogue.php');
 
 /**
  * View to edit a banner.
@@ -20,72 +20,71 @@ JLoader::register('CatalogueHelper', JPATH_COMPONENT.'/helpers/catalogue.php');
  */
 class CatalogueViewItem extends JViewLegacy
 {
-	protected $form;
-	protected $item;
-	protected $state;
-	protected $pagination;
-	
-	/**
-	 * Display the view
-	 */
-	public function display($tpl = null)
-	{
-		
-		// Initialiase variables.
-		$this->form		= $this->get('Form');
-		$this->item		= $this->get('Item');
-		$this->state		= $this->get('State');
-		$this->pagination	= $this->get('Pagination');
-		
-		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
-			return false;
-		}
+    protected $form;
+    protected $item;
+    protected $state;
+    protected $pagination;
 
-		$this->addToolbar();
-		parent::display($tpl);
-	}
+    /**
+     * Display the view
+     */
+    public function display($tpl = null)
+    {
 
-	/**
-	 * Add the page title and toolbar.
-	 *
-	 * @since	1.6
-	 */
-	protected function addToolbar()
-	{
-		JFactory::getApplication()->input->set('hidemainmenu', true);
+        // Initialiase variables.
+        $this->form = $this->get('Form');
+        $this->item = $this->get('Item');
+        $this->state = $this->get('State');
+        $this->pagination = $this->get('Pagination');
 
-		$user		= JFactory::getUser();
-		$userId		= $user->get('id');
-		$isNew		= ($this->item->id == 0);
-		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-		// Since we don't track these assets at the item level, use the category id.
-		$canDo		= CatalogueHelper::getActions($this->item->id, 0);
+        // Check for errors.
+        if (count($errors = $this->get('Errors'))) {
+            JError::raiseError(500, implode("\n", $errors));
+            return false;
+        }
 
-		JToolbarHelper::title($isNew ? JText::_('COM_CATALOGUE_MANAGER_ITEM_NEW') : JText::_('COM_CATALOGUE_MANAGER_ITEM_EDIT'), 'banners.png');
+        $this->addToolbar();
+        parent::display($tpl);
+    }
 
-		// If not checked out, can save the item.
-		if (!$checkedOut && ($canDo->get('core.edit'))){
-			JToolbarHelper::apply('item.apply');
-			JToolbarHelper::save('item.save');
+    /**
+     * Add the page title and toolbar.
+     *
+     * @since    1.6
+     */
+    protected function addToolbar()
+    {
+        JFactory::getApplication()->input->set('hidemainmenu', true);
 
-			if ($canDo->get('core.create')) {
-				JToolbarHelper::save2new('item.save2new');
-			}
-		}
+        $user = JFactory::getUser();
+        $userId = $user->get('id');
+        $isNew = ($this->item->id == 0);
+        $checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
+        // Since we don't track these assets at the item level, use the category id.
+        $canDo = CatalogueHelper::getActions($this->item->id, 0);
 
-		// If an existing item, can save to a copy.
-		if (!$isNew && $canDo->get('core.create')) {
-			JToolbarHelper::save2copy('item.save2copy');
-		}
+        JToolbarHelper::title($isNew ? JText::_('COM_CATALOGUE_MANAGER_ITEM_NEW') : JText::_('COM_CATALOGUE_MANAGER_ITEM_EDIT'), 'banners.png');
 
-		if (empty($this->item->id))  {
-			JToolbarHelper::cancel('item.cancel');
-		}
-		else {
-			JToolbarHelper::cancel('item.cancel', 'JTOOLBAR_CLOSE');
-		}
+        // If not checked out, can save the item.
+        if (!$checkedOut && ($canDo->get('core.edit'))) {
+            JToolbarHelper::apply('item.apply');
+            JToolbarHelper::save('item.save');
 
-	}
+            if ($canDo->get('core.create')) {
+                JToolbarHelper::save2new('item.save2new');
+            }
+        }
+
+        // If an existing item, can save to a copy.
+        if (!$isNew && $canDo->get('core.create')) {
+            JToolbarHelper::save2copy('item.save2copy');
+        }
+
+        if (empty($this->item->id)) {
+            JToolbarHelper::cancel('item.cancel');
+        } else {
+            JToolbarHelper::cancel('item.cancel', 'JTOOLBAR_CLOSE');
+        }
+
+    }
 }

@@ -18,12 +18,12 @@ defined('_JEXEC') or die;
  */
 class CatalogueCategories extends JCategories
 {
-	public function __construct($options = array())
-	{
-		$options['table'] 		= '#__catalogue_item';
-		$options['extension'] 	= 'com_catalogue';
-		$options['field']		= 'category_id';
+    public function __construct($options = array())
+    {
+        $options['table'] = '#__catalogue_item';
+        $options['extension'] = 'com_catalogue';
+        $options['field'] = 'category_id';
 
-		parent::__construct($options);
-	}
+        parent::__construct($options);
+    }
 }

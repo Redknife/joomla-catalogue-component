@@ -6,32 +6,31 @@ defined('_JEXEC') or die;
 
 class CatalogueControllerFrontpage extends JControllerForm
 {
-	protected $view_list = 'frontpage';
-	
-	public function saveOrderAjax()
-	{
-		// Get the input
-		$pks = $this->input->post->get('cid', array(), 'array');
-		$order = $this->input->post->get('order', array(), 'array');
-		
-		// Sanitize the input
-		JArrayHelper::toInteger($pks);
-		JArrayHelper::toInteger($order);
+    protected $view_list = 'frontpage';
 
-		// Get the model
-		$model = $this->getModel();
-                
-		// Save the ordering
-		$return = $model->saveorder($pks, $order);
+    public function saveOrderAjax()
+    {
+        // Get the input
+        $pks = $this->input->post->get('cid', array(), 'array');
+        $order = $this->input->post->get('order', array(), 'array');
 
-		if ($return)
-		{
-			echo "1";
-		}
+        // Sanitize the input
+        JArrayHelper::toInteger($pks);
+        JArrayHelper::toInteger($order);
 
-		// Close the application
-		JFactory::getApplication()->close();
-	}
-	
-	
+        // Get the model
+        $model = $this->getModel();
+
+        // Save the ordering
+        $return = $model->saveorder($pks, $order);
+
+        if ($return) {
+            echo "1";
+        }
+
+        // Close the application
+        JFactory::getApplication()->close();
+    }
+
+
 }

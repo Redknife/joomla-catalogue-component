@@ -9,33 +9,31 @@ require_once __DIR__ . '/../../helpers/catalogue.php';
 
 class JFormFieldCountriesList extends JFormFieldList
 {
-	
-	protected $type = 'CountriesList';
 
-	protected static $options = array();
-	
-	public function getOptions()
-	{
-		
-		$hash = md5($this->element);
-		
-		if (!isset(static::$options[$hash]))
-		{
-			
-			
-			static::$options[$hash] = parent::getOptions();
+    protected static $options = array();
+    protected $type = 'CountriesList';
 
-			$options = array();
+    public function getOptions()
+    {
 
-			$options = CatalogueHelper::getCountriesOptions();
-		
-			static::$options[$hash] = array_merge(static::$options[$hash], $options);
-			
-			
-		}
+        $hash = md5($this->element);
 
-		return static::$options[$hash];
-	
-		
-	}
+        if (!isset(static::$options[$hash])) {
+
+
+            static::$options[$hash] = parent::getOptions();
+
+            $options = array();
+
+            $options = CatalogueHelper::getCountriesOptions();
+
+            static::$options[$hash] = array_merge(static::$options[$hash], $options);
+
+
+        }
+
+        return static::$options[$hash];
+
+
+    }
 }

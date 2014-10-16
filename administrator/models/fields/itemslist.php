@@ -9,13 +9,13 @@ require_once __DIR__ . '/../../helpers/catalogue.php';
 
 class JFormFieldItemsList extends JFormFieldList
 {
-	
-	protected $type = 'ItemsList';
 
-	
-	public function getOptions()
-	{
-		 
-		return CatalogueHelper::getItemsOptions(true);
-	}
+    protected $type = 'ItemsList';
+
+
+    public function getOptions()
+    {
+
+        return CatalogueHelper::getItemsOptions(true);
+    }
 }

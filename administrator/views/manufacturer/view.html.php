@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-JLoader::register('CatalogueHelper', JPATH_COMPONENT.'/helpers/catalogue.php');
+JLoader::register('CatalogueHelper', JPATH_COMPONENT . '/helpers/catalogue.php');
 
 /**
  * View to edit a banner.
@@ -20,73 +20,72 @@ JLoader::register('CatalogueHelper', JPATH_COMPONENT.'/helpers/catalogue.php');
  */
 class CatalogueViewManufacturer extends JViewLegacy
 {
-	protected $form;
+    protected $form;
 
-	protected $item;
+    protected $item;
 
-	protected $state;
+    protected $state;
 
-	/**
-	 * Display the view
-	 */
-	public function display($tpl = null)
-	{
-		
-		// Initialiase variables.
-		$this->form		= $this->get('Form');
-		$this->item		= $this->get('Item');
-		$this->state	= $this->get('State');
+    /**
+     * Display the view
+     */
+    public function display($tpl = null)
+    {
 
-		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
-			return false;
-		}
+        // Initialiase variables.
+        $this->form = $this->get('Form');
+        $this->item = $this->get('Item');
+        $this->state = $this->get('State');
 
-		$this->addToolbar();
-		parent::display($tpl);
-	}
+        // Check for errors.
+        if (count($errors = $this->get('Errors'))) {
+            JError::raiseError(500, implode("\n", $errors));
+            return false;
+        }
 
-	/**
-	 * Add the page title and toolbar.
-	 *
-	 * @since	1.6
-	 */
-	protected function addToolbar()
-	{
-		JFactory::getApplication()->input->set('hidemainmenu', true);
+        $this->addToolbar();
+        parent::display($tpl);
+    }
 
-		$user		= JFactory::getUser();
-		$userId		= $user->get('id');
-		$isNew		= ($this->item->id == 0);
-		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-		// Since we don't track these assets at the item level, use the manufacturer id.
-		$canDo		= CatalogueHelper::getActions($this->item->id, 0);
+    /**
+     * Add the page title and toolbar.
+     *
+     * @since    1.6
+     */
+    protected function addToolbar()
+    {
+        JFactory::getApplication()->input->set('hidemainmenu', true);
 
-		JToolbarHelper::title($isNew ? JText::_('COM_CATALOGUE_MANAGER_MANUFACTURER_NEW') : JText::_('COM_CATALOGUE_MANAGER_MANUFACTURER_EDIT'));
+        $user = JFactory::getUser();
+        $userId = $user->get('id');
+        $isNew = ($this->item->id == 0);
+        $checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
+        // Since we don't track these assets at the item level, use the manufacturer id.
+        $canDo = CatalogueHelper::getActions($this->item->id, 0);
 
-		// If not checked out, can save the item.
-		if (!$checkedOut && ($canDo->get('core.edit'))){
-			JToolbarHelper::apply('manufacturer.apply');
-			JToolbarHelper::save('manufacturer.save');
+        JToolbarHelper::title($isNew ? JText::_('COM_CATALOGUE_MANAGER_MANUFACTURER_NEW') : JText::_('COM_CATALOGUE_MANAGER_MANUFACTURER_EDIT'));
 
-			if ($canDo->get('core.create')) {
-				JToolbarHelper::save2new('manufacturer.save2new');
-			}
-		}
+        // If not checked out, can save the item.
+        if (!$checkedOut && ($canDo->get('core.edit'))) {
+            JToolbarHelper::apply('manufacturer.apply');
+            JToolbarHelper::save('manufacturer.save');
 
-		// If an existing item, can save to a copy.
-		if (!$isNew && $canDo->get('core.create')) {
-			JToolbarHelper::save2copy('manufacturer.save2copy');
-		}
+            if ($canDo->get('core.create')) {
+                JToolbarHelper::save2new('manufacturer.save2new');
+            }
+        }
 
-		if (empty($this->item->id))  {
-			JToolbarHelper::cancel('manufacturer.cancel');
-		}
-		else {
-			JToolbarHelper::cancel('manufacturer.cancel', 'JTOOLBAR_CLOSE');
-		}
+        // If an existing item, can save to a copy.
+        if (!$isNew && $canDo->get('core.create')) {
+            JToolbarHelper::save2copy('manufacturer.save2copy');
+        }
 
-		JToolbarHelper::divider();
-	}
+        if (empty($this->item->id)) {
+            JToolbarHelper::cancel('manufacturer.cancel');
+        } else {
+            JToolbarHelper::cancel('manufacturer.cancel', 'JTOOLBAR_CLOSE');
+        }
+
+        JToolbarHelper::divider();
+    }
 }

@@ -14,17 +14,16 @@ JHtml::_('behavior.multiselect');
 JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
 
-$user		= JFactory::getUser();
-$userId		= $user->get('id');
-$listOrder	= $this->escape($this->state->get('list.ordering'));
-$listDirn	= $this->escape($this->state->get('list.direction'));
-$archived	= $this->state->get('filter.published') == 2 ? true : false;
-$trashed	= $this->state->get('filter.published') == -2 ? true : false;
-$params		= (isset($this->state->params)) ? $this->state->params : new JObject;
-$saveOrder	= $listOrder == 'c.ordering';
+$user = JFactory::getUser();
+$userId = $user->get('id');
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn = $this->escape($this->state->get('list.direction'));
+$archived = $this->state->get('filter.published') == 2 ? true : false;
+$trashed = $this->state->get('filter.published') == -2 ? true : false;
+$params = (isset($this->state->params)) ? $this->state->params : new JObject;
+$saveOrder = $listOrder == 'c.ordering';
 
-if ($saveOrder)
-{
+if ($saveOrder) {
     $saveOrderingUrl = 'index.php?option=com_catalogue&task=item.saveOrderAjax&tmpl=component';
     JHtml::_('sortablelist.sortable', 'articleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
@@ -33,7 +32,7 @@ $sortFields = $this->getSortFields();
 ?>
 
 <script type="text/javascript">
-    Joomla.orderTable = function() {
+    Joomla.orderTable = function () {
         table = document.getElementById("sortTable");
         direction = document.getElementById("directionTable");
         order = table.options[table.selectedIndex].value;
@@ -46,49 +45,63 @@ $sortFields = $this->getSortFields();
     }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_catalogue&view=catalogue'); ?>" method="post" name="adminForm" id="adminForm">
-    <?php if(!empty( $this->sidebar)): ?>
+<form action="<?php echo JRoute::_('index.php?option=com_catalogue&view=catalogue'); ?>" method="post" name="adminForm"
+      id="adminForm">
+    <?php if (!empty($this->sidebar)): ?>
     <div id="j-sidebar-container" class="span2">
         <?php echo $this->sidebar; ?>
         <?php
-		// Search tools bar
-		echo JLayoutHelper::render('filters', array('view' => $this));
-		?>
+        // Search tools bar
+        echo JLayoutHelper::render('filters', array('view' => $this));
+        ?>
     </div>
     <div id="j-main-container" class="span10">
         <?php else : ?>
         <div id="j-main-container">
-            <?php endif;?>
+            <?php endif; ?>
             <div id="filter-bar" class="btn-toolbar">
                 <div class="filter-search btn-group pull-left">
-                    <label for="filter_search" class="element-invisible"><?php echo JText::_('COM_CATALOGUE_SEARCH_IN_TITLE');?></label>
-                    <input type="text" name="filter_search" id="filter_search" placeholder="<?php echo JText::_('COM_CATALOGUE_SEARCH_IN_TITLE'); ?>" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" title="<?php echo JText::_('COM_CATALOGUE_SEARCH_IN_TITLE'); ?>" />
+                    <label for="filter_search"
+                           class="element-invisible"><?php echo JText::_('COM_CATALOGUE_SEARCH_IN_TITLE'); ?></label>
+                    <input type="text" name="filter_search" id="filter_search"
+                           placeholder="<?php echo JText::_('COM_CATALOGUE_SEARCH_IN_TITLE'); ?>"
+                           value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
+                           title="<?php echo JText::_('COM_CATALOGUE_SEARCH_IN_TITLE'); ?>"/>
                 </div>
                 <div class="btn-group pull-left">
-                    <button type="submit" class="btn hasTooltip" title="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>"><i class="icon-search"></i></button>
-                    <button type="button" class="btn hasTooltip" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>" onclick="document.id('filter_search').value='';this.form.submit();"><i class="icon-remove"></i></button>
+                    <button type="submit" class="btn hasTooltip"
+                            title="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>"><i class="icon-search"></i>
+                    </button>
+                    <button type="button" class="btn hasTooltip" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>"
+                            onclick="document.id('filter_search').value='';this.form.submit();"><i
+                            class="icon-remove"></i></button>
                 </div>
                 <div class="btn-group pull-right hidden-phone">
-                    <label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
+                    <label for="limit"
+                           class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?></label>
                     <?php echo $this->pagination->getLimitBox(); ?>
                 </div>
                 <div class="btn-group pull-right hidden-phone">
-                    <label for="directionTable" class="element-invisible"><?php echo JText::_('JFIELD_ORDERING_DESC');?></label>
-                    <select name="directionTable" id="directionTable" class="input-medium" onchange="Joomla.orderTable()">
-                        <option value=""><?php echo JText::_('JFIELD_ORDERING_DESC');?></option>
-                        <option value="asc" <?php if ($listDirn == 'asc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_ASCENDING');?></option>
-                        <option value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING');?></option>
+                    <label for="directionTable"
+                           class="element-invisible"><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></label>
+                    <select name="directionTable" id="directionTable" class="input-medium"
+                            onchange="Joomla.orderTable()">
+                        <option value=""><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></option>
+                        <option
+                            value="asc" <?php if ($listDirn == 'asc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_ASCENDING'); ?></option>
+                        <option
+                            value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING'); ?></option>
                     </select>
                 </div>
                 <div class="btn-group pull-right">
-                    <label for="sortTable" class="element-invisible"><?php echo JText::_('JGLOBAL_SORT_BY');?></label>
+                    <label for="sortTable" class="element-invisible"><?php echo JText::_('JGLOBAL_SORT_BY'); ?></label>
                     <select name="sortTable" id="sortTable" class="input-medium" onchange="Joomla.orderTable()">
-                        <option value=""><?php echo JText::_('JGLOBAL_SORT_BY');?></option>
-                        <?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder);?>
+                        <option value=""><?php echo JText::_('JGLOBAL_SORT_BY'); ?></option>
+                        <?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder); ?>
                     </select>
                 </div>
             </div>
-            <div class="clearfix"> </div>
+            <div class="clearfix"></div>
             <table class="table table-striped" id="articleList">
                 <thead>
                 <tr>
@@ -96,7 +109,8 @@ $sortFields = $this->getSortFields();
                         <?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'c.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
                     </th>
                     <th width="1%" class="hidden-phone">
-                        <input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+                        <input type="checkbox" name="checkall-toggle" value=""
+                               title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)"/>
                     </th>
                     <th width="1%" class="nowrap center">
                         <?php echo JHtml::_('grid.sort', 'JSTATUS', 'c.published', $listDirn, $listOrder); ?>
@@ -131,28 +145,30 @@ $sortFields = $this->getSortFields();
                 <tbody>
                 <?php foreach ($this->items as $i => $item) :
                     $item->max_ordering = 0; //??
-                    $ordering   = ($listOrder == 'c.ordering');
-                    $canEdit    = $user->authorise('core.edit',       'com_catalogue.item.'.$item->id);
-                    $canCheckin = $user->authorise('core.manage',     'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-                    $canEditOwn = $user->authorise('core.edit.own',   'com_catalogue.item.'.$item->id) && $item->created_by == $userId;
-                    $canChange  = $user->authorise('core.edit.state', 'com_catalogue.item.'.$item->id) && $canCheckin;
+                    $ordering = ($listOrder == 'c.ordering');
+                    $canEdit = $user->authorise('core.edit', 'com_catalogue.item.' . $item->id);
+                    $canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
+                    $canEditOwn = $user->authorise('core.edit.own', 'com_catalogue.item.' . $item->id) && $item->created_by == $userId;
+                    $canChange = $user->authorise('core.edit.state', 'com_catalogue.item.' . $item->id) && $canCheckin;
                     ?>
-                    <tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->category_id?>">
+                    <tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->category_id ?>">
                         <td class="order nowrap center hidden-phone">
                             <?php if ($canChange) :
                                 $disableClassName = '';
-                                $disabledLabel	  = '';
+                                $disabledLabel = '';
 
                                 if (!$saveOrder) :
-                                    $disabledLabel    = JText::_('JORDERINGDISABLED');
+                                    $disabledLabel = JText::_('JORDERINGDISABLED');
                                     $disableClassName = 'inactive tip-top';
                                 endif; ?>
-                                <span class="sortable-handler hasTooltip <?php echo $disableClassName?>" title="<?php echo $disabledLabel?>">
+                                <span class="sortable-handler hasTooltip <?php echo $disableClassName ?>"
+                                      title="<?php echo $disabledLabel ?>">
 							<i class="icon-menu"></i>
 						</span>
-                                <input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering;?>" class="width-20 text-area-order " />
+                                <input type="text" style="display:none" name="order[]" size="5"
+                                       value="<?php echo $item->ordering; ?>" class="width-20 text-area-order "/>
                             <?php else : ?>
-                                <span class="sortable-handler inactive" >
+                                <span class="sortable-handler inactive">
 							<i class="icon-menu"></i>
 						</span>
                             <?php endif; ?>
@@ -166,13 +182,13 @@ $sortFields = $this->getSortFields();
                         <td class="nowrap has-context" style="width: 25%;">
                             <div class="pull-left">
                                 <?php if ($canEdit) : ?>
-                                    <a href="<?php echo JRoute::_('index.php?option=com_catalogue&task=item.edit&id='.(int) $item->id); ?>">
+                                    <a href="<?php echo JRoute::_('index.php?option=com_catalogue&task=item.edit&id=' . (int)$item->id); ?>">
                                         <?php echo $this->escape($item->item_name); ?></a>
                                 <?php else : ?>
                                     <?php echo $this->escape($item->item_name); ?>
                                 <?php endif; ?>
                                 <div class="small">
-                                    <?php echo JText::_('JCATEGORY').': '.$item->category_name;?>
+                                    <?php echo JText::_('JCATEGORY') . ': ' . $item->category_name; ?>
                                 </div>
                             </div>
                             <div class="pull-left">
@@ -201,27 +217,34 @@ $sortFields = $this->getSortFields();
                                 endif;
 
 
-
                                 // render dropdown list
                                 echo JHtml::_('dropdown.render');
                                 ?>
                             </div>
                         <td class="hidden-phone">
-                            <?php if($item->item_description) echo substr($item->item_description,0,100).'...';?>
+                            <?php if ($item->item_description) echo substr(strip_tags($item->item_description), 0, 100) . '...'; ?>
                         </td>
                         <td class="hidden-phone">
                             <?php echo $item->manufacturer_name; ?>
                             <div class="small">
-                                <?php echo $item->country_name;?>
+                                <?php echo $item->country_name; ?>
                             </div>
                         </td>
                         <td class="hidden-phone">
                             <?php
-                            switch ($item->sticker){
-                                case 0: echo '<span class="label label-info">none</span>'; break;
-                                case 1: echo '<span class="label label-warning">new</span>';break;
-                                case 2: echo '<span class="label label-important">hot</span>';break;
-                                case 3: echo '<span class="label label-success">sale</span>';break;
+                            switch ($item->sticker) {
+                                case 0:
+                                    echo '<span class="label label-info">none</span>';
+                                    break;
+                                case 1:
+                                    echo '<span class="label label-important">hot</span>';
+                                    break;
+                                case 2:
+                                    echo '<span class="label label-warning">new</span>';
+                                    break;
+                                case 3:
+                                    echo '<span class="label label-success">sale</span>';
+                                    break;
                             }
                             ?>
                         </td>
@@ -237,10 +260,10 @@ $sortFields = $this->getSortFields();
                 </tbody>
             </table>
 
-            <input type="hidden" name="task" value="" />
-            <input type="hidden" name="boxchecked" value="0" />
-            <input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
-            <input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+            <input type="hidden" name="task" value=""/>
+            <input type="hidden" name="boxchecked" value="0"/>
+            <input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>"/>
+            <input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>"/>
             <?php echo JHtml::_('form.token'); ?>
         </div>
 </form>

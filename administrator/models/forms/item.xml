@@ -3,59 +3,72 @@
     <fieldset name="details" addfieldpath="/administrator/components/com_catalogue/models/fields">
         <field name="id" type="text" default="0"
                readonly="true" class="readonly"
-               label="JGLOBAL_FIELD_ID_LABEL" 	description ="JGLOBAL_FIELD_ID_DESC" />
+               label="JGLOBAL_FIELD_ID_LABEL" description="JGLOBAL_FIELD_ID_DESC"/>
 
         <field name="item_name" type="text" class="inputbox"
                size="40" label="COM_CATALOGUE_FIELD_NAME_LABEL"
-               description="COM_CATALOGUE_FIELD_NAME_DESC" required="true" />
+               description="COM_CATALOGUE_FIELD_NAME_DESC" required="true"/>
 
         <field name="item_shortname" type="text" class="inputbox"
-               size="40" label="COM_CATALOGUE_FIELD_SHORTNAME_LABEL" required="false" />
+               size="40" label="COM_CATALOGUE_FIELD_SHORTNAME_LABEL" required="false"/>
+
+        <field name="item_shortdesc" type="editor" class="text"
+               label="COM_CATALOGUE_FIELD_SHORTDESC_LABEL"
+               filter="JComponentHelper::filterText" buttons="true"/>
+
+        <field name="item_techdesc" type="editor" class="text"
+               label="COM_CATALOGUE_FIELD_TECHDESC_LABEL"
+               filter="JComponentHelper::filterText" buttons="true"/>
 
         <field name="item_art" type="text" class="inputbox"
                size="40" label="COM_CATALOGUE_FIELD_ITEMART_LABEL"
-               description="COM_CATALOGUE_FIELD_ITEMART_DESC" required="false" />
+               description="COM_CATALOGUE_FIELD_ITEMART_DESC" required="false"/>
 
         <field name="item_count" type="text" class="inputbox"
                size="40" label="COM_CATALOGUE_FIELD_ITEMCOUNT_LABEL"
-               description="COM_CATALOGUE_FIELD_ITEMCOUNT_DESC" required="false" />
+               description="COM_CATALOGUE_FIELD_ITEMCOUNT_DESC" required="false"/>
 
-        <field name="category_id" type="categoryedit" addfieldpath="/administrator/components/com_categories/models/fields"
+        <field name="category_id" type="categoryedit"
+               addfieldpath="/administrator/components/com_categories/models/fields"
                label="JCATEGORY" description="JFIELD_CATEGORY_DESC"
                required="true"
                 />
 
         <field name="manufacturer_id" type="manufacturerslist"
-               label="COM_CATALOGUE_FIELD_MANUFACTURER_LABEL" description="COM_CATALOGUE_FIELD_MANUFACTURER_DESC" />
+               label="COM_CATALOGUE_FIELD_MANUFACTURER_LABEL" description="COM_CATALOGUE_FIELD_MANUFACTURER_DESC"/>
 
         <field name="item_sale" type="text" class="inputbox"
                size="45" label="COM_CATALOGUE_FIELD_ITEMSALE_LABEL"
-               description="COM_CATALOGUE_FIELD_ITEMSALE_DESC" required="false" />
+               description="COM_CATALOGUE_FIELD_ITEMSALE_DESC" required="false"/>
 
         <field name="alias" type="text" class="inputbox"
                size="45" label="COM_CATALOGUE_FIELD_ALIAS_LABEL"
-               description="COM_CATALOGUE_FIELD_ALIAS_DESC" required="false" />
+               description="COM_CATALOGUE_FIELD_ALIAS_DESC" required="false"/>
 
         <field name="rate" type="text" class="inputbox"
                size="45" label="COM_CATALOGUE_FIELD_RATE_LABEL"
-               description="COM_CATALOGUE_FIELD_RATE_DESC" required="false" />
+               description="COM_CATALOGUE_FIELD_RATE_DESC" required="false"/>
 
         <field name="item_description" type="editor" class="text"
                label="COM_CATALOGUE_FIELD_DESCRIPTION_LABEL" description="COM_CATALOGUE_FIELD_DESCRIPTION_DESC"
-               filter="JComponentHelper::filterText" buttons="true" />
+               filter="JComponentHelper::filterText" buttons="true"/>
 
         <field name="state" type="list" label="JSTATUS"
                description="JFIELD_PUBLISHED_DESC" class="small"
                filter="intval" size="1" default="1"
                 >
             <option value="1">
-                JPUBLISHED</option>
+                JPUBLISHED
+            </option>
             <option value="0">
-                JUNPUBLISHED</option>
+                JUNPUBLISHED
+            </option>
             <option value="2">
-                JARCHIVED</option>
+                JARCHIVED
+            </option>
             <option value="-2">
-                JTRASHED</option>
+                JTRASHED
+            </option>
         </field>
 
         <field name="sticker" type="list" label="COM_CATALOGUE_FIELD_STICKER_LABEL"
@@ -65,71 +78,8 @@
             <option value="0">COM_CATALOGUE_NONE</option>
             <option value="1">COM_CATALOGUE_HOT</option>
             <option value="2">COM_CATALOGUE_NEW</option>
+            <option value="3">COM_CATALOGUE_SALE</option>
         </field>
-
-        <field name="price_cat" type="list" label="COM_CATALOGUE_FIELD_PRICECAT_LABEL"
-               class="small"
-               filter="intval" size="1" default="0"
-                >
-            <option value="1">COM_CATALOGUE_PRICE_MIN</option>
-            <option value="2">COM_CATALOGUE_PRICE_ECONOM</option>
-            <option value="3">COM_CATALOGUE_PRICE_BUISNES</option>
-            <option value="4">COM_CATALOGUE_PRICE_PREMIUM</option>
-            <option value="5">COM_CATALOGUE_PRICE_ELITE</option>
-        </field>
-
-        <field
-               name="print_totalsum"
-               type="radio"
-               label="COM_CATALOGUE_PRINT_TOTALSUM_LABEL"
-               class="btn-group"
-               default="1" >
-          <option
-            value="0">JNO</option>
-          <option
-            value="1">JYES</option>
-        </field>
-
-        <field name="stock" type="list" label="COM_CATALOGUE_FIELD_STOCK_LABEL" class="small"
-               filter="intval" size="1" default="1" >
-            <option value="1">COM_CATALOGUE_INSTOCK</option>
-            <option value="0">COM_CATALOGUE_OUTOFSTOCK</option>
-        </field>
-
-        <field name="delivery_period" type="text" class="inputbox"
-               size="45" label="COM_CATALOGUE_FIELD_DELIVERY_LABEL" required="false" />
-
-        <field name="warranty" type="text" class="inputbox"
-               size="45" label="COM_CATALOGUE_FIELD_WARRANTY_LABEL" required="false" />
-
-        <field name="assembly" type="text" class="inputbox" label="COM_CATALOGUE_FIELD_ASSEMBLY_LABEL" size="45" required="false"  />
-
-
-        <field
-                name="price_list"
-                type="text"
-                label="COM_CATALOGIE_FIELD_PRICELIST_LABEL"
-                labelclass="control-label"/>
-
-        <field
-                name="tech_desc"
-                type="text"
-                label="COM_CATALOGIE_FIELD_TECHDESC_LABEL"
-                labelclass="control-label"/>
-
-
-        <field name="benefits" type="editor" class="text"
-               label="COM_CATALOGUE_FIELD_BENEFITS_LABEL"
-               height="150px"
-               filter="JComponentHelper::filterText" buttons="true" />
-
-        <field name="color_scheme" type="editor" class="text"
-               label="COM_CATALOGUE_FIELD_COLORSCHEME_LABEL"
-               filter="JComponentHelper::filterText" buttons="true" />
-
-        <field name="assets" type="editor" class="text"
-               label="COM_CATALOGUE_FIELD_ASSETS_LABEL"
-               filter="JComponentHelper::filterText" buttons="true" />
 
         <field
                 name="item_image"
@@ -173,98 +123,98 @@
                 description="COM_CATALOGIE_FIELD_IMAGE_DESC"
                 labelclass="control-label"/>
 
-                <field
+        <field
                 name="item_image_7"
                 type="media"
                 label="COM_CATALOGIE_FIELD_IMAGE5_LABEL"
                 description="COM_CATALOGIE_FIELD_IMAGE_DESC"
                 labelclass="control-label"/>
 
-                <field
+        <field
                 name="item_image_8"
                 type="media"
                 label="COM_CATALOGIE_FIELD_IMAGE5_LABEL"
                 description="COM_CATALOGIE_FIELD_IMAGE_DESC"
                 labelclass="control-label"/>
 
-                <field
+        <field
                 name="item_image_9"
                 type="media"
                 label="COM_CATALOGIE_FIELD_IMAGE5_LABEL"
                 description="COM_CATALOGIE_FIELD_IMAGE_DESC"
                 labelclass="control-label"/>
 
-                <field
+        <field
                 name="item_image_10"
                 type="media"
                 label="COM_CATALOGIE_FIELD_IMAGE5_LABEL"
                 description="COM_CATALOGIE_FIELD_IMAGE_DESC"
                 labelclass="control-label"/>
 
-                <field
+        <field
                 name="item_image_11"
                 type="media"
                 label="COM_CATALOGIE_FIELD_IMAGE5_LABEL"
                 description="COM_CATALOGIE_FIELD_IMAGE_DESC"
                 labelclass="control-label"/>
 
-                <field
+        <field
                 name="item_image_12"
                 type="media"
                 label="COM_CATALOGIE_FIELD_IMAGE5_LABEL"
                 description="COM_CATALOGIE_FIELD_IMAGE_DESC"
                 labelclass="control-label"/>
 
-                <field
+        <field
                 name="item_image_13"
                 type="media"
                 label="COM_CATALOGIE_FIELD_IMAGE5_LABEL"
                 description="COM_CATALOGIE_FIELD_IMAGE_DESC"
                 labelclass="control-label"/>
 
-                <field
+        <field
                 name="item_image_14"
                 type="media"
                 label="COM_CATALOGIE_FIELD_IMAGE5_LABEL"
                 description="COM_CATALOGIE_FIELD_IMAGE_DESC"
                 labelclass="control-label"/>
 
-                <field
+        <field
                 name="item_image_15"
                 type="media"
                 label="COM_CATALOGIE_FIELD_IMAGE5_LABEL"
                 description="COM_CATALOGIE_FIELD_IMAGE_DESC"
                 labelclass="control-label"/>
 
-                <field
+        <field
                 name="item_image_16"
                 type="media"
                 label="COM_CATALOGIE_FIELD_IMAGE5_LABEL"
                 description="COM_CATALOGIE_FIELD_IMAGE_DESC"
                 labelclass="control-label"/>
 
-                <field
+        <field
                 name="item_image_17"
                 type="media"
                 label="COM_CATALOGIE_FIELD_IMAGE5_LABEL"
                 description="COM_CATALOGIE_FIELD_IMAGE_DESC"
                 labelclass="control-label"/>
 
-                <field
+        <field
                 name="item_image_18"
                 type="media"
                 label="COM_CATALOGIE_FIELD_IMAGE5_LABEL"
                 description="COM_CATALOGIE_FIELD_IMAGE_DESC"
                 labelclass="control-label"/>
 
-                <field
+        <field
                 name="item_image_19"
                 type="media"
                 label="COM_CATALOGIE_FIELD_IMAGE5_LABEL"
                 description="COM_CATALOGIE_FIELD_IMAGE_DESC"
                 labelclass="control-label"/>
 
-                <field
+        <field
                 name="item_image_20"
                 type="media"
                 label="COM_CATALOGIE_FIELD_IMAGE5_LABEL"
@@ -272,98 +222,105 @@
                 labelclass="control-label"/>
 
         <field name="item_image_desc" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
         <field name="item_image_desc_2" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
         <field name="item_image_desc_3" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
         <field name="item_image_desc_4" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
         <field name="item_image_desc_5" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
-          <field name="item_image_desc_6" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+        <field name="item_image_desc_6" type="text" class="inputbox"
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
-          <field name="item_image_desc_7" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+        <field name="item_image_desc_7" type="text" class="inputbox"
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
-          <field name="item_image_desc_8" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+        <field name="item_image_desc_8" type="text" class="inputbox"
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
-          <field name="item_image_desc_9" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+        <field name="item_image_desc_9" type="text" class="inputbox"
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
-          <field name="item_image_desc_10" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+        <field name="item_image_desc_10" type="text" class="inputbox"
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
-          <field name="item_image_desc_11" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+        <field name="item_image_desc_11" type="text" class="inputbox"
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
-          <field name="item_image_desc_12" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+        <field name="item_image_desc_12" type="text" class="inputbox"
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
-          <field name="item_image_desc_13" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+        <field name="item_image_desc_13" type="text" class="inputbox"
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
-          <field name="item_image_desc_14" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+        <field name="item_image_desc_14" type="text" class="inputbox"
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
-          <field name="item_image_desc_15" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+        <field name="item_image_desc_15" type="text" class="inputbox"
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
-          <field name="item_image_desc_16" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+        <field name="item_image_desc_16" type="text" class="inputbox"
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
-          <field name="item_image_desc_17" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+        <field name="item_image_desc_17" type="text" class="inputbox"
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
-          <field name="item_image_desc_18" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+        <field name="item_image_desc_18" type="text" class="inputbox"
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
-          <field name="item_image_desc_19" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+        <field name="item_image_desc_19" type="text" class="inputbox"
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
-          <field name="item_image_desc_20" type="text" class="inputbox"
-          size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
-          required="false" />
+        <field name="item_image_desc_20" type="text" class="inputbox"
+               size="45" label="COM_CATALOGUE_FIELD_ITEMIMGDESC_LABEL"
+               required="false"/>
 
         <field name="price" type="text" class="inputbox"
                size="40" label="COM_CATALOGUE_FIELD_PRICE_LABEL"
-               description="COM_CATALOGUE_FIELD_PRICE_DESC" required="false" />
+               description="COM_CATALOGUE_FIELD_PRICE_DESC" required="false"/>
 
         <field name="ordering" type="ordering" class="inputbox"
 
-               label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC" />
+               label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC"/>
 
-        <field name="params" type="text" />
+        <field name="params" type="text"/>
+        <field name="techs" type="text"/>
 
         <field name="item_id" type="itemslist" multiple="false"
-	    label="COM_CATALOGUE_FIELD_ASSOC_LABEL" description="COM_CATALOGUE_FIELD_ASSOC_DESC" />
+               label="COM_CATALOGUE_FIELD_ASSOC_LABEL" description="COM_CATALOGUE_FIELD_ASSOC_DESC"/>
 
+        <field
+                name="attr_image"
+                type="paramsmedia"
+                label="COM_CATALOGUE_FIELD_ATTRIMAGE_LABEL"
+                description="COM_CATALOGUE_FIELD_ATTRIMAGE_DESC"
+                labelclass="control-label"/>
     </fieldset>
 
     <fields name="metadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">
@@ -379,11 +336,11 @@
 
             <field name="metakey" type="textarea"
                    label="JFIELD_META_KEYWORDS_LABEL" description="JFIELD_META_KEYWORDS_DESC"
-                   rows="3" cols="30" />
+                   rows="3" cols="30"/>
 
             <field name="metadesc" type="textarea"
                    label="JFIELD_META_DESCRIPTION_LABEL" description="JFIELD_META_DESCRIPTION_DESC"
-                   rows="3" cols="30" />
+                   rows="3" cols="30"/>
 
 
             <field

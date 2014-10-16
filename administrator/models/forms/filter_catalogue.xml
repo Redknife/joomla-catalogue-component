@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fields name="filter">
-		
-		<field
-			name="published"
-			type="status"
-			label="COM_CONTENT_FILTER_PUBLISHED"
-			description="COM_CONTENT_FILTER_PUBLISHED_DESC"
-			onchange="this.form.submit();"
-			>
-			<option value="">JOPTION_SELECT_PUBLISHED</option>
-		</field>
-		
-		<field
-			name="category_id"
-			type="category"
-			label="JOPTION_FILTER_CATEGORY"
-			extension="com_catalogue"
-			description="JOPTION_FILTER_CATEGORY_DESC"
-			onchange="this.form.submit();"
-			>
-			<option value="">JOPTION_SELECT_CATEGORY</option>
-		</field>
-		
-		<field
-			name="manufacturer_id"
-			type="manufacturerslist"
-			label="JOPTION_SELECT_MANUFACTURER"
-			description="JOPTION_SELECT_MANUFACTURER_DESC"
-			onchange="this.form.submit();"
-			>
-			<option value="">JOPTION_SELECT_MANUFACTURER</option>
-		</field>
-		
-		<field
-			name="country_id"
-			type="countrieslist"
-			label="JOPTION_SELECT_COUNTRY"
-			description="JOPTION_SELECT_COUNTRY_DESC"
-			onchange="this.form.submit();"
-			>
-			<option value="">JOPTION_SELECT_COUNTRY</option>
-		</field>
-		
-	</fields>
-	
+    <fields name="filter">
+
+        <field
+                name="published"
+                type="status"
+                label="COM_CONTENT_FILTER_PUBLISHED"
+                description="COM_CONTENT_FILTER_PUBLISHED_DESC"
+                onchange="this.form.submit();"
+                >
+            <option value="">JOPTION_SELECT_PUBLISHED</option>
+        </field>
+
+        <field
+                name="category_id"
+                type="category"
+                label="JOPTION_FILTER_CATEGORY"
+                extension="com_catalogue"
+                description="JOPTION_FILTER_CATEGORY_DESC"
+                onchange="this.form.submit();"
+                >
+            <option value="">JOPTION_SELECT_CATEGORY</option>
+        </field>
+
+        <field
+                name="manufacturer_id"
+                type="manufacturerslist"
+                label="JOPTION_SELECT_MANUFACTURER"
+                description="JOPTION_SELECT_MANUFACTURER_DESC"
+                onchange="this.form.submit();"
+                >
+            <option value="">JOPTION_SELECT_MANUFACTURER</option>
+        </field>
+
+        <field
+                name="country_id"
+                type="countrieslist"
+                label="JOPTION_SELECT_COUNTRY"
+                description="JOPTION_SELECT_COUNTRY_DESC"
+                onchange="this.form.submit();"
+                >
+            <option value="">JOPTION_SELECT_COUNTRY</option>
+        </field>
+
+    </fields>
+
 </form>

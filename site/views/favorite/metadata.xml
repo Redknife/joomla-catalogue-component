@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<view
-		title="Favorite">
-		<message><![CDATA[TYPECATEGORYDESC]]></message>
-	</view>
+    <view
+            title="Favorite">
+        <message><![CDATA[TYPECATEGORYDESC]]></message>
+    </view>
 </metadata>

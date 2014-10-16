@@ -1,81 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset>
-		<field name="id" type="text" default="0"
-			readonly="true" class="readonly"
-			label="JGLOBAL_FIELD_ID_LABEL" 	description ="JGLOBAL_FIELD_ID_DESC" />
+    <fieldset>
+        <field name="id" type="text" default="0"
+               readonly="true" class="readonly"
+               label="JGLOBAL_FIELD_ID_LABEL" description="JGLOBAL_FIELD_ID_DESC"/>
 
-		<field
-                    name="name"
-                    type="text"
-                    class="inputbox span4 required hasTooltip"
-                    label="COM_CATALOGUE_FIELD_NAME_LABEL"
-		    description="COM_CATALOGUE_FIELD_NAME_DESC"
-                    required="true"
+        <field
+                name="name"
+                type="text"
+                class="inputbox span4 required hasTooltip"
+                label="COM_CATALOGUE_FIELD_NAME_LABEL"
+                description="COM_CATALOGUE_FIELD_NAME_DESC"
+                required="true"
                 />
-                
-                <field
-                    name="email"
-                    type="text"
-                    class="inputbox span2 required hasTooltip"
-                    label="COM_CATALOGUE_FIELD_EMAIL_LABEL"
-		    description="COM_CATALOGUE_FIELD_EMAIL_DESC"
-                    required="true"
+
+        <field
+                name="email"
+                type="text"
+                class="inputbox span2 required hasTooltip"
+                label="COM_CATALOGUE_FIELD_EMAIL_LABEL"
+                description="COM_CATALOGUE_FIELD_EMAIL_DESC"
+                required="true"
                 />
-                
-                <field
-                    name="phone"
-                    type="text"
-                    class="inputbox span2 required hasTooltip"
-                    label="COM_CATALOGUE_FIELD_PHONE_LABEL"
-		    description="COM_CATALOGUE_FIELD_PHONE_DESC"
-                    required="true"
+
+        <field
+                name="phone"
+                type="text"
+                class="inputbox span2 required hasTooltip"
+                label="COM_CATALOGUE_FIELD_PHONE_LABEL"
+                description="COM_CATALOGUE_FIELD_PHONE_DESC"
+                required="true"
                 />
-                
-                <field
-                    name="comment"
-                    type="text"
-                    class="inputbox span4 required hasTooltip"
-                    label="COM_CATALOGUE_FIELD_COMMENT_LABEL"
-		    description="COM_CATALOGUE_FIELD_COMMENT_DESC"
-                    required="true"
+
+        <field
+                name="comment"
+                type="text"
+                class="inputbox span4 required hasTooltip"
+                label="COM_CATALOGUE_FIELD_COMMENT_LABEL"
+                description="COM_CATALOGUE_FIELD_COMMENT_DESC"
+                required="true"
                 />
-                
-                <field
-                    name="name_to"
-                    type="text"
-                    class="inputbox span3 required validate-text hasTooltip"
-                    label="COM_CATALOGUE_FIELD_NAMETO_LABEL"
-		    description="COM_CATALOGUE_FIELD_NAMETO_DESC"
-                    required="true"
+
+        <field
+                name="name_to"
+                type="text"
+                class="inputbox span3 required validate-text hasTooltip"
+                label="COM_CATALOGUE_FIELD_NAMETO_LABEL"
+                description="COM_CATALOGUE_FIELD_NAMETO_DESC"
+                required="true"
                 />
-                
-                <field
-                    name="date_to"
-                    type="text"
-                    class="inputbox span3 required hasTooltip"
-                    label="COM_CATALOGUE_FIELD_DATETO_LABEL"
-		    description="COM_CATALOGUE_FIELD_DATETO_DESC"
-                    required="true"
+
+        <field
+                name="date_to"
+                type="text"
+                class="inputbox span3 required hasTooltip"
+                label="COM_CATALOGUE_FIELD_DATETO_LABEL"
+                description="COM_CATALOGUE_FIELD_DATETO_DESC"
+                required="true"
                 />
-                
-                <field
-                    name="address_to"
-                    type="text"
-                    class="inputbox span3 required validate-text hasTooltip"
-                    label="COM_CATALOGUE_FIELD_ADDRESSTO_LABEL"
-		    description="COM_CATALOGUE_FIELD_ADDRESSTO_DESC"
-                    required="true"
+
+        <field
+                name="address_to"
+                type="text"
+                class="inputbox span3 required validate-text hasTooltip"
+                label="COM_CATALOGUE_FIELD_ADDRESSTO_LABEL"
+                description="COM_CATALOGUE_FIELD_ADDRESSTO_DESC"
+                required="true"
                 />
-                
-                <field
-                    name="phone_to"
-                    type="text"
-                    class="inputbox span3 required validate-numeric hasTooltip"
-                    label="COM_CATALOGUE_FIELD_PHONETO_LABEL"
-		    description="COM_CATALOGUE_FIELD_PHONETO_DESC"
-                    required="true"
+
+        <field
+                name="phone_to"
+                type="text"
+                class="inputbox span3 required validate-numeric hasTooltip"
+                label="COM_CATALOGUE_FIELD_PHONETO_LABEL"
+                description="COM_CATALOGUE_FIELD_PHONETO_DESC"
+                required="true"
                 />
-                
-	</fieldset>
+
+    </fieldset>
 </form>

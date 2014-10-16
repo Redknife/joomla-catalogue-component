@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset>
+        <field name="id" type="text" default="0"
+               readonly="true" class="readonly"
+               label="JGLOBAL_FIELD_ID_LABEL" description="JGLOBAL_FIELD_ID_DESC"/>
+
+        <field name="item_id" type="text" default="0"
+               class="readonly" label="JGLOBAL_FIELD_ITEMID_LABEL"/>
+
+        <field
+                name="item_review_fio"
+                type="text"
+                class="inputbox required"
+                label="COM_CATALOGUE_FIELD_NAME_LABEL"
+                required="true"
+                />
+
+        <field
+                name="item_review_date"
+                type="text"
+                class="inputbox required"
+                label="COM_CATALOGUE_FIELD_EMAIL_LABEL"
+                required="true"
+                />
+
+        <field
+                name="item_review_phone"
+                type="text"
+                class="inputbox"
+                label="COM_CATALOGUE_FIELD_PHONE_LABEL"
+                />
+
+        <field
+                name="item_review_text"
+                type="text"
+                class="inputbox required"
+                label="COM_CATALOGUE_FIELD_COMMENT_LABEL"
+                required="true"
+                />
+
+        <field
+                name="item_review_rate"
+                type="text"
+                class="required"
+                label="COM_CATALOGUE_FIELD_RATE_LABEL"
+                required="true"
+                />
+
+    </fieldset>
+</form>
