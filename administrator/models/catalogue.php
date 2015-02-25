@@ -91,11 +91,11 @@ class CatalogueModelCatalogue extends JModelList
         $query->select('u.name AS username')
             ->join('LEFT', '#__users AS u ON u.id = c.created_by');
 
-        // Filter by published state
-        $published = $this->getState('filter.state');
-        if (is_numeric($published)) {
-            $query->where('c.state = ' . (int)$published);
-        } elseif ($published === '') {
+        // Filter by state
+        $state = $this->getState('filter.state');
+        if (is_numeric($state)) {
+            $query->where('c.state = ' . (int)$state);
+        } elseif ($state === '') {
             $query->where('(c.state IN (0, 1))');
         }
 
@@ -121,9 +121,9 @@ class CatalogueModelCatalogue extends JModelList
         $published = $this->getState('filter.published');
 
         if (is_numeric($published)) {
-            $query->where('c.state = ' . (int)$published);
+            $query->where('c.published = ' . (int)$published);
         } elseif ($published === '') {
-            $query->where('(c.state = 0 OR c.state = 1)');
+            $query->where('(c.published = 0 OR c.published = 1)');
         }
 
         // Filter by search in title
